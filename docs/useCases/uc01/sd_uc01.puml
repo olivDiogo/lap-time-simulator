@@ -1,0 +1,30 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant " "
+participant TrackController as CTRL
+participant TrackService as SERV
+participant TrackRepository as REPO
+
+
+" "-> CTRL: getTracks()
+activate CTRL
+
+CTRL -> SERV: getTracks()
+activate SERV
+
+SERV -> REPO: findAll()
+activate REPO
+
+REPO --> SERV: List<TrackDataModel>
+deactivate REPO
+
+SERV --> CTRL: List<TrackDataModel>
+deactivate SERV
+
+CTRL --> " ": List<String: trackName>
+deactivate CTRL
+
+@enduml

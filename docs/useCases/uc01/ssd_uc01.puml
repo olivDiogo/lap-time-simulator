@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor User
+participant Frontend
+participant Server
+participant Database
+
+User -> Frontend: I want to get the list of all available tracks
+activate Frontend
+
+Frontend -> Server: getTracks()
+activate Server
+
+Server -> Database: SELECT * FROM tracks
+activate Database
+
+Database --> Server: tracksDataModel
+deactivate Database
+
+Server --> Frontend: trackNamesList
+deactivate Server
+
+Frontend --> User: trackNamesList
+deactivate Frontend
+
+@enduml
