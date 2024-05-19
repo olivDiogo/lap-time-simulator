@@ -7,6 +7,7 @@ participant " "
 participant TrackController as CTRL
 participant TrackService as SERV
 participant TrackRepository as REPO
+participant TrackAssembler as ASSEMBLER
 
 
 " "-> CTRL: getTracks()
@@ -18,13 +19,19 @@ activate SERV
 SERV -> REPO: findAll()
 activate REPO
 
-REPO --> SERV: List<Track>
+REPO --> SERV: tracks
 deactivate REPO
 
-SERV --> CTRL: List<Track>
+SERV --> CTRL: tracks
 deactivate SERV
 
-CTRL --> " ": List<TrackDTO>
+CTRL -> ASSEMBLER: toDTO(tracks)
+activate ASSEMBLER
+
+ASSEMBLER --> CTRL: tracksDTO
+deactivate ASSEMBLER
+
+CTRL --> " ": tracksDTO
 deactivate CTRL
 
 @enduml

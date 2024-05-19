@@ -1,0 +1,37 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant " "
+participant VehicleController as CTRL
+participant VehicleService as SERV
+participant VehicleRepository as REPO
+participant VehicleAssembler as ASSEMBLER
+
+
+" "-> CTRL: createVehicle(vehicleDataDTO)
+activate CTRL
+
+CTRL -> SERV: createVehicle(vehicle)
+activate SERV
+
+SERV -> REPO: save(vehicle)
+activate REPO
+
+REPO --> SERV: vehicle
+deactivate REPO
+
+SERV --> CTRL: vehicle
+deactivate SERV
+
+CTRL -> ASSEMBLER: toDTO(vehicle)
+activate ASSEMBLER
+
+ASSEMBLER --> CTRL: vehicleDTO
+deactivate ASSEMBLER
+
+CTRL --> " ": vehicleDTO
+deactivate CTRL
+
+@enduml

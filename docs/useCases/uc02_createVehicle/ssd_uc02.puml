@@ -1,0 +1,25 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor User
+participant Frontend
+participant Server
+participant Database
+
+User -> Frontend: I want to create a vehicle
+activate Frontend
+
+Frontend -> Server: createVehicle(vehicleDataDTO)
+activate Server
+
+Server -> Database: INSERT INTO vehicles
+
+Server --> Frontend: vehicleDTO
+deactivate Server
+
+Frontend --> User: vehicleDTO
+deactivate Frontend
+
+@enduml

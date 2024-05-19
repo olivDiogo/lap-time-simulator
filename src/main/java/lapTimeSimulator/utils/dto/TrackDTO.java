@@ -1,7 +1,5 @@
 package lapTimeSimulator.utils.dto;
 
-import lapTimeSimulator.domain.track.Track;
-
 public class TrackDTO {
     public final String trackID;
     public final String trackName;
