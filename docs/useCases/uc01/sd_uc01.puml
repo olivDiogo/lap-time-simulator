@@ -18,13 +18,13 @@ activate SERV
 SERV -> REPO: findAll()
 activate REPO
 
-REPO --> SERV: List<TrackDataModel>
+REPO --> SERV: List<Track>
 deactivate REPO
 
-SERV --> CTRL: List<TrackDataModel>
+SERV --> CTRL: List<Track>
 deactivate SERV
 
-CTRL --> " ": List<String: trackName>
+CTRL --> " ": List<TrackDTO>
 deactivate CTRL
 
 @enduml
