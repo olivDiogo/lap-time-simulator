@@ -13,9 +13,12 @@ import lombok.Getter;
 @Table(name = "Vehicle")
 @Getter
 public class VehicleDataModel {
-    @Id @NotNull @NotBlank
+    @Id
+    @NotNull(message = "Vehicle ID cannot be null.")
+    @NotBlank(message = "Vehicle ID cannot be blank.")
     private String vehicleID;
-    @NotNull @NotBlank
+    @NotNull(message = "Vehicle name cannot be null.")
+    @NotBlank(message = "Vehicle name cannot be blank.")
     private String vehicleName;
     private double downforce;
     private double drag;

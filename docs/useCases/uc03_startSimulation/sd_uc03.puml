@@ -1,0 +1,57 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant " "
+participant ":SimulationController" as CTRL
+participant ":SimulationService" as SERV
+participant "simulation:Simulation" as SIM
+participant ":SimulationRepository" as SREPO
+participant ":VehicleRepository" as VREPO
+participant ":TrackRepository" as TREPO
+participant "C++ Script" as CPP
+
+" " -> CTRL: startSimulation(simulationDataDTO)
+activate CTRL
+
+CTRL -> SERV: startSimulation(name, vehicleID, trackID)
+activate SERV
+
+create SIM
+SERV -> SIM: Simulation(name, vehicleID, trackID)
+activate SIM
+
+SIM --> SERV: simulation
+deactivate SIM
+
+SERV -> SREPO: saveSimulation(simulation)
+activate SREPO
+
+SREPO --> SERV: simulation
+deactivate SREPO
+
+SERV -> VREPO: getVehicle(vehicleID)
+activate VREPO
+
+VREPO --> SERV: vehicle
+deactivate VREPO
+
+SERV -> TREPO: getTrack(trackID)
+activate TREPO
+
+TREPO --> SERV: track
+deactivate TREPO
+
+SERV -> CPP: startSimulation(vehicle?, track?)
+activate CPP
+
+CPP --> SERV: simulationResult
+deactivate CPP
+
+SERV --> CTRL: simulationResult
+deactivate SERV
+
+CTRL --> " ": return simulationResult
+deactivate CTRL
+@enduml

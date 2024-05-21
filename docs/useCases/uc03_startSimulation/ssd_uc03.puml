@@ -1,0 +1,40 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor User
+participant Frontend
+participant Server
+participant Database
+participant "C++ Script" as CPP
+
+User -> Frontend: I want to start a simulation
+activate Frontend
+
+Frontend -> Server: startSimulation(simulationDataDTO)
+activate Server
+
+Server -> Database: SELECT * FROM vehicles WHERE vehicleID = simulationVehicleID
+activate Database
+
+Database --> Server: vehicle
+
+Server -> Database: SELECT * FROM tracks WHERE trackID = simulationTrackID
+
+Database --> Server: track
+deactivate Database
+
+Server -> CPP: runSimulation(vehicle, track)
+activate CPP
+
+CPP --> Server: simulationResult
+deactivate CPP
+
+Server --> Frontend: simulationResult
+deactivate Server
+
+Frontend --> User: simulationResult
+deactivate Frontend
+
+@enduml
