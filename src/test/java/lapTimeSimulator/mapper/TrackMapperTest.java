@@ -2,13 +2,12 @@ package lapTimeSimulator.mapper;
 
 import lapTimeSimulator.ddd.IMapper;
 import lapTimeSimulator.domain.track.Track;
-import lapTimeSimulator.domain.valueObject.Description;
+import lapTimeSimulator.domain.valueObject.Name;
 import lapTimeSimulator.domain.valueObject.TrackID;
 import lapTimeSimulator.utils.dto.TrackDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.format.DecimalStyle;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,11 +24,11 @@ class TrackMapperTest {
         TrackID trackID = mock(TrackID.class);
         when(trackID.getId()).thenReturn("1");
 
-        Description trackName = mock(Description.class);
-        when(trackName.getDescription()).thenReturn("Test Track");
+        Name trackName = mock(Name.class);
+        when(trackName.getStrName()).thenReturn("Test Track");
 
         Track track = mock(Track.class);
-        when(track.getId()).thenReturn(trackID);
+        when(track.getTrackID()).thenReturn(trackID);
         when(track.getTrackName()).thenReturn(trackName);
 
         IMapper<Track, TrackDTO> trackMapper = new TrackMapper();
@@ -63,11 +62,11 @@ class TrackMapperTest {
         TrackID trackID = mock(TrackID.class);
         when(trackID.getId()).thenReturn("1");
 
-        Description trackName = mock(Description.class);
-        when(trackName.getDescription()).thenReturn("Test Track");
+        Name trackName = mock(Name.class);
+        when(trackName.getStrName()).thenReturn("Test Track");
 
         Track track = mock(Track.class);
-        when(track.getId()).thenReturn(trackID);
+        when(track.getTrackID()).thenReturn(trackID);
         when(track.getTrackName()).thenReturn(trackName);
 
         IMapper<Track, TrackDTO> trackMapper = new TrackMapper();

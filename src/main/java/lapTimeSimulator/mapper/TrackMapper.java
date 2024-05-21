@@ -1,13 +1,19 @@
 package lapTimeSimulator.mapper;
 
 import lapTimeSimulator.ddd.IMapper;
+import lapTimeSimulator.domain.track.ITrackFactory;
 import lapTimeSimulator.domain.track.Track;
+import lapTimeSimulator.domain.valueObject.Name;
+import lapTimeSimulator.domain.valueObject.TrackID;
 import lapTimeSimulator.utils.dto.TrackDTO;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
+//@AllArgsConstructor
 public class TrackMapper implements IMapper<Track, TrackDTO> {
+//    private final ITrackFactory trackFactory;
 
     /**
      * Method to convert a Track into a TrackDTO.
@@ -20,8 +26,8 @@ public class TrackMapper implements IMapper<Track, TrackDTO> {
         if(track == null)
             throw new IllegalArgumentException("The track cannot be null.");
 
-        String trackID = track.getId().getId();
-        String trackName = track.getTrackName().getDescription();
+        String trackID = track.getTrackID().getId();
+        String trackName = track.getTrackName().getStrName();
         return new TrackDTO(trackID, trackName);
     }
 
@@ -38,4 +44,21 @@ public class TrackMapper implements IMapper<Track, TrackDTO> {
 
         return tracks.stream().map(this::toDTO).toList();
     }
+
+//    /**
+//     * Method to convert a TrackDTO into a Track.
+//     *
+//     * @param trackDTO is the DTO to be converted.
+//     * @return the track object.
+//     */
+//    @Override
+//    public Track toDomain(TrackDTO trackDTO) {
+//        if(trackDTO == null)
+//            throw new IllegalArgumentException("The DTO cannot be null.");
+//
+//        TrackID trackID = new TrackID(trackDTO.trackID);
+//        Name trackName = new Name(trackDTO.trackName);
+//
+//        return trackFactory.createTrack(trackID, trackName);
+//    }
 }

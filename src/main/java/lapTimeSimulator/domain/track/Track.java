@@ -1,25 +1,24 @@
 package lapTimeSimulator.domain.track;
 
 import lapTimeSimulator.ddd.IAggregateRoot;
-import lapTimeSimulator.domain.valueObject.Description;
+import lapTimeSimulator.domain.valueObject.Name;
 import lapTimeSimulator.domain.valueObject.TrackID;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import java.util.UUID;
 
+@Getter
+@EqualsAndHashCode
 public class Track implements IAggregateRoot<TrackID> {
     private final TrackID trackID;
-    @Getter
-    private Description trackName;
+    private Name trackName;
 
     /**
      * Constructs a new Track instance with the specified track name.
      *
      * @param trackName The name of the track. Must not be null.
      */
-    Track(Description trackName) {
-        if(trackName == null) {
-            throw new IllegalArgumentException("Track name cannot be null.");
-        }
+    Track(Name trackName) {
         this.trackName = trackName;
         this.trackID = new TrackID(UUID.randomUUID().toString());
     }
@@ -30,23 +29,22 @@ public class Track implements IAggregateRoot<TrackID> {
      * @param trackID The ID of the track. Must not be null.
      * @param trackName The name of the track. Must not be null.
      */
-    Track(TrackID trackID, Description trackName) {
-        if(trackID == null || trackName == null) {
-            throw new IllegalArgumentException("Track ID and track name cannot be null.");
-        }
-
+    Track(TrackID trackID, Name trackName) {
         this.trackID = trackID;
         this.trackName = trackName;
     }
 
     /**
-     * Getter for the track ID.
+     * Updates the name of the track.
      *
-     * @return the ID of the track.
+     * @param trackName The new name of the track. Must not be null.
      */
-    @Override
-    public TrackID getId() {
-        return trackID;
+    public Name updateTrackName(Name trackName) {
+        if (trackName == null) {
+            throw new IllegalArgumentException("Track name cannot be null.");
+        }
+        this.trackName = trackName;
+        return trackName;
     }
 
 }

@@ -1,6 +1,6 @@
 package lapTimeSimulator.domain.track;
 
-import lapTimeSimulator.domain.valueObject.Description;
+import lapTimeSimulator.domain.valueObject.Name;
 import lapTimeSimulator.domain.valueObject.TrackID;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockedConstruction;
@@ -14,11 +14,11 @@ import static org.mockito.Mockito.mockConstruction;
 class TrackTest {
 
     @Test
-    void shouldInstantiateTrack_whenDescriptionIsValid(){
+    void shouldInstantiateTrack_whenNameIsValid(){
         // Assert
-        Description trackName = mock(Description.class);
+        Name trackName = mock(Name.class);
 
-        try (MockedConstruction<TrackID> deviceIDMocked = mockConstruction(TrackID.class)) {
+        try (MockedConstruction<TrackID> trackIDMocked = mockConstruction(TrackID.class)) {
             //Act
             Track track = new Track(trackName);
 
@@ -27,23 +27,11 @@ class TrackTest {
         }
     }
 
-    @Test
-    void shouldThrowException_whenDescriptionIsNullFirstConstructor(){
-        // Assert
-        String expectedMessage = "Track name cannot be null.";
-
-        // Act + Assert
-        Exception e = assertThrows(IllegalArgumentException.class, () -> new Track(null));
-
-        // Assert
-        String actualMessage = e.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
 
     @Test
-    void shouldInstantiateTrack_whenTrackIDAndDescriptionAreValid(){
+    void shouldInstantiateTrack_whenTrackIDAndNameAreValid(){
         // Assert
-        Description trackName = mock(Description.class);
+        Name trackName = mock(Name.class);
         TrackID trackID = mock(TrackID.class);
 
         //Act
@@ -54,44 +42,34 @@ class TrackTest {
     }
 
     @Test
-    void shouldThrowException_whenDescriptionIsNullSecondConstructor(){
-        // Assert
-        TrackID trackID = mock(TrackID.class);
-        String expectedMessage = "Track ID and track name cannot be null.";
-
-        // Act + Assert
-        Exception e = assertThrows(IllegalArgumentException.class, () -> new Track(trackID, null));
-
-        // Assert
-        String actualMessage = e.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
-
-    @Test
-    void shouldThrowException_whenTrackIDIsNullSecondConstructor(){
-        // Assert
-        Description trackName = mock(Description.class);
-        String expectedMessage = "Track ID and track name cannot be null.";
-
-        // Act + Assert
-        Exception e = assertThrows(IllegalArgumentException.class, () -> new Track(null, trackName));
-
-        // Assert
-        String actualMessage = e.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
-
-    @Test
-    void shouldReturnTrackID_whenGetIDIsCalled(){
+    void shouldUpdateTrackName_whenUpdateTrackNameIsCalled(){
         // Arrange
-        Description trackName = mock(Description.class);
+        Name trackName = mock(Name.class);
+        Name newTrackName = mock(Name.class);
         TrackID trackID = mock(TrackID.class);
         Track track = new Track(trackID, trackName);
 
         // Act
-        TrackID actualTrackID = track.getId();
+        Name result = track.updateTrackName(newTrackName);
 
         // Assert
-        assertEquals(trackID, actualTrackID);
+        assertEquals(newTrackName, result);
+    }
+
+    @Test
+    void shouldThrowException_whenUpdateTrackNameIsNull(){
+        // Arrange
+        Name trackName = mock(Name.class);
+        TrackID trackID = mock(TrackID.class);
+        Track track = new Track(trackID, trackName);
+
+        String expectedMessage = "Track name cannot be null.";
+
+        // Act + Assert
+        Exception e = assertThrows(IllegalArgumentException.class, () -> track.updateTrackName(null));
+
+        // Assert
+        String actualMessage = e.getMessage();
+        assertEquals(expectedMessage, actualMessage);
     }
 }

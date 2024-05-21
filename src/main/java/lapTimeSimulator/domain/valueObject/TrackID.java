@@ -2,7 +2,9 @@ package lapTimeSimulator.domain.valueObject;
 
 import lapTimeSimulator.ddd.IDomainID;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
+@Getter
 @EqualsAndHashCode
 public class TrackID implements IDomainID {
     private final String id;
@@ -17,15 +19,5 @@ public class TrackID implements IDomainID {
             throw new IllegalArgumentException("Track ID must be a non-empty string.");
         }
         this.id = id;
-    }
-
-    /**
-     * Getter for ID.
-     *
-     * @return the ID of the track.
-     */
-    @Override
-    public String getId() {
-        return id;
     }
 }

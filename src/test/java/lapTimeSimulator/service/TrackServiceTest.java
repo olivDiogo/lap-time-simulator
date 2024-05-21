@@ -3,7 +3,7 @@ package lapTimeSimulator.service;
 import lapTimeSimulator.domain.track.ITrackFactory;
 import lapTimeSimulator.domain.track.Track;
 import lapTimeSimulator.domain.track.TrackFactory;
-import lapTimeSimulator.domain.valueObject.Description;
+import lapTimeSimulator.domain.valueObject.Name;
 import lapTimeSimulator.persistence.track.ITrackRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -51,8 +51,8 @@ class TrackServiceTest {
         // Arrange
         TrackService trackService = new TrackService(trackRepository);
 
-        Description trackName = mock(Description.class);
-        when(trackName.getDescription()).thenReturn("AIA");
+        Name trackName = mock(Name.class);
+        when(trackName.getStrName()).thenReturn("AIA");
 
         Track track = mock(Track.class);
         ITrackFactory trackFactory = mock(TrackFactory.class);

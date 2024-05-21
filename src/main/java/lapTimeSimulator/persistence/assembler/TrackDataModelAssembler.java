@@ -2,7 +2,7 @@ package lapTimeSimulator.persistence.assembler;
 
 import lapTimeSimulator.domain.track.ITrackFactory;
 import lapTimeSimulator.domain.track.Track;
-import lapTimeSimulator.domain.valueObject.Description;
+import lapTimeSimulator.domain.valueObject.Name;
 import lapTimeSimulator.domain.valueObject.TrackID;
 import lapTimeSimulator.persistence.dataModel.TrackDataModel;
 import org.springframework.stereotype.Component;
@@ -37,7 +37,7 @@ public class TrackDataModelAssembler implements IDataModelAssembler<Track, Track
             throw new IllegalArgumentException("The track data model must be not null.");
 
         TrackID trackID = new TrackID(dataModel.getTrackID());
-        Description trackName = new Description(dataModel.getTrackName());
+        Name trackName = new Name(dataModel.getTrackName());
 
         return trackFactory.createTrack(trackID, trackName);
     }

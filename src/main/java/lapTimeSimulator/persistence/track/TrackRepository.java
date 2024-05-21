@@ -1,31 +1,36 @@
 package lapTimeSimulator.persistence.track;
 
+import jakarta.validation.constraints.NotNull;
 import lapTimeSimulator.domain.track.Track;
 import lapTimeSimulator.domain.valueObject.TrackID;
 import lapTimeSimulator.persistence.assembler.IDataModelAssembler;
 import lapTimeSimulator.persistence.dataModel.TrackDataModel;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
+@AllArgsConstructor
 public class TrackRepository implements ITrackRepository {
+    @NotNull
     ITrackSpringDataRepository repository;
+    @NotNull
     IDataModelAssembler<Track, TrackDataModel> assembler;
 
-    /**
-     * Constructor of the class.
-     *
-     * @param repository is the track repository.
-     * @param assembler is the track data model assembler.
-     */
-    public TrackRepository(ITrackSpringDataRepository repository, IDataModelAssembler<Track, TrackDataModel> assembler) {
-        if(repository == null || assembler == null)
-            throw new IllegalArgumentException("The repository and the assembler must be not null.");
-        this.repository = repository;
-        this.assembler = assembler;
-    }
+//    /**
+//     * Constructor of the class.
+//     *
+//     * @param repository is the track repository.
+//     * @param assembler is the track data model assembler.
+//     */
+//    public TrackRepository(ITrackSpringDataRepository repository, IDataModelAssembler<Track, TrackDataModel> assembler) {
+//        if(repository == null || assembler == null)
+//            throw new IllegalArgumentException("The repository and the assembler must be not null.");
+//        this.repository = repository;
+//        this.assembler = assembler;
+//    }
 
     /**
      * Method to save a track entity.

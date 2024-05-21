@@ -1,6 +1,6 @@
 package lapTimeSimulator.domain.track;
 
-import lapTimeSimulator.domain.valueObject.Description;
+import lapTimeSimulator.domain.valueObject.Name;
 import lapTimeSimulator.domain.valueObject.TrackID;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +14,7 @@ public class TrackFactory implements ITrackFactory { //Review need for this clas
      * @return The new track instance.
      */
     @Override
-    public Track createTrack(Description trackName) {
+    public Track createTrack(Name trackName) {
         if (trackName == null)
             throw new IllegalArgumentException("Track name cannot be null.");
         return new Track(trackName);
@@ -28,7 +28,7 @@ public class TrackFactory implements ITrackFactory { //Review need for this clas
      * @return The new track instance.
      */
     @Override
-    public Track createTrack(TrackID trackID, Description trackName) {
+    public Track createTrack(TrackID trackID, Name trackName) {
         if(trackID == null || trackName == null)
             throw new IllegalArgumentException("Track ID and track name cannot be null.");
         return new Track(trackID, trackName);
