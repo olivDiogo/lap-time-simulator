@@ -1,6 +1,6 @@
 package lapTimeSimulator.domain.track;
 
-import lapTimeSimulator.domain.valueObject.Description;
+import lapTimeSimulator.domain.valueObject.Name;
 import lapTimeSimulator.domain.valueObject.TrackID;
 
 public interface ITrackFactory {
@@ -10,7 +10,7 @@ public interface ITrackFactory {
      * @param trackName The name of the track. Must not be null.
      * @return The new track instance.
      */
-    Track createTrack(Description trackName);
+    Track createTrack(Name trackName);
 
     /**
      * Creates a new track with the specified ID and name.
@@ -19,5 +19,5 @@ public interface ITrackFactory {
      * @param trackName The name of the track. Must not be null.
      * @return The new track instance.
      */
-    Track createTrack(TrackID trackID, Description trackName);
+    Track createTrack(TrackID trackID, Name trackName);
 }

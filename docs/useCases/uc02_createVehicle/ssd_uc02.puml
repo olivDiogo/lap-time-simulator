@@ -14,7 +14,7 @@ activate Frontend
 Frontend -> Server: createVehicle(vehicleDataDTO)
 activate Server
 
-Server -> Database: INSERT INTO vehicles
+Server -> Database: INSERT INTO vehicle
 
 Server --> Frontend: vehicleDTO
 deactivate Server
