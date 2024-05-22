@@ -1,9 +1,10 @@
 package lapTimeSimulator.domain.valueObject;
 
-import jakarta.validation.constraints.NotNull;
 import lapTimeSimulator.ddd.IDomainID;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
+@Getter
 @EqualsAndHashCode
 public class VehicleID implements IDomainID {
     private final String id;
@@ -18,14 +19,5 @@ public class VehicleID implements IDomainID {
             throw new IllegalArgumentException("Vehicle ID must be a non-empty string.");
         }
         this.id = id;
-    }
-
-    /**
-     * Getter for ID.
-     *
-     * @return the ID of the vehicle.
-     */
-    public String getId() {
-        return id;
     }
 }

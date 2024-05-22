@@ -5,7 +5,6 @@ import lapTimeSimulator.domain.vehicle.IVehicleFactory;
 import lapTimeSimulator.domain.vehicle.Vehicle;
 import lapTimeSimulator.persistence.vehicle.IVehicleRepository;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
@@ -84,13 +83,11 @@ class VehicleServiceTest {
 
         String expectedMessage = "Vehicle parameters cannot be null.";
 
-        VehicleParameters vehicleParameters = null;
-        Vehicle vehicle = mock(Vehicle.class);
-        when(vehicleFactory.createVehicle(vehicleParameters)).thenThrow(new IllegalArgumentException("Vehicle parameters cannot be null."));
+        when(vehicleFactory.createVehicle(null)).thenThrow(new IllegalArgumentException("Vehicle parameters cannot be null."));
 
         // Act
         Exception e = assertThrows(IllegalArgumentException.class, () -> {
-            vehicleService.createVehicle(vehicleParameters);
+            vehicleService.createVehicle(null);
         });
 
         // Assert

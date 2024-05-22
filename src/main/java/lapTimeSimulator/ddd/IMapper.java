@@ -1,8 +1,5 @@
 package lapTimeSimulator.ddd;
 
-import lapTimeSimulator.domain.vehicle.Vehicle;
-import lapTimeSimulator.utils.dto.VehicleDTO;
-
 import java.util.List;
 
 public interface IMapper <ID extends IAggregateRoot, T>{

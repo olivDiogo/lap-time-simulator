@@ -12,7 +12,7 @@ public class BrakeModel implements IValueObject {
     /**
      * Constructor of the class BrakeModel
      *
-     * @param pressureToTorqueRatio is the pressure to torque ratio of the object.
+     * @param pressureToTorqueRatio is the pressure to torque ratio.
      */
     public BrakeModel(double pressureToTorqueRatio) {
         if (pressureToTorqueRatio < 0) {

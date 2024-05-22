@@ -21,7 +21,7 @@ public class TransmissionModel implements IValueObject {
      * @param finalDriveRatio is the final drive ratio of the object.
      */
     public TransmissionModel(int numberOfGears, List<Double> gears, double finalDriveRatio) {
-        if (numberOfGears < 0 || finalDriveRatio < 0) {
+        if (numberOfGears <= 0 || finalDriveRatio <= 0) {
             throw new IllegalArgumentException("Number of gears and final drive ratio must be positive.");
         }
         if (gears == null) {

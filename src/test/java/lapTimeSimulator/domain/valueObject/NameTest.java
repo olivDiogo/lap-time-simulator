@@ -2,8 +2,7 @@ package lapTimeSimulator.domain.valueObject;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class NameTest {
 
@@ -25,7 +24,7 @@ class NameTest {
         String expectedMessage = "The name must be a non-empty string.";
 
         // Act & Assert
-        IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             new Name(null);
         });
 
@@ -41,7 +40,7 @@ class NameTest {
         String expectedMessage = "The name must be a non-empty string.";
 
         // Act & Assert
-        IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             new Name(name);
         });
 
@@ -57,7 +56,7 @@ class NameTest {
         String expectedMessage = "The name must be a non-empty string.";
 
         // Act & Assert
-        IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             new Name(name);
         });
 

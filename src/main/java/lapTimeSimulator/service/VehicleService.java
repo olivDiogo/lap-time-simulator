@@ -1,15 +1,12 @@
 package lapTimeSimulator.service;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
 import lapTimeSimulator.ddd.IRepository;
 import lapTimeSimulator.domain.valueObject.VehicleID;
 import lapTimeSimulator.domain.valueObject.VehicleParameters;
 import lapTimeSimulator.domain.vehicle.IVehicleFactory;
 import lapTimeSimulator.domain.vehicle.Vehicle;
-import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
+
 
 @Service
 public class VehicleService {
@@ -36,7 +33,7 @@ public class VehicleService {
      * @param vehicleParameters The parameters of the vehicle.
      * @return The created vehicle.
      */
-    public Vehicle createVehicle(@Valid VehicleParameters vehicleParameters) {
+    public Vehicle createVehicle(VehicleParameters vehicleParameters) {
         Vehicle vehicle = vehicleFactory.createVehicle(vehicleParameters);
         vehicleRepository.save(vehicle);
         return vehicle;

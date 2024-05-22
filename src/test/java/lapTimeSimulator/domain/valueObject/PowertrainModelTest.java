@@ -8,51 +8,93 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 class PowertrainModelTest {
 
     @Test
-    void shouldCreatePowertrainModel_whenPowerAndTorqueArePositive() {
+    void shouldCreatePowertrainModel_whenParametersAreValid() {
         // Arrange
         double power = 100;
         double torque = 50;
+        double rpmPower = 5000;
+        double rpmTorque = 2500;
 
         // Act
-        PowertrainModel powertrainModel = new PowertrainModel(power, torque);
+        PowertrainModel powertrainModel = new PowertrainModel(power, torque, rpmPower, rpmTorque);
 
         // Assert
         assertNotNull(powertrainModel);
     }
 
     @Test
-    void shouldThrowException_whenPowerIsNegative() {
+    void shouldThrowException_whenPowerMaxIsNegative() {
         // Arrange
-        double power = -100;
-        double torque = 50;
+        double powerMax = -100;
+        double torqueMax = 50;
+        double rpmPowerMax = 5000;
+        double rpmTorqueMax = 2500;
 
-        String expectedMessage = "Power and torque values must be positive.";
+        String expectedMessage = "Engine parameters must be positive.";
 
         // Act & Assert
         IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new PowertrainModel(power, torque);
+            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
         });
 
         // Assert
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
-    void shouldThrowException_whenTorqueIsNegative() {
+    void shouldThrowException_whenTorqueMaxIsNegative() {
         // Arrange
-        double power = 100;
-        double torque = -50;
+        double powerMax = 100;
+        double torqueMax = -50;
+        double rpmPowerMax = 5000;
+        double rpmTorqueMax = 2500;
 
-        String expectedMessage = "Power and torque values must be positive.";
+        String expectedMessage = "Engine parameters must be positive.";
 
         // Act & Assert
         IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new PowertrainModel(power, torque);
+            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
         });
 
         // Assert
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowException_whenRpmPowerMaxIsNegative() {
+        // Arrange
+        double powerMax = 100;
+        double torqueMax = 50;
+        double rpmPowerMax = -5000;
+        double rpmTorqueMax = 2500;
+
+        String expectedMessage = "Engine parameters must be positive.";
+
+        // Act & Assert
+        IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
+        });
+
+        // Assert
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowException_whenRpmTorqueMaxIsNegative() {
+        // Arrange
+        double powerMax = 100;
+        double torqueMax = 50;
+        double rpmPowerMax = 5000;
+        double rpmTorqueMax = -2500;
+
+        String expectedMessage = "Engine parameters must be positive.";
+
+        // Act & Assert
+        IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
+        });
+
+        // Assert
+        assertEquals(expectedMessage, exception.getMessage());
     }
 }

@@ -25,7 +25,12 @@ public class VehicleDataModelAssembler implements IDataModelAssembler<Vehicle, V
         this.vehicleFactory = vehicleFactory;
     }
 
-
+    /**
+     * Method to convert a vehicle domain entity to a vehicle data model.
+     *
+     * @param dataModel is the data model to be converted.
+     * @return the domain entity.
+     */
     @Override
     public Vehicle toDomain(VehicleDataModel dataModel) {
         if(dataModel == null)
@@ -35,8 +40,8 @@ public class VehicleDataModelAssembler implements IDataModelAssembler<Vehicle, V
         AeroModel aeroModel = new AeroModel(dataModel.getDownforce(), dataModel.getDrag());
         BrakeModel brakeModel = new BrakeModel(dataModel.getPressureToTorqueRatio());
         ChassisModel chassisModel = new ChassisModel(dataModel.getMass());
-        PowertrainModel powertrainModel = new PowertrainModel(dataModel.getPower(), dataModel.getTorque());
-        TyreModel tyreModel = new TyreModel(dataModel.getLongitudinalGrip(), dataModel.getLateralGrip());
+        PowertrainModel powertrainModel = new PowertrainModel(dataModel.getPowerMax(), dataModel.getTorqueMax(), dataModel.getRpmPowerMax(), dataModel.getRpmTorqueMax());
+        TyreModel tyreModel = new TyreModel(dataModel.getLongitudinalGrip(), dataModel.getLateralGrip(), dataModel.getTyreRadius());
         Name vehicleName = new Name(dataModel.getVehicleName());
 
         List<Double> gears = List.of(dataModel.getFirstGear(), dataModel.getSecondGear(), dataModel.getThirdGear(), dataModel.getFourthGear(), dataModel.getFifthGear(), dataModel.getSixthGear(), dataModel.getSeventhGear(), dataModel.getEighthGear());
@@ -48,6 +53,12 @@ public class VehicleDataModelAssembler implements IDataModelAssembler<Vehicle, V
         return vehicleFactory.createVehicle(vehicleID, vehicleParameters);
     }
 
+    /**
+     * Method to convert a list of vehicle data models to a list of vehicle domain entities.
+     *
+     * @param dataModels is the list of data models to be converted.
+     * @return the list of domain entities.
+     */
     @Override
     public List<Vehicle> toDomain(List<VehicleDataModel> dataModels) {
         List<Vehicle> vehicles = new ArrayList<>();

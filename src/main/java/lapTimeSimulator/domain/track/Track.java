@@ -19,6 +19,7 @@ public class Track implements IAggregateRoot<TrackID> {
      * @param trackName The name of the track. Must not be null.
      */
     Track(Name trackName) {
+        // Parameter validation is done in the factory.
         this.trackName = trackName;
         this.trackID = new TrackID(UUID.randomUUID().toString());
     }
@@ -30,6 +31,7 @@ public class Track implements IAggregateRoot<TrackID> {
      * @param trackName The name of the track. Must not be null.
      */
     Track(TrackID trackID, Name trackName) {
+        // Parameter validation is done in the factory.
         this.trackID = trackID;
         this.trackName = trackName;
     }

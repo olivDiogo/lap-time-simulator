@@ -9,6 +9,7 @@ import lombok.Getter;
 public class TyreModel implements IValueObject {
     private final double longitudinalGrip;
     private final double lateralGrip;
+    private final double tyreRadius;
 
     /**
      * Constructor of the class TyreModel
@@ -16,9 +17,10 @@ public class TyreModel implements IValueObject {
      * @param longitudinalGrip is the longitudinal grip of the object.
      * @param lateralGrip      is the lateral grip of the object.
      */
-    public TyreModel(double longitudinalGrip, double lateralGrip) {
-        if (longitudinalGrip < 0 || lateralGrip < 0) {
-            throw new IllegalArgumentException("Grip values must be positive.");
+    public TyreModel(double longitudinalGrip, double lateralGrip, double tyreRadius) {
+        this.tyreRadius = tyreRadius;
+        if (longitudinalGrip < 0 || lateralGrip < 0 || tyreRadius <= 0) {
+            throw new IllegalArgumentException("Tyre parameters must be positive.");
         }
 
         this.longitudinalGrip = longitudinalGrip;

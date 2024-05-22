@@ -19,46 +19,45 @@ class VehicleIDTest {
 
     @Test
     void shouldThrowException_whenParameterIsNull() {
+        // Arrange
+        String expectedMessage = "Vehicle ID must be a non-empty string.";
+
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             new VehicleID(null);
         });
-        assertEquals("Vehicle ID must be a non-empty string.", exception.getMessage());
+
+        // Assert
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
     void shouldThrowException_whenParameterIsEmpty() {
         // Arrange
         String strVehicleID = "";
+        String expectedMessage = "Vehicle ID must be a non-empty string.";
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             new VehicleID(strVehicleID);
         });
-        assertEquals("Vehicle ID must be a non-empty string.", exception.getMessage());
+
+        // Assert
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
     void shouldThrowException_whenParameterIsBlank() {
         // Arrange
         String strVehicleID = " ";
+        String expectedMessage = "Vehicle ID must be a non-empty string.";
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             new VehicleID(strVehicleID);
         });
-        assertEquals("Vehicle ID must be a non-empty string.", exception.getMessage());
-    }
-
-    @Test
-    void shouldReturnVehicleID_whenGetIdIsCalled() {
-        // Arrange
-        String strVehicleID = "1";
-
-        // Act
-        VehicleID vehicleID = new VehicleID(strVehicleID);
 
         // Assert
-        assertEquals(strVehicleID, vehicleID.getId());
+        assertEquals(expectedMessage, exception.getMessage());
     }
 }

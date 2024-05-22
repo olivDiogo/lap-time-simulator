@@ -8,10 +8,7 @@ import org.springframework.stereotype.Component;
 public class VehicleFactory implements IVehicleFactory{
     @Override
     public Vehicle createVehicle(VehicleParameters vehicleParameters) {
-        if (vehicleParameters == null || vehicleParameters.getVehicleName() == null || vehicleParameters.getAeroModel() == null ||
-                vehicleParameters.getBrakeModel() == null || vehicleParameters.getChassisModel() == null ||
-                vehicleParameters.getPowertrainModel() == null || vehicleParameters.getTransmissionModel() == null ||
-                vehicleParameters.getTyreModel() == null) {
+        if (vehicleParameters == null) {
             throw new IllegalArgumentException("Vehicle parameters cannot be null.");
         }
 
@@ -20,10 +17,7 @@ public class VehicleFactory implements IVehicleFactory{
 
     @Override
     public Vehicle createVehicle(VehicleID vehicleID, VehicleParameters vehicleParameters) {
-        if (vehicleID == null || vehicleParameters == null || vehicleParameters.getVehicleName() == null || vehicleParameters.getAeroModel() == null ||
-                vehicleParameters.getBrakeModel() == null || vehicleParameters.getChassisModel() == null ||
-                vehicleParameters.getPowertrainModel() == null || vehicleParameters.getTransmissionModel() == null ||
-                vehicleParameters.getTyreModel() == null) {
+        if (vehicleID == null || vehicleParameters == null) {
             throw new IllegalArgumentException("Vehicle parameters cannot be null.");
         }
 

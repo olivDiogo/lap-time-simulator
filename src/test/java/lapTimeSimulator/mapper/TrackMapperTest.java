@@ -4,7 +4,7 @@ import lapTimeSimulator.ddd.IMapper;
 import lapTimeSimulator.domain.track.Track;
 import lapTimeSimulator.domain.valueObject.Name;
 import lapTimeSimulator.domain.valueObject.TrackID;
-import lapTimeSimulator.utils.dto.TrackDTO;
+import lapTimeSimulator.utils.dto.outputDataDTO.TrackDataOutDTO;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -17,7 +17,7 @@ import static org.mockito.Mockito.when;
 class TrackMapperTest {
 
     @Test
-    void shouldMapTrackToTrackDTO_whenTrackIsValid(){
+    void shouldMapTrackToTrackDataOutDTO_whenTrackIsValid(){
         // Arrange
         TrackID trackID = mock(TrackID.class);
         when(trackID.getId()).thenReturn("1");
@@ -29,19 +29,19 @@ class TrackMapperTest {
         when(track.getTrackID()).thenReturn(trackID);
         when(track.getTrackName()).thenReturn(trackName);
 
-        IMapper<Track, TrackDTO> trackMapper = new TrackMapper();
+        IMapper<Track, TrackDataOutDTO> trackMapper = new TrackMapper();
 
         // Act
-        TrackDTO trackDTO = trackMapper.toDTO(track);
+        TrackDataOutDTO trackDataOutDTO = trackMapper.toDTO(track);
 
         // Assert
-        assertEquals(trackID.getId(), trackDTO.trackID);
+        assertEquals(trackID.getId(), trackDataOutDTO.trackID);
     }
 
     @Test
     void shouldThrowException_whenTrackIsNull(){
         // Arrange
-        IMapper<Track, TrackDTO> trackMapper = new TrackMapper();
+        IMapper<Track, TrackDataOutDTO> trackMapper = new TrackMapper();
         Track track = null;
 
         String expectedMessage = "The track cannot be null.";
@@ -55,7 +55,7 @@ class TrackMapperTest {
     }
 
     @Test
-    void shouldMapTrackListToTrackDTOList_whenTrackListIsValid(){
+    void shouldMapTrackListToTrackDataOutDTOList_whenTrackListIsValid(){
         // Arrange
         TrackID trackID = mock(TrackID.class);
         when(trackID.getId()).thenReturn("1");
@@ -67,12 +67,12 @@ class TrackMapperTest {
         when(track.getTrackID()).thenReturn(trackID);
         when(track.getTrackName()).thenReturn(trackName);
 
-        IMapper<Track, TrackDTO> trackMapper = new TrackMapper();
+        IMapper<Track, TrackDataOutDTO> trackMapper = new TrackMapper();
 
         List<Track> tracks = List.of(track);
 
         // Act
-        List<TrackDTO> tracksDTO = trackMapper.toDTO(tracks);
+        List<TrackDataOutDTO> tracksDTO = trackMapper.toDTO(tracks);
 
         // Assert
         assertEquals(trackID.getId(), tracksDTO.get(0).trackID);
@@ -81,7 +81,7 @@ class TrackMapperTest {
     @Test
     void shouldThrowException_whenTrackListIsNull(){
         // Arrange
-        IMapper<Track, TrackDTO> trackMapper = new TrackMapper();
+        IMapper<Track, TrackDataOutDTO> trackMapper = new TrackMapper();
         List<Track> tracks = null;
 
         String expectedMessage = "The list of tracks cannot be null.";

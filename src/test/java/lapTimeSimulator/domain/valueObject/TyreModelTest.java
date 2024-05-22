@@ -11,9 +11,10 @@ class TyreModelTest {
         // Arrange
         double longitudinalGrip = 1.0;
         double lateralGrip = 1.0;
+        double tyreRadius = 0.3;
 
         // Act
-        TyreModel tyreModel = new TyreModel(longitudinalGrip, lateralGrip);
+        TyreModel tyreModel = new TyreModel(longitudinalGrip, lateralGrip, tyreRadius);
 
         // Assert
         assertNotNull(tyreModel);
@@ -24,17 +25,17 @@ class TyreModelTest {
         // Arrange
         double longitudinalGrip = -1.0;
         double lateralGrip = 1.0;
+        double tyreRadius = 0.3;
 
-        String expectedMessage = "Grip values must be positive.";
+        String expectedMessage = "Tyre parameters must be positive.";
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new TyreModel(longitudinalGrip, lateralGrip);
+            new TyreModel(longitudinalGrip, lateralGrip, tyreRadius);
         });
 
         // Assert
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
@@ -42,17 +43,53 @@ class TyreModelTest {
         // Arrange
         double longitudinalGrip = 1.0;
         double lateralGrip = -1.0;
+        double tyreRadius = 0.3;
 
-        String expectedMessage = "Grip values must be positive.";
+        String expectedMessage = "Tyre parameters must be positive.";
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new TyreModel(longitudinalGrip, lateralGrip);
+            new TyreModel(longitudinalGrip, lateralGrip, tyreRadius);
         });
 
         // Assert
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentException_whenTyreRadiusIsNegative(){
+        // Arrange
+        double longitudinalGrip = 1.0;
+        double lateralGrip = 1.0;
+        double tyreRadius = -0.3;
+
+        String expectedMessage = "Tyre parameters must be positive.";
+
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            new TyreModel(longitudinalGrip, lateralGrip, tyreRadius);
+        });
+
+        // Assert
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentException_whenTyreRadiusIsZero(){
+        // Arrange
+        double longitudinalGrip = 1.0;
+        double lateralGrip = 1.0;
+        double tyreRadius = 0;
+
+        String expectedMessage = "Tyre parameters must be positive.";
+
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            new TyreModel(longitudinalGrip, lateralGrip, tyreRadius);
+        });
+
+        // Assert
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
 

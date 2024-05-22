@@ -5,7 +5,8 @@ import lapTimeSimulator.ddd.IMapper;
 import lapTimeSimulator.domain.valueObject.*;
 import lapTimeSimulator.domain.vehicle.Vehicle;
 import lapTimeSimulator.service.VehicleService;
-import lapTimeSimulator.utils.dto.VehicleDTO;
+import lapTimeSimulator.utils.dto.inputDataDTO.VehicleDataInDTO;
+import lapTimeSimulator.utils.dto.outputDataDTO.VehicleDataOutDTO;
 import lapTimeSimulator.utils.vehicleParameters.VehicleParametersUtils;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
@@ -23,9 +24,9 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RequestMapping("/vehicles")
 public class VehicleController {
     private final VehicleService vehicleService;
-    private final IMapper<Vehicle, VehicleDTO> vehicleMapper;
+    private final IMapper<Vehicle, VehicleDataOutDTO> vehicleMapper;
 
-    public VehicleController(VehicleService vehicleService, IMapper<Vehicle, VehicleDTO> vehicleMapper) {
+    public VehicleController(VehicleService vehicleService, IMapper<Vehicle, VehicleDataOutDTO> vehicleMapper) {
         if (vehicleService == null || vehicleMapper == null) {
             throw new IllegalArgumentException("Vehicle service and mapper cannot be null.");
         }
@@ -36,23 +37,23 @@ public class VehicleController {
     /**
      * Method to create a vehicle.
      *
-     * @param vehicleDataDTO is the vehicle data.
+     * @param vehicleDataInDTO is the vehicle data.
      * @return the vehicle data transfer object.
      */
     @PostMapping
-    public ResponseEntity<EntityModel<VehicleDTO>> createVehicle(@Valid @RequestBody VehicleDTO vehicleDataDTO) {
-        if (vehicleDataDTO == null) {
+    public ResponseEntity<EntityModel<VehicleDataOutDTO>> createVehicle(@Valid @RequestBody VehicleDataInDTO vehicleDataInDTO) {
+        if (vehicleDataInDTO == null) {
             throw new IllegalArgumentException("Vehicle DTO cannot be null.");
         }
 
-        VehicleParameters vehicleParameters = VehicleParametersUtils.getVehicleParameters(vehicleDataDTO);
+        VehicleParameters vehicleParameters = VehicleParametersUtils.getVehicleParameters(vehicleDataInDTO);
 
         Vehicle vehicle = vehicleService.createVehicle(vehicleParameters);
-        VehicleDTO vehicleDTO = vehicleMapper.toDTO(vehicle);
+        VehicleDataOutDTO vehicleDTO = vehicleMapper.toDTO(vehicle);
 
-        Link selfLink = linkTo(methodOn(VehicleController.class).createVehicle(vehicleDTO)).withSelfRel();
+        Link selfLink = linkTo(methodOn(VehicleController.class).createVehicle(vehicleDataInDTO)).withSelfRel();
 
-        EntityModel<VehicleDTO> response = EntityModel.of(vehicleDTO, selfLink);
+        EntityModel<VehicleDataOutDTO> response = EntityModel.of(vehicleDTO, selfLink);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

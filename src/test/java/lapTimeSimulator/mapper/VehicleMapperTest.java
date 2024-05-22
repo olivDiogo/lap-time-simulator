@@ -2,9 +2,8 @@ package lapTimeSimulator.mapper;
 
 import lapTimeSimulator.domain.valueObject.*;
 import lapTimeSimulator.domain.vehicle.Vehicle;
-import lapTimeSimulator.utils.dto.VehicleDTO;
+import lapTimeSimulator.utils.dto.outputDataDTO.VehicleDataOutDTO;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.List;
 
@@ -16,7 +15,7 @@ import static org.mockito.Mockito.when;
 class VehicleMapperTest {
 
     @Test
-    void shouldReturnVehicleDTO_whenToDTOIsCalled() {
+    void shouldReturnVehicleDataOutDTO_whenToDTOIsCalled() {
         // Assert
         VehicleID vehicleID = mock(VehicleID.class);
         when(vehicleID.getId()).thenReturn("1");
@@ -25,8 +24,8 @@ class VehicleMapperTest {
         when(vehicleName.getStrName()).thenReturn("Test Vehicle");
 
         AeroModel aeroModel = mock(AeroModel.class);
-        when(aeroModel.getDownforce()).thenReturn(100.0);
-        when(aeroModel.getDrag()).thenReturn(50.0);
+        when(aeroModel.getDownforceCoefficient()).thenReturn(100.0);
+        when(aeroModel.getDragCoefficient()).thenReturn(50.0);
 
         BrakeModel brakeModel = mock(BrakeModel.class);
         when(brakeModel.getPressureToTorqueRatio()).thenReturn(0.5);
@@ -35,8 +34,8 @@ class VehicleMapperTest {
         when(chassisModel.getMass()).thenReturn(500.0);
 
         PowertrainModel powertrainModel = mock(PowertrainModel.class);
-        when(powertrainModel.getPower()).thenReturn(1000.0);
-        when(powertrainModel.getTorque()).thenReturn(500.0);
+        when(powertrainModel.getPowerMax()).thenReturn(1000.0);
+        when(powertrainModel.getTorqueMax()).thenReturn(500.0);
 
         TransmissionModel transmissionModel = mock(TransmissionModel.class);
         when(transmissionModel.getNumberOfGears()).thenReturn(6);
@@ -60,10 +59,10 @@ class VehicleMapperTest {
         VehicleMapper vehicleMapper = new VehicleMapper();
 
         // Act
-        VehicleDTO vehicleDTO = vehicleMapper.toDTO(vehicle);
+        VehicleDataOutDTO vehicleDataOutDTO = vehicleMapper.toDTO(vehicle);
 
         // Assert
-        assertEquals(vehicleID.getId(), vehicleDTO.vehicleID);
+        assertEquals(vehicleID.getId(), vehicleDataOutDTO.vehicleID);
     }
 
     @Test
@@ -83,7 +82,7 @@ class VehicleMapperTest {
     }
 
     @Test
-    void shouldMapVehicleListToVehicleDTOList_whenVehicleListIsValid() {
+    void shouldMapVehicleListToVehicleDataOutDTOList_whenVehicleListIsValid() {
         // Assert
         VehicleID vehicleID = mock(VehicleID.class);
         when(vehicleID.getId()).thenReturn("1");
@@ -92,8 +91,8 @@ class VehicleMapperTest {
         when(vehicleName.getStrName()).thenReturn("Test Vehicle");
 
         AeroModel aeroModel = mock(AeroModel.class);
-        when(aeroModel.getDownforce()).thenReturn(100.0);
-        when(aeroModel.getDrag()).thenReturn(50.0);
+        when(aeroModel.getDownforceCoefficient()).thenReturn(100.0);
+        when(aeroModel.getDragCoefficient()).thenReturn(50.0);
 
         BrakeModel brakeModel = mock(BrakeModel.class);
         when(brakeModel.getPressureToTorqueRatio()).thenReturn(0.5);
@@ -102,8 +101,8 @@ class VehicleMapperTest {
         when(chassisModel.getMass()).thenReturn(500.0);
 
         PowertrainModel powertrainModel = mock(PowertrainModel.class);
-        when(powertrainModel.getPower()).thenReturn(1000.0);
-        when(powertrainModel.getTorque()).thenReturn(500.0);
+        when(powertrainModel.getPowerMax()).thenReturn(1000.0);
+        when(powertrainModel.getTorqueMax()).thenReturn(500.0);
 
         TransmissionModel transmissionModel = mock(TransmissionModel.class);
         when(transmissionModel.getNumberOfGears()).thenReturn(6);
@@ -129,9 +128,9 @@ class VehicleMapperTest {
         List<Vehicle> vehicles = List.of(vehicle);
 
         // Act
-        List<VehicleDTO> vehiclesDTO = vehicleMapper.toDTO(vehicles);
+        List<VehicleDataOutDTO> vehiclesDataOutDTO = vehicleMapper.toDTO(vehicles);
 
         // Assert
-        assertEquals(vehicleID.getId(), vehiclesDTO.get(0).vehicleID);
+        assertEquals(vehicleID.getId(), vehiclesDataOutDTO.get(0).vehicleID);
     }
 }

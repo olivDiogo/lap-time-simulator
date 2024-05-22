@@ -38,8 +38,25 @@ class TransmissionModelTest {
         });
 
         // Assert
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentException_whenNumberOfGearsIsZero() {
+        // Arrange
+        int numberOfGears = 0;
+        List<Double> gears = Arrays.asList(3.5, 2.5, 1.8, 1.4, 1.0, 0.8);
+        double finalDriveRatio = 3.9;
+
+        String expectedMessage = "Number of gears and final drive ratio must be positive.";
+
+        // Act & Assert
+        IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new TransmissionModel(numberOfGears, gears, finalDriveRatio);
+        });
+
+        // Assert
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
@@ -57,8 +74,25 @@ class TransmissionModelTest {
         });
 
         // Assert
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentException_whenFinalDriveRatioIsZero() {
+        // Arrange
+        int numberOfGears = 6;
+        List<Double> gears = Arrays.asList(3.5, 2.5, 1.8, 1.4, 1.0, 0.8);
+        double finalDriveRatio = 0;
+
+        String expectedMessage = "Number of gears and final drive ratio must be positive.";
+
+        // Act & Assert
+        IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new TransmissionModel(numberOfGears, gears, finalDriveRatio);
+        });
+
+        // Assert
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
@@ -75,7 +109,6 @@ class TransmissionModelTest {
         });
 
         // Assert
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
+        assertEquals(expectedMessage, exception.getMessage());
     }
 }

@@ -20,6 +20,22 @@ class ChassisModelTest {
     }
 
     @Test
+    void shouldThrowException_whenMassIsZero() {
+        // Assert
+        double mass = 0;
+        String expectedMessage = "Mass value must be positive.";
+
+        // Act & Assert
+        IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new ChassisModel(mass);
+        });
+
+        // Assert
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+
+    @Test
     void shouldThrowException_whenMassIsNegative() {
         // Assert
         double mass = -100;
@@ -31,7 +47,6 @@ class ChassisModelTest {
         });
 
         // Assert
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
+        assertEquals(expectedMessage, exception.getMessage());
     }
 }

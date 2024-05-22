@@ -8,10 +8,8 @@ import lapTimeSimulator.domain.vehicle.VehicleFactory;
 import lapTimeSimulator.mapper.VehicleMapper;
 import lapTimeSimulator.persistence.vehicle.IVehicleRepository;
 import lapTimeSimulator.service.VehicleService;
-import lapTimeSimulator.utils.dto.VehicleDTO;
+import lapTimeSimulator.utils.dto.outputDataDTO.VehicleDataOutDTO;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.NullAndEmptySource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -43,7 +41,7 @@ class VehicleControllerTest {
         // Arrange
         IVehicleFactory vehicleFactory = new VehicleFactory();
         VehicleService vehicleService = new VehicleService(vehicleFactory, vehicleRepository);
-        IMapper<Vehicle, VehicleDTO> vehicleMapper = new VehicleMapper();
+        IMapper<Vehicle, VehicleDataOutDTO> vehicleMapper = new VehicleMapper();
 
         // Act
         VehicleController vehicleController = new VehicleController(vehicleService, vehicleMapper);
@@ -55,7 +53,7 @@ class VehicleControllerTest {
     @Test
     void shouldThrowException_whenVehicleServiceIsNull() {
         // Arrange
-        IMapper<Vehicle, VehicleDTO> vehicleMapper = new VehicleMapper();
+        IMapper<Vehicle, VehicleDataOutDTO> vehicleMapper = new VehicleMapper();
 
         String expectedMessage = "Vehicle service and mapper cannot be null.";
 
@@ -90,10 +88,22 @@ class VehicleControllerTest {
         // Arrange
         String vehicleID = "vehicleID";
         String vehicleName = "vehicleName";
+        double downforceCoefficient = 1.0;
+        double dragCoefficient = -1.0;
+        double pressureToTorqueRatio = 1.0;
+        double mass = 1.0;
+        double powerMax = 1.0;
+        double torqueMax = 1.0;
+        double rpmPowerMax = 1.0;
+        double rpmTorqueMax = 1.0;
+        int numberOfGears = 1;
+        List<Double> gears = List.of(1.0);
+        double finalDriveRatio = 1.0;
+        double longitudinalGrip = 1.0;
+        double lateralGrip = 1.0;
+        double tyreRadius = 1.0;
 
-        VehicleDTO vehicleDataDTO = new VehicleDTO(vehicleID, vehicleName, 1.0,
-                1.0, 1.0, 1.0, 1.0, 1.0,
-                1, List.of(1.0, 2.4, 5.4), 1.0, 1.0, 1.0);
+        VehicleDataOutDTO vehicleDataDTO = new VehicleDataOutDTO(vehicleID, vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
 
         // Act + Assert
         MvcResult result = mockMvc.perform(post("/vehicles")
@@ -104,7 +114,7 @@ class VehicleControllerTest {
 
         // Assert
         String content = result.getResponse().getContentAsString();
-        VehicleDTO vehicle = objectMapper.readValue(content, VehicleDTO.class);
+        VehicleDataOutDTO vehicle = objectMapper.readValue(content, VehicleDataOutDTO.class);
         assertEquals(vehicleName, vehicle.vehicleName);
 
     }
@@ -114,7 +124,7 @@ class VehicleControllerTest {
         // Arrange
         IVehicleFactory vehicleFactory = new VehicleFactory();
         VehicleService vehicleService = new VehicleService(vehicleFactory, vehicleRepository);
-        IMapper<Vehicle, VehicleDTO> vehicleMapper = new VehicleMapper();
+        IMapper<Vehicle, VehicleDataOutDTO> vehicleMapper = new VehicleMapper();
         VehicleController vehicleController = new VehicleController(vehicleService, vehicleMapper);
 
         String expectedMessage = "Vehicle DTO cannot be null.";
@@ -126,56 +136,5 @@ class VehicleControllerTest {
         // Assert
         String actualMessage = e.getMessage();
         assertEquals(expectedMessage, actualMessage);
-    }
-
-    @Test
-    void shouldThrowBadRequest_whenGearsListIsNull() throws Exception {
-        // Arrange
-        String vehicleID = "vehicleID";
-        String vehicleName = "vehicleName";
-
-        VehicleDTO vehicleDTO = new VehicleDTO(vehicleID, vehicleName, 1.0,
-                1.0, 1.0, 1.0, 1.0, 1.0,
-                1, null, 1.0, 1.0, 1.0);
-
-        // Act + Assert
-        mockMvc.perform(post("/vehicles")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(vehicleDTO)))
-                .andExpect(status().isBadRequest());
-    }
-
-    @ParameterizedTest
-    @NullAndEmptySource
-    void shouldThrowBadRequest_whenVehicleIDIsNullOrBlank(String vehicleID) throws Exception {
-        // Arrange
-        String vehicleName = "vehicleName";
-
-        VehicleDTO vehicleDTO = new VehicleDTO(vehicleID, vehicleName, 1.0,
-                1.0, 1.0, 1.0, 1.0, 1.0,
-                1, List.of(1.0, 2.4, 5.4), 1.0, 1.0, 1.0);
-
-        // Act + Assert
-        mockMvc.perform(post("/vehicles")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(vehicleDTO)))
-                .andExpect(status().isBadRequest());
-    }
-
-    @ParameterizedTest
-    @NullAndEmptySource
-    void shouldThrowBadRequest_whenVehicleNameIsNullOrBlank(String vehicleName) throws Exception {
-        // Arrange
-        String vehicleID = "vehicleID";
-
-        VehicleDTO vehicleDTO = new VehicleDTO(vehicleID, vehicleName, 1.0,
-                1.0, 1.0, 1.0, 1.0, 1.0,
-                1, List.of(1.0, 2.4, 5.4), 1.0, 1.0, 1.0);
-
-        // Act + Assert
-        mockMvc.perform(post("/vehicles")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(vehicleDTO)))
-                .andExpect(status().isBadRequest());
     }
 }

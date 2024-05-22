@@ -24,8 +24,10 @@ public class VehicleDataModel {
     private double drag;
     private double pressureToTorqueRatio;
     private double mass;
-    private double power;
-    private double torque;
+    private double powerMax;
+    private double torqueMax;
+    private double rpmPowerMax;
+    private double rpmTorqueMax;
     private int numberOfGears;
     private double firstGear;
     private double secondGear;
@@ -38,6 +40,7 @@ public class VehicleDataModel {
     private double finalDriveRatio;
     private double longitudinalGrip;
     private double lateralGrip;
+    private double tyreRadius;
 
     @Version
     private long version;
@@ -57,16 +60,19 @@ public class VehicleDataModel {
 
         this.vehicleID = vehicle.getVehicleID().getId();
         this.vehicleName = vehicle.getVehicleName().getStrName();
-        this.downforce = vehicle.getAeroModel().getDownforce();
-        this.drag = vehicle.getAeroModel().getDrag();
+        this.downforce = vehicle.getAeroModel().getDownforceCoefficient();
+        this.drag = vehicle.getAeroModel().getDragCoefficient();
         this.pressureToTorqueRatio = vehicle.getBrakeModel().getPressureToTorqueRatio();
         this.mass = vehicle.getChassisModel().getMass();
-        this.power = vehicle.getPowertrainModel().getPower();
-        this.torque = vehicle.getPowertrainModel().getTorque();
+        this.powerMax = vehicle.getPowertrainModel().getPowerMax();
+        this.torqueMax = vehicle.getPowertrainModel().getTorqueMax();
+        this.rpmPowerMax = vehicle.getPowertrainModel().getRpmPowerMax();
+        this.rpmTorqueMax = vehicle.getPowertrainModel().getRpmTorqueMax();
         this.numberOfGears = vehicle.getTransmissionModel().getNumberOfGears();
         this.finalDriveRatio = vehicle.getTransmissionModel().getFinalDriveRatio();
         this.longitudinalGrip = vehicle.getTyreModel().getLongitudinalGrip();
         this.lateralGrip = vehicle.getTyreModel().getLateralGrip();
+        this.tyreRadius = vehicle.getTyreModel().getTyreRadius();
 
         this.firstGear = numberOfGears > 0 ? vehicle.getTransmissionModel().getGears().get(0) : 0;
         this.secondGear = numberOfGears > 1 ? vehicle.getTransmissionModel().getGears().get(1) : 0;

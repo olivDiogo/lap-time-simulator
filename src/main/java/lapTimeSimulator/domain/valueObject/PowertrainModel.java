@@ -7,21 +7,25 @@ import lombok.Getter;
 @Getter
 @EqualsAndHashCode
 public class PowertrainModel implements IValueObject {
-    private final double power;
-    private final double torque;
+    private final double powerMax;
+    private final double torqueMax;
+    private final double rpmPowerMax;
+    private final double rpmTorqueMax;
 
     /**
      * Constructor of the class PowertrainModel
      *
-     * @param power is the power of the object.
-     * @param torque is the torque of the object.
+     * @param powerMax is the power of the object.
+     * @param torqueMax is the torque of the object.
      */
-    public PowertrainModel(double power, double torque) {
-        if (power < 0 || torque < 0) {
-            throw new IllegalArgumentException("Power and torque values must be positive.");
+    public PowertrainModel(double powerMax, double torqueMax, double rpmPowerMax, double rpmTorqueMax) {
+        if (powerMax <= 0 || torqueMax <= 0 || rpmPowerMax <= 0 || rpmTorqueMax <= 0) {
+            throw new IllegalArgumentException("Engine parameters must be positive.");
         }
 
-        this.power = power;
-        this.torque = torque;
+        this.powerMax = powerMax;
+        this.torqueMax = torqueMax;
+        this.rpmPowerMax = rpmPowerMax;
+        this.rpmTorqueMax = rpmTorqueMax;
     }
 }

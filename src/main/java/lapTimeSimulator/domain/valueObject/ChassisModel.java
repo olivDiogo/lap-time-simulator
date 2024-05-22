@@ -15,7 +15,7 @@ public class ChassisModel implements IValueObject {
      * @param mass is the mass of the object.
      */
     public ChassisModel(double mass) {
-        if (mass < 0) {
+        if (mass <= 0) {
             throw new IllegalArgumentException("Mass value must be positive.");
         }
 

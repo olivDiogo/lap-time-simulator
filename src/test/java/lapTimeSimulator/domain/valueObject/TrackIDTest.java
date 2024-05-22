@@ -20,34 +20,45 @@ class TrackIDTest {
 
     @Test
     void shouldThrowException_whenParameterIsNull() {
+        // Arrange
+        String expectedMessage = "Track ID must be a non-empty string.";
+
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             new TrackID(null);
         });
-        assertEquals("Track ID must be a non-empty string.", exception.getMessage());
+
+        // Assert
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
     void shouldThrowException_whenParameterIsEmpty() {
         // Arrange
         String strTrackID = "";
+        String expectedMessage = "Track ID must be a non-empty string.";
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             new TrackID(strTrackID);
         });
-        assertEquals("Track ID must be a non-empty string.", exception.getMessage());
+
+        // Assert
+        assertEquals(expectedMessage, exception.getMessage());
     }
 
     @Test
     void shouldThrowException_whenParameterIsBlank() {
         // Arrange
         String strTrackID = " ";
+        String expectedMessage = "Track ID must be a non-empty string.";
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
             new TrackID(strTrackID);
         });
-        assertEquals("Track ID must be a non-empty string.", exception.getMessage());
+
+        // Assert
+        assertEquals(expectedMessage, exception.getMessage());
     }
 }

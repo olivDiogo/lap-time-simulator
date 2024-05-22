@@ -10,7 +10,7 @@ import lapTimeSimulator.domain.valueObject.Name;
 import lapTimeSimulator.mapper.TrackMapper;
 import lapTimeSimulator.persistence.track.ITrackRepository;
 import lapTimeSimulator.service.TrackService;
-import lapTimeSimulator.utils.dto.TrackDTO;
+import lapTimeSimulator.utils.dto.outputDataDTO.TrackDataOutDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -43,7 +43,7 @@ class TrackControllerTest {
     void shouldInstantiateTrackController_whenParametersAreValid() {
         // Arrange
         TrackService trackService = new TrackService(trackRepository);
-        IMapper<Track, TrackDTO> trackMapper = new TrackMapper();
+        IMapper<Track, TrackDataOutDTO> trackMapper = new TrackMapper();
 
         // Act
         TrackController trackController = new TrackController(trackService, trackMapper);
@@ -55,7 +55,7 @@ class TrackControllerTest {
     @Test
     void shouldThrowException_whenTrackServiceIsNull() {
         // Arrange
-        IMapper<Track, TrackDTO> trackMapper = new TrackMapper();
+        IMapper<Track, TrackDataOutDTO> trackMapper = new TrackMapper();
 
         String expectedMessage = "Track service and mapper cannot be null.";
 
@@ -95,10 +95,10 @@ class TrackControllerTest {
 
         when(trackRepository.findAll()).thenReturn(List.of(track));
 
-        IMapper<Track, TrackDTO> trackMapper = new TrackMapper();
-        TrackDTO trackDTO = trackMapper.toDTO(track);
+        IMapper<Track, TrackDataOutDTO> trackMapper = new TrackMapper();
+        TrackDataOutDTO trackDataOutDTO = trackMapper.toDTO(track);
 
-        List<TrackDTO> expectedTracks = List.of(trackDTO);
+        List<TrackDataOutDTO> expectedTracks = List.of(trackDataOutDTO);
 
         // Act + Assert
         MvcResult result = mockMvc.perform(get("/tracks")
@@ -108,7 +108,7 @@ class TrackControllerTest {
 
         // Assert
         String actualResponseBody = result.getResponse().getContentAsString();
-        List<TrackDTO> actualTracks = objectMapper.readValue(actualResponseBody, new TypeReference<>() {});
+        List<TrackDataOutDTO> actualTracks = objectMapper.readValue(actualResponseBody, new TypeReference<>() {});
         assertEquals(expectedTracks.get(0).trackID, actualTracks.get(0).trackID);
     }
 
@@ -125,7 +125,7 @@ class TrackControllerTest {
 
         // Assert
         String actualResponseBody = result.getResponse().getContentAsString();
-        List<TrackDTO> actualTracks = objectMapper.readValue(actualResponseBody, new TypeReference<>() {});
+        List<TrackDataOutDTO> actualTracks = objectMapper.readValue(actualResponseBody, new TypeReference<>() {});
         assertTrue(actualTracks.isEmpty());
     }
 }

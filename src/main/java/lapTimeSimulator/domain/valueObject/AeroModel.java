@@ -1,14 +1,21 @@
 package lapTimeSimulator.domain.valueObject;
 
 import lapTimeSimulator.ddd.IValueObject;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
 @EqualsAndHashCode
-@AllArgsConstructor
 public class AeroModel implements IValueObject {
-    private final double downforce;
-    private final double drag;
+    private final double downforceCoefficient;
+    private final double dragCoefficient;
+
+    public AeroModel(double downforceCoefficient, double dragCoefficient) {
+        if (dragCoefficient > 0) {
+            throw new IllegalArgumentException("Drag coefficient cannot be positive.");
+        }
+
+        this.downforceCoefficient = downforceCoefficient;
+        this.dragCoefficient = dragCoefficient;
+    }
 }
