@@ -37,11 +37,12 @@ public class VehicleParametersUtils {
         BrakeModel brakeModel = new BrakeModel(vehicleDataInDTO.pressureToTorqueRatio);
         ChassisModel chassisModel = new ChassisModel(vehicleDataInDTO.mass);
         Name vehicleName = new Name(vehicleDataInDTO.vehicleName);
-        PowertrainModel powertrainModel = new PowertrainModel(vehicleDataInDTO.powerMax, vehicleDataInDTO.torqueMax, vehicleDataInDTO.rpmPowerMax, vehicleDataInDTO.rpmTorqueMax);
+        PowertrainModelCombustion powertrainModelCombustion = new PowertrainModelCombustion(vehicleDataInDTO.powerMax, vehicleDataInDTO.torqueMax, vehicleDataInDTO.rpmPowerMax, vehicleDataInDTO.rpmTorqueMax);
+        PowertrainModelElectric powertrainModelElectric = new PowertrainModelElectric(vehicleDataInDTO.powerMax, vehicleDataInDTO.torqueMax);
         TransmissionModel transmissionModel = new TransmissionModel(vehicleDataInDTO.numberOfGears, vehicleDataInDTO.gears, vehicleDataInDTO.finalDriveRatio);
         TyreModel tyreModel = new TyreModel(vehicleDataInDTO.longitudinalGrip, vehicleDataInDTO.lateralGrip, vehicleDataInDTO.tyreRadius);
 
-        return new VehicleParameters(aeroModel, brakeModel, chassisModel, vehicleName, powertrainModel, transmissionModel, tyreModel);
+        return new VehicleParameters(aeroModel, brakeModel, chassisModel, vehicleName, powertrainModelCombustion, powertrainModelElectric, transmissionModel, tyreModel);
     }
 
 

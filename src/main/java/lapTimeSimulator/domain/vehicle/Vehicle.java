@@ -17,7 +17,8 @@ public class Vehicle implements IAggregateRoot<VehicleID> {
     private AeroModel aeroModel;
     private BrakeModel brakeModel;
     private ChassisModel chassisModel;
-    private PowertrainModel powertrainModel;
+    private PowertrainModelCombustion powertrainModelCombustion;
+    private PowertrainModelElectric powertrainModelElectric;
     private TransmissionModel transmissionModel;
     private TyreModel tyreModel;
 
@@ -28,12 +29,14 @@ public class Vehicle implements IAggregateRoot<VehicleID> {
      */
     Vehicle(VehicleParameters vehicleParameters) {
         // Validation of the parameters is done in the factory
+
+        this.powertrainModelElectric = vehicleParameters.getPowertrainModelElectric();
+        this.powertrainModelCombustion = vehicleParameters.getPowertrainModelCombustion();
         this.vehicleID = new VehicleID(UUID.randomUUID().toString());
         this.vehicleName = vehicleParameters.getVehicleName();
         this.aeroModel = vehicleParameters.getAeroModel();
         this.brakeModel = vehicleParameters.getBrakeModel();
         this.chassisModel = vehicleParameters.getChassisModel();
-        this.powertrainModel = vehicleParameters.getPowertrainModel();
         this.transmissionModel = vehicleParameters.getTransmissionModel();
         this.tyreModel = vehicleParameters.getTyreModel();
     }
@@ -51,7 +54,7 @@ public class Vehicle implements IAggregateRoot<VehicleID> {
         this.aeroModel = vehicleParameters.getAeroModel();
         this.brakeModel = vehicleParameters.getBrakeModel();
         this.chassisModel = vehicleParameters.getChassisModel();
-        this.powertrainModel = vehicleParameters.getPowertrainModel();
+        this.powertrainModelCombustion = vehicleParameters.getPowertrainModelCombustion();
         this.transmissionModel = vehicleParameters.getTransmissionModel();
         this.tyreModel = vehicleParameters.getTyreModel();
     }

@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-class PowertrainModelTest {
+class PowertrainModelCombustionTest {
 
     @Test
     void shouldCreatePowertrainModel_whenParametersAreValid() {
@@ -16,10 +16,10 @@ class PowertrainModelTest {
         double rpmTorque = 2500;
 
         // Act
-        PowertrainModel powertrainModel = new PowertrainModel(power, torque, rpmPower, rpmTorque);
+        PowertrainModelCombustion powertrainModelCombustion = new PowertrainModelCombustion(power, torque, rpmPower, rpmTorque);
 
         // Assert
-        assertNotNull(powertrainModel);
+        assertNotNull(powertrainModelCombustion);
     }
 
     @Test
@@ -34,7 +34,7 @@ class PowertrainModelTest {
 
         // Act & Assert
         IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
+            new PowertrainModelCombustion(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
         });
 
         // Assert
@@ -53,7 +53,7 @@ class PowertrainModelTest {
 
         // Act & Assert
         IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
+            new PowertrainModelCombustion(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
         });
 
         // Assert
@@ -72,7 +72,7 @@ class PowertrainModelTest {
 
         // Act & Assert
         IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
+            new PowertrainModelCombustion(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
         });
 
         // Assert
@@ -91,7 +91,7 @@ class PowertrainModelTest {
 
         // Act & Assert
         IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
+            new PowertrainModelCombustion(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
         });
 
         // Assert

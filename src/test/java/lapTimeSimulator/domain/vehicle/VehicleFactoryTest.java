@@ -20,7 +20,7 @@ class VehicleFactoryTest {
         when(vehicleParameters.getAeroModel()).thenReturn(mock(AeroModel.class));
         when(vehicleParameters.getBrakeModel()).thenReturn(mock(BrakeModel.class));
         when(vehicleParameters.getChassisModel()).thenReturn(mock(ChassisModel.class));
-        when(vehicleParameters.getPowertrainModel()).thenReturn(mock(PowertrainModel.class));
+        when(vehicleParameters.getPowertrainModelCombustion()).thenReturn(mock(PowertrainModelCombustion.class));
         when(vehicleParameters.getTransmissionModel()).thenReturn(mock(TransmissionModel.class));
         when(vehicleParameters.getTyreModel()).thenReturn(mock(TyreModel.class));
 
@@ -60,7 +60,7 @@ class VehicleFactoryTest {
         when(vehicleParameters.getAeroModel()).thenReturn(mock(AeroModel.class));
         when(vehicleParameters.getBrakeModel()).thenReturn(mock(BrakeModel.class));
         when(vehicleParameters.getChassisModel()).thenReturn(mock(ChassisModel.class));
-        when(vehicleParameters.getPowertrainModel()).thenReturn(mock(PowertrainModel.class));
+        when(vehicleParameters.getPowertrainModelCombustion()).thenReturn(mock(PowertrainModelCombustion.class));
         when(vehicleParameters.getTransmissionModel()).thenReturn(mock(TransmissionModel.class));
         when(vehicleParameters.getTyreModel()).thenReturn(mock(TyreModel.class));
 

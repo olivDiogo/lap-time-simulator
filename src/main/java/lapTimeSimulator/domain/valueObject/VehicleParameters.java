@@ -15,8 +15,8 @@ public class VehicleParameters {
     private ChassisModel chassisModel;
     @NonNull
     private Name vehicleName;
-    @NonNull
-    private PowertrainModel powertrainModel;
+    private PowertrainModelCombustion powertrainModelCombustion;
+    private PowertrainModelElectric powertrainModelElectric;
     @NonNull
     private TransmissionModel transmissionModel;
     @NonNull

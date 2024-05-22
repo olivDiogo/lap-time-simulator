@@ -28,7 +28,7 @@ public class VehicleMapper implements IMapper<Vehicle, VehicleDataOutDTO> {
         BrakeModel brakeModel = vehicle.getBrakeModel();
         ChassisModel chassisModel = vehicle.getChassisModel();
         Name vehicleName = vehicle.getVehicleName();
-        PowertrainModel powertrainModel = vehicle.getPowertrainModel();
+        PowertrainModelCombustion powertrainModelCombustion = vehicle.getPowertrainModelCombustion();
         TransmissionModel transmissionModel = vehicle.getTransmissionModel();
         TyreModel tyreModel = vehicle.getTyreModel();
 
@@ -38,10 +38,10 @@ public class VehicleMapper implements IMapper<Vehicle, VehicleDataOutDTO> {
         double dragCoefficient = aeroModel.getDragCoefficient();
         double pressureToTorqueRatio = brakeModel.getPressureToTorqueRatio();
         double mass = chassisModel.getMass();
-        double powerMax = powertrainModel.getPowerMax();
-        double torqueMax = powertrainModel.getTorqueMax();
-        double rpmPowerMax = powertrainModel.getRpmPowerMax();
-        double rpmTorqueMax = powertrainModel.getRpmTorqueMax();
+        double powerMax = powertrainModelCombustion.getPowerMax();
+        double torqueMax = powertrainModelCombustion.getTorqueMax();
+        double rpmPowerMax = powertrainModelCombustion.getRpmPowerMax();
+        double rpmTorqueMax = powertrainModelCombustion.getRpmTorqueMax();
         int numberOfGears = transmissionModel.getNumberOfGears();
         List<Double> gears = transmissionModel.getGears();
         double finalDriveRatio = transmissionModel.getFinalDriveRatio();

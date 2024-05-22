@@ -40,7 +40,8 @@ public class VehicleDataModelAssembler implements IDataModelAssembler<Vehicle, V
         AeroModel aeroModel = new AeroModel(dataModel.getDownforce(), dataModel.getDrag());
         BrakeModel brakeModel = new BrakeModel(dataModel.getPressureToTorqueRatio());
         ChassisModel chassisModel = new ChassisModel(dataModel.getMass());
-        PowertrainModel powertrainModel = new PowertrainModel(dataModel.getPowerMax(), dataModel.getTorqueMax(), dataModel.getRpmPowerMax(), dataModel.getRpmTorqueMax());
+        PowertrainModelCombustion powertrainModelCombustion = new PowertrainModelCombustion(dataModel.getPowerMax(), dataModel.getTorqueMax(), dataModel.getRpmPowerMax(), dataModel.getRpmTorqueMax());
+        PowertrainModelElectric powertrainModelElectric = new PowertrainModelElectric(dataModel.getPowerMax(), dataModel.getTorqueMax());
         TyreModel tyreModel = new TyreModel(dataModel.getLongitudinalGrip(), dataModel.getLateralGrip(), dataModel.getTyreRadius());
         Name vehicleName = new Name(dataModel.getVehicleName());
 
@@ -48,7 +49,7 @@ public class VehicleDataModelAssembler implements IDataModelAssembler<Vehicle, V
         TransmissionModel transmissionModel = new TransmissionModel(dataModel.getNumberOfGears(), gears, dataModel.getFinalDriveRatio());
 
         VehicleParameters vehicleParameters = new VehicleParameters(aeroModel, brakeModel, chassisModel, vehicleName,
-                powertrainModel, transmissionModel, tyreModel);
+                powertrainModelCombustion, powertrainModelElectric, transmissionModel, tyreModel);
 
         return vehicleFactory.createVehicle(vehicleID, vehicleParameters);
     }

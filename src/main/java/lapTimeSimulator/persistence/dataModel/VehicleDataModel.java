@@ -64,10 +64,10 @@ public class VehicleDataModel {
         this.drag = vehicle.getAeroModel().getDragCoefficient();
         this.pressureToTorqueRatio = vehicle.getBrakeModel().getPressureToTorqueRatio();
         this.mass = vehicle.getChassisModel().getMass();
-        this.powerMax = vehicle.getPowertrainModel().getPowerMax();
-        this.torqueMax = vehicle.getPowertrainModel().getTorqueMax();
-        this.rpmPowerMax = vehicle.getPowertrainModel().getRpmPowerMax();
-        this.rpmTorqueMax = vehicle.getPowertrainModel().getRpmTorqueMax();
+        this.powerMax = vehicle.getPowertrainModelCombustion().getPowerMax();
+        this.torqueMax = vehicle.getPowertrainModelCombustion().getTorqueMax();
+        this.rpmPowerMax = vehicle.getPowertrainModelCombustion().getRpmPowerMax();
+        this.rpmTorqueMax = vehicle.getPowertrainModelCombustion().getRpmTorqueMax();
         this.numberOfGears = vehicle.getTransmissionModel().getNumberOfGears();
         this.finalDriveRatio = vehicle.getTransmissionModel().getFinalDriveRatio();
         this.longitudinalGrip = vehicle.getTyreModel().getLongitudinalGrip();

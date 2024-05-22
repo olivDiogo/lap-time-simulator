@@ -33,9 +33,9 @@ class VehicleMapperTest {
         ChassisModel chassisModel = mock(ChassisModel.class);
         when(chassisModel.getMass()).thenReturn(500.0);
 
-        PowertrainModel powertrainModel = mock(PowertrainModel.class);
-        when(powertrainModel.getPowerMax()).thenReturn(1000.0);
-        when(powertrainModel.getTorqueMax()).thenReturn(500.0);
+        PowertrainModelCombustion powertrainModelCombustion = mock(PowertrainModelCombustion.class);
+        when(powertrainModelCombustion.getPowerMax()).thenReturn(1000.0);
+        when(powertrainModelCombustion.getTorqueMax()).thenReturn(500.0);
 
         TransmissionModel transmissionModel = mock(TransmissionModel.class);
         when(transmissionModel.getNumberOfGears()).thenReturn(6);
@@ -52,7 +52,7 @@ class VehicleMapperTest {
         when(vehicle.getAeroModel()).thenReturn(aeroModel);
         when(vehicle.getBrakeModel()).thenReturn(brakeModel);
         when(vehicle.getChassisModel()).thenReturn(chassisModel);
-        when(vehicle.getPowertrainModel()).thenReturn(powertrainModel);
+        when(vehicle.getPowertrainModelCombustion()).thenReturn(powertrainModelCombustion);
         when(vehicle.getTransmissionModel()).thenReturn(transmissionModel);
         when(vehicle.getTyreModel()).thenReturn(tyreModel);
 
@@ -100,9 +100,9 @@ class VehicleMapperTest {
         ChassisModel chassisModel = mock(ChassisModel.class);
         when(chassisModel.getMass()).thenReturn(500.0);
 
-        PowertrainModel powertrainModel = mock(PowertrainModel.class);
-        when(powertrainModel.getPowerMax()).thenReturn(1000.0);
-        when(powertrainModel.getTorqueMax()).thenReturn(500.0);
+        PowertrainModelCombustion powertrainModelCombustion = mock(PowertrainModelCombustion.class);
+        when(powertrainModelCombustion.getPowerMax()).thenReturn(1000.0);
+        when(powertrainModelCombustion.getTorqueMax()).thenReturn(500.0);
 
         TransmissionModel transmissionModel = mock(TransmissionModel.class);
         when(transmissionModel.getNumberOfGears()).thenReturn(6);
@@ -119,7 +119,7 @@ class VehicleMapperTest {
         when(vehicle.getAeroModel()).thenReturn(aeroModel);
         when(vehicle.getBrakeModel()).thenReturn(brakeModel);
         when(vehicle.getChassisModel()).thenReturn(chassisModel);
-        when(vehicle.getPowertrainModel()).thenReturn(powertrainModel);
+        when(vehicle.getPowertrainModelCombustion()).thenReturn(powertrainModelCombustion);
         when(vehicle.getTransmissionModel()).thenReturn(transmissionModel);
         when(vehicle.getTyreModel()).thenReturn(tyreModel);
 
