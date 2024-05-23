@@ -1,7 +1,10 @@
 package lapTimeSimulator.utils.dto.inputDataDTO;
 
+import lombok.AllArgsConstructor;
+
 import java.util.List;
 
+@AllArgsConstructor
 public class VehicleDataInDTO {
     public final String vehicleName;
     public final double downforceCoefficient;
@@ -19,27 +22,5 @@ public class VehicleDataInDTO {
     public final double lateralGrip;
     public final double tyreRadius;
 
-    public VehicleDataInDTO(String vehicleName, double downforceCoefficient, double dragCoefficient, double pressureToTorqueRatio, double mass,
-                            double powerMax, double torqueMax, double rpmPowerMax, double rpmTorqueMax, int numberOfGears, List<Double> gears, double finalDriveRatio,
-                            double longitudinalGrip, double lateralGrip, double tyreRadius) {
-        if (vehicleName == null || gears == null) {
-            throw new IllegalArgumentException("The vehicle parameters cannot be null.");
-        }
 
-        this.vehicleName = vehicleName;
-        this.downforceCoefficient = downforceCoefficient;
-        this.dragCoefficient = dragCoefficient;
-        this.pressureToTorqueRatio = pressureToTorqueRatio;
-        this.mass = mass;
-        this.powerMax = powerMax;
-        this.torqueMax = torqueMax;
-        this.rpmPowerMax = rpmPowerMax;
-        this.rpmTorqueMax = rpmTorqueMax;
-        this.numberOfGears = numberOfGears;
-        this.gears = gears;
-        this.finalDriveRatio = finalDriveRatio;
-        this.longitudinalGrip = longitudinalGrip;
-        this.lateralGrip = lateralGrip;
-        this.tyreRadius = tyreRadius;
-    }
 }

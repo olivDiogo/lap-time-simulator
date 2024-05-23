@@ -84,7 +84,7 @@ class VehicleControllerTest {
     }
 
     @Test
-    void shouldCreateVehicle_whenParametersAreValid() throws Exception {
+    void shouldCreateCombustionVehicle_whenParametersAreValid() throws Exception {
         // Arrange
         String vehicleID = "vehicleID";
         String vehicleName = "vehicleName";
@@ -96,6 +96,41 @@ class VehicleControllerTest {
         double torqueMax = 1.0;
         double rpmPowerMax = 1.0;
         double rpmTorqueMax = 1.0;
+        int numberOfGears = 1;
+        List<Double> gears = List.of(1.0);
+        double finalDriveRatio = 1.0;
+        double longitudinalGrip = 1.0;
+        double lateralGrip = 1.0;
+        double tyreRadius = 1.0;
+
+        VehicleDataOutDTO vehicleDataDTO = new VehicleDataOutDTO(vehicleID, vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+
+        // Act + Assert
+        MvcResult result = mockMvc.perform(post("/vehicles")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(vehicleDataDTO)))
+                .andExpect(status().isCreated())
+                .andReturn();
+
+        // Assert
+        String content = result.getResponse().getContentAsString();
+        VehicleDataOutDTO vehicle = objectMapper.readValue(content, VehicleDataOutDTO.class);
+        assertEquals(vehicleName, vehicle.vehicleName);
+    }
+
+    @Test
+    void shouldCreateElectricVehicle_whenParametersAreValid() throws Exception {
+        // Arrange
+        String vehicleID = "vehicleID";
+        String vehicleName = "vehicleName";
+        double downforceCoefficient = 1.0;
+        double dragCoefficient = -1.0;
+        double pressureToTorqueRatio = 1.0;
+        double mass = 1.0;
+        double powerMax = 1.0;
+        double torqueMax = 1.0;
+        double rpmPowerMax = 0;
+        double rpmTorqueMax = 0;
         int numberOfGears = 1;
         List<Double> gears = List.of(1.0);
         double finalDriveRatio = 1.0;

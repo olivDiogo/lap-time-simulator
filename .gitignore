@@ -19,6 +19,8 @@
 # Generated files
 .idea/**/contentModel.xml
 target/
+simulationResult.json
+simulationData.json
 
 # Sensitive or high-churn files
 .idea/**/dataSources/

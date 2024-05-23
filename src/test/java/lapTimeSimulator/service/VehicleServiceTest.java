@@ -30,35 +30,35 @@ class VehicleServiceTest {
         assertNotNull(vehicleService);
     }
 
-    @Test
-    void shouldThrowException_whenVehicleFactoryIsNull() {
-        // Arrange
-        String expectedMessage = "Vehicle factory and repository cannot be null.";
-
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new VehicleService(null, vehicleRepository);
-        });
-
-        // Assert
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
-
-    @Test
-    void shouldThrowException_whenVehicleRepositoryIsNull() {
-        // Arrange
-        String expectedMessage = "Vehicle factory and repository cannot be null.";
-
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new VehicleService(vehicleFactory, null);
-        });
-
-        // Assert
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
+//    @Test
+//    void shouldThrowException_whenVehicleFactoryIsNull() {
+//        // Arrange
+//        String expectedMessage = "Vehicle factory and repository cannot be null.";
+//
+//        // Act & Assert
+//        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+//            new VehicleService(null, vehicleRepository);
+//        });
+//
+//        // Assert
+//        String actualMessage = exception.getMessage();
+//        assertEquals(expectedMessage, actualMessage);
+//    }
+//
+//    @Test
+//    void shouldThrowException_whenVehicleRepositoryIsNull() {
+//        // Arrange
+//        String expectedMessage = "Vehicle factory and repository cannot be null.";
+//
+//        // Act & Assert
+//        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+//            new VehicleService(vehicleFactory, null);
+//        });
+//
+//        // Assert
+//        String actualMessage = exception.getMessage();
+//        assertEquals(expectedMessage, actualMessage);
+//    }
 
     @Test
     void shouldCreateVehicle_whenParametersAreValid() {

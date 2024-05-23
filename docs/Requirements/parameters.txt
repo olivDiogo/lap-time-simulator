@@ -2,19 +2,10 @@ SCx - dragCoefficient
 SCz - downforceCoefficient
 RRTyre = tyreRadius
 mCar - mass
-PEngMax - engine  max power
+pEngMax - engine  max power
 nEngPMax - engine rpm at max power
-TEngMax - engine max torque
+tEngMax - engine max torque
 nEngTMax - engine rpm at max torque
 muy - lateral grip coefficient
 mux - longitudinal grip coefficient
 rBrkF2P - brake force to pressure ratio
-
-
-
-------------------------------------------------------------
-If electric motor: torque max and power max
-If combustion engine: torque max and power max, and rpm torque max and rpm power max
-
--------------------------------------------------------------
-map parameters nomenclature in java to be used in the algorithm

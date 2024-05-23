@@ -1,7 +1,11 @@
 package lapTimeSimulator.domain.valueObject;
 
 import lapTimeSimulator.ddd.IValueObject;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 
+@Getter
+@EqualsAndHashCode
 public class PowertrainModelElectric implements IValueObject {
     private final double powerMax;
     private final double torqueMax;

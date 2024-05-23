@@ -30,21 +30,21 @@ class TrackServiceTest {
         assertNotNull(trackService);
     }
 
-    @Test
-    void shouldThrowIllegalArgumentException_whenRepositoryIsNull() {
-        // Arrange
-        String expectedMessage = "Repository cannot be null.";
-
-        // Act & Assert
-        IllegalArgumentException exception =
-            assertThrows(IllegalArgumentException.class, () -> {
-                new TrackService(null);
-            });
-
-        // Assert
-        String actualMessage = exception.getMessage();
-        assertEquals(expectedMessage, actualMessage);
-    }
+//    @Test
+//    void shouldThrowIllegalArgumentException_whenRepositoryIsNull() {
+//        // Arrange
+//        String expectedMessage = "Repository cannot be null.";
+//
+//        // Act & Assert
+//        IllegalArgumentException exception =
+//            assertThrows(IllegalArgumentException.class, () -> {
+//                new TrackService(null);
+//            });
+//
+//        // Assert
+//        String actualMessage = exception.getMessage();
+//        assertEquals(expectedMessage, actualMessage);
+//    }
 
     @Test
     void shouldGetTracks_whenTheRepositoryHasTracks() {

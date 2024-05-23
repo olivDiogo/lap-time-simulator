@@ -1,6 +1,5 @@
 package lapTimeSimulator.controller;
 
-import jakarta.validation.Valid;
 import lapTimeSimulator.ddd.IMapper;
 import lapTimeSimulator.domain.valueObject.*;
 import lapTimeSimulator.domain.vehicle.Vehicle;
@@ -8,6 +7,7 @@ import lapTimeSimulator.service.VehicleService;
 import lapTimeSimulator.utils.dto.inputDataDTO.VehicleDataInDTO;
 import lapTimeSimulator.utils.dto.outputDataDTO.VehicleDataOutDTO;
 import lapTimeSimulator.utils.vehicleParameters.VehicleParametersUtils;
+import lombok.AllArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.HttpStatus;
@@ -22,17 +22,18 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/vehicles")
+@AllArgsConstructor
 public class VehicleController {
-    private final VehicleService vehicleService;
-    private final IMapper<Vehicle, VehicleDataOutDTO> vehicleMapper;
+    private VehicleService vehicleService;
+    private IMapper<Vehicle, VehicleDataOutDTO> vehicleMapper;
 
-    public VehicleController(VehicleService vehicleService, IMapper<Vehicle, VehicleDataOutDTO> vehicleMapper) {
-        if (vehicleService == null || vehicleMapper == null) {
-            throw new IllegalArgumentException("Vehicle service and mapper cannot be null.");
-        }
-        this.vehicleService = vehicleService;
-        this.vehicleMapper = vehicleMapper;
-    }
+//    public VehicleController(VehicleService vehicleService, IMapper<Vehicle, VehicleDataOutDTO> vehicleMapper) {
+//        if (vehicleService == null || vehicleMapper == null) {
+//            throw new IllegalArgumentException("Vehicle service and mapper cannot be null.");
+//        }
+//        this.vehicleService = vehicleService;
+//        this.vehicleMapper = vehicleMapper;
+//    }
 
     /**
      * Method to create a vehicle.
@@ -41,7 +42,7 @@ public class VehicleController {
      * @return the vehicle data transfer object.
      */
     @PostMapping
-    public ResponseEntity<EntityModel<VehicleDataOutDTO>> createVehicle(@Valid @RequestBody VehicleDataInDTO vehicleDataInDTO) {
+    public ResponseEntity<EntityModel<VehicleDataOutDTO>> createVehicle(@RequestBody VehicleDataInDTO vehicleDataInDTO) {
         if (vehicleDataInDTO == null) {
             throw new IllegalArgumentException("Vehicle DTO cannot be null.");
         }
