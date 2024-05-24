@@ -5,25 +5,27 @@ import lapTimeSimulator.domain.valueObject.AeroModel;
 import lapTimeSimulator.domain.vehicle.IVehicleFactory;
 import lapTimeSimulator.domain.vehicle.Vehicle;
 import lapTimeSimulator.persistence.dataModel.VehicleDataModel;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@AllArgsConstructor
 public class VehicleDataModelAssembler implements IDataModelAssembler<Vehicle, VehicleDataModel>{
     private final IVehicleFactory vehicleFactory;
 
-    /**
-     * Constructor of the class.
-     *
-     * @param vehicleFactory is the vehicle factory.
-     */
-    public VehicleDataModelAssembler(IVehicleFactory vehicleFactory) {
-        if (vehicleFactory == null)
-            throw new IllegalArgumentException("The vehicle factory must be not null.");
-        this.vehicleFactory = vehicleFactory;
-    }
+//    /**
+//     * Constructor of the class.
+//     *
+//     * @param vehicleFactory is the vehicle factory.
+//     */
+//    public VehicleDataModelAssembler(IVehicleFactory vehicleFactory) {
+//        if (vehicleFactory == null)
+//            throw new IllegalArgumentException("The vehicle factory must be not null.");
+//        this.vehicleFactory = vehicleFactory;
+//    }
 
     /**
      * Method to convert a vehicle domain entity to a vehicle data model.
@@ -40,8 +42,7 @@ public class VehicleDataModelAssembler implements IDataModelAssembler<Vehicle, V
         AeroModel aeroModel = new AeroModel(dataModel.getDownforce(), dataModel.getDrag());
         BrakeModel brakeModel = new BrakeModel(dataModel.getPressureToTorqueRatio());
         ChassisModel chassisModel = new ChassisModel(dataModel.getMass());
-        PowertrainModelCombustion powertrainModelCombustion = new PowertrainModelCombustion(dataModel.getPowerMax(), dataModel.getTorqueMax(), dataModel.getRpmPowerMax(), dataModel.getRpmTorqueMax());
-        PowertrainModelElectric powertrainModelElectric = new PowertrainModelElectric(dataModel.getPowerMax(), dataModel.getTorqueMax());
+        PowertrainModel powertrainModel = new PowertrainModel(dataModel.getPowerMax(), dataModel.getTorqueMax(), dataModel.getRpmPowerMax(), dataModel.getRpmTorqueMax());
         TyreModel tyreModel = new TyreModel(dataModel.getLongitudinalGrip(), dataModel.getLateralGrip(), dataModel.getTyreRadius());
         Name vehicleName = new Name(dataModel.getVehicleName());
 
@@ -49,7 +50,7 @@ public class VehicleDataModelAssembler implements IDataModelAssembler<Vehicle, V
         TransmissionModel transmissionModel = new TransmissionModel(dataModel.getNumberOfGears(), gears, dataModel.getFinalDriveRatio());
 
         VehicleParameters vehicleParameters = new VehicleParameters(aeroModel, brakeModel, chassisModel, vehicleName,
-                powertrainModelCombustion, powertrainModelElectric, transmissionModel, tyreModel);
+                powertrainModel, transmissionModel, tyreModel);
 
         return vehicleFactory.createVehicle(vehicleID, vehicleParameters);
     }

@@ -28,17 +28,12 @@ public class VehicleMapper implements IMapper<Vehicle, VehicleDataOutDTO> {
         BrakeModel brakeModel = vehicle.getBrakeModel();
         ChassisModel chassisModel = vehicle.getChassisModel();
         Name vehicleName = vehicle.getVehicleName();
+        PowertrainModel powertrainModel = vehicle.getPowertrainModel();
         TransmissionModel transmissionModel = vehicle.getTransmissionModel();
         TyreModel tyreModel = vehicle.getTyreModel();
 
-        PowertrainModelCombustion powertrainModelCombustion = vehicle.getPowertrainModelCombustion();
-        PowertrainModelElectric powertrainModelElectric = null;
-        if(powertrainModelCombustion == null) {
-            powertrainModelElectric = vehicle.getPowertrainModelElectric();
-        }
-
         /* Parsing the vehicle parameters objects to primitives*/
-        String vehicleNameString = vehicleName.getStrName();
+        String strVehicleName = vehicleName.getStrName();
         double downforceCoefficient = aeroModel.getDownforceCoefficient();
         double dragCoefficient = aeroModel.getDragCoefficient();
         double pressureToTorqueRatio = brakeModel.getPressureToTorqueRatio();
@@ -49,25 +44,12 @@ public class VehicleMapper implements IMapper<Vehicle, VehicleDataOutDTO> {
         double longitudinalGrip = tyreModel.getLongitudinalGrip();
         double lateralGrip = tyreModel.getLateralGrip();
         double tyreRadius = tyreModel.getTyreRadius();
+        double powerMax = powertrainModel.getPowerMax();
+        double torqueMax = powertrainModel.getTorqueMax();
+        Double rpmPowerMax = powertrainModel.getRpmPowerMax();
+        Double rpmTorqueMax = powertrainModel.getRpmTorqueMax();
 
-        double powerMax;
-        double torqueMax;
-        double rpmPowerMax = 0;
-        double rpmTorqueMax = 0;
-
-        if(powertrainModelCombustion == null) {
-            powerMax = powertrainModelElectric.getPowerMax();
-            torqueMax = powertrainModelElectric.getTorqueMax();
-        } else {
-            powerMax = powertrainModelCombustion.getPowerMax();
-            torqueMax = powertrainModelCombustion.getTorqueMax();
-            rpmPowerMax = powertrainModelCombustion.getRpmPowerMax();
-            rpmTorqueMax = powertrainModelCombustion.getRpmTorqueMax();
-        }
-
-        return new VehicleDataOutDTO(vehicleID, vehicleNameString, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass,
-                powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio,
-                longitudinalGrip, lateralGrip, tyreRadius);
+        return new VehicleDataOutDTO(vehicleID, strVehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
     }
 
     /**

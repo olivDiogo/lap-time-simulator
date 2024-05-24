@@ -47,7 +47,13 @@ public class VehicleController {
             throw new IllegalArgumentException("Vehicle DTO cannot be null.");
         }
 
-        VehicleParameters vehicleParameters = VehicleParametersUtils.getVehicleParameters(vehicleDataInDTO);
+        VehicleParameters vehicleParameters;
+
+        try {
+            vehicleParameters = VehicleParametersUtils.getVehicleParameters(vehicleDataInDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
 
         Vehicle vehicle = vehicleService.createVehicle(vehicleParameters);
         VehicleDataOutDTO vehicleDTO = vehicleMapper.toDTO(vehicle);

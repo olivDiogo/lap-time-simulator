@@ -14,9 +14,7 @@ import java.util.Optional;
 @Repository
 @AllArgsConstructor
 public class VehicleRepository implements IVehicleRepository{
-    @NotNull
     IVehicleSpringDataRepository repository;
-    @NotNull
     IDataModelAssembler<Vehicle, VehicleDataModel> assembler;
 
     /**

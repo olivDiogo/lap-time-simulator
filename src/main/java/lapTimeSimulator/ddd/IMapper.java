@@ -18,13 +18,4 @@ public interface IMapper <ID extends IAggregateRoot, T>{
      * @return the list of DTOs.
      */
     List<T> toDTO(List<ID> domainEntities);
-
-//    /**
-//     * Method to convert a DTO into a domain entity.
-//     *
-//     * @param dto is the DTO to be converted.
-//     * @return the domain entity.
-//     */
-//    ID toDomain(T dto);
-
 }

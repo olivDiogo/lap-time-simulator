@@ -13,14 +13,12 @@ public class VehicleDataInDTO {
     public final double mass;
     public final double powerMax;
     public final double torqueMax;
-    public final double rpmPowerMax;
-    public final double rpmTorqueMax;
+    public final Double rpmPowerMax;
+    public final Double rpmTorqueMax;
     public final int numberOfGears;
     public final List<Double> gears;
     public final double finalDriveRatio;
     public final double longitudinalGrip;
     public final double lateralGrip;
     public final double tyreRadius;
-
-
 }

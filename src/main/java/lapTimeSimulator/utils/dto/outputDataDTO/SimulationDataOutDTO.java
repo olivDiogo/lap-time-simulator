@@ -3,7 +3,6 @@ package lapTimeSimulator.utils.dto.outputDataDTO;
 import lombok.AllArgsConstructor;
 
 import java.util.List;
-import java.util.SimpleTimeZone;
 
 @AllArgsConstructor
 public class SimulationDataOutDTO {

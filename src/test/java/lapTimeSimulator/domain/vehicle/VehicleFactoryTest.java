@@ -20,7 +20,7 @@ class VehicleFactoryTest {
         when(vehicleParameters.getAeroModel()).thenReturn(mock(AeroModel.class));
         when(vehicleParameters.getBrakeModel()).thenReturn(mock(BrakeModel.class));
         when(vehicleParameters.getChassisModel()).thenReturn(mock(ChassisModel.class));
-        when(vehicleParameters.getPowertrainModelCombustion()).thenReturn(mock(PowertrainModelCombustion.class));
+        when(vehicleParameters.getPowertrainModel()).thenReturn(mock(PowertrainModel.class));
         when(vehicleParameters.getTransmissionModel()).thenReturn(mock(TransmissionModel.class));
         when(vehicleParameters.getTyreModel()).thenReturn(mock(TyreModel.class));
 
@@ -37,12 +37,11 @@ class VehicleFactoryTest {
     void shouldThrowIllegalArgumentException_whenVehicleParametersAreNull() {
         // Arrange
         VehicleFactory vehicleFactory = new VehicleFactory();
-        VehicleParameters vehicleParameters = null;
 
         String expectedMessage = "Vehicle parameters cannot be null.";
 
         //Act & Assert
-        Exception e = assertThrows(IllegalArgumentException.class, () -> vehicleFactory.createVehicle(vehicleParameters));
+        Exception e = assertThrows(IllegalArgumentException.class, () -> vehicleFactory.createVehicle(null));
 
         //Assert
         String actualMessage = e.getMessage();
@@ -60,7 +59,7 @@ class VehicleFactoryTest {
         when(vehicleParameters.getAeroModel()).thenReturn(mock(AeroModel.class));
         when(vehicleParameters.getBrakeModel()).thenReturn(mock(BrakeModel.class));
         when(vehicleParameters.getChassisModel()).thenReturn(mock(ChassisModel.class));
-        when(vehicleParameters.getPowertrainModelCombustion()).thenReturn(mock(PowertrainModelCombustion.class));
+        when(vehicleParameters.getPowertrainModel()).thenReturn(mock(PowertrainModel.class));
         when(vehicleParameters.getTransmissionModel()).thenReturn(mock(TransmissionModel.class));
         when(vehicleParameters.getTyreModel()).thenReturn(mock(TyreModel.class));
 
@@ -78,12 +77,11 @@ class VehicleFactoryTest {
         // Arrange
         VehicleFactory vehicleFactory = new VehicleFactory();
         VehicleParameters vehicleParameters = mock(VehicleParameters.class);
-        VehicleID vehicleID = null;
 
         String expectedMessage = "Vehicle parameters cannot be null.";
 
         //Act & Assert
-        Exception e = assertThrows(IllegalArgumentException.class, () -> vehicleFactory.createVehicle(vehicleID, vehicleParameters));
+        Exception e = assertThrows(IllegalArgumentException.class, () -> vehicleFactory.createVehicle(null, vehicleParameters));
 
         //Assert
         String actualMessage = e.getMessage();
@@ -94,13 +92,12 @@ class VehicleFactoryTest {
     void shouldThrowIllegalArgumentException_whenVehicleIDIsValidAndVehicleParametersAreNull() {
         // Arrange
         VehicleFactory vehicleFactory = new VehicleFactory();
-        VehicleParameters vehicleParameters = null;
         VehicleID vehicleID = mock(VehicleID.class);
 
         String expectedMessage = "Vehicle parameters cannot be null.";
 
         //Act & Assert
-        Exception e = assertThrows(IllegalArgumentException.class, () -> vehicleFactory.createVehicle(vehicleID, vehicleParameters));
+        Exception e = assertThrows(IllegalArgumentException.class, () -> vehicleFactory.createVehicle(vehicleID, null));
 
         //Assert
         String actualMessage = e.getMessage();

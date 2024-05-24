@@ -1,7 +1,7 @@
 # UC03 - Start a simulation
 
 ## Description
-As a user, I want to start a simulation with a vehicle and a track.
+As a user, I want to start a simulation with a vehicle and a track, and get the results.
 
 ## System Interaction
 ![SSD](ssd_uc03_v1.svg)
