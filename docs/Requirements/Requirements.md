@@ -38,3 +38,19 @@
 - Database: ?
 - Hosting: Cloud-based service ?
 - Version Control: Git
+
+
+## Future Development
+### Code
+- Services return DTO to controllers
+- HATEOAS links inside DTOs
+- Verify coverage
+- handle exceptions
+- database connection and deployment: https://chatgpt.com/share/6b34b476-87e0-473e-8d06-7466cee36c9b
+### Algorithm
+- Bicycle model
+### Features
+- User Authentication
+- User Profile
+- Data Persistence: https://chatgpt.com/share/3359b0da-5f81-4d7e-a366-e9418cc3ec4a
+- Machine licensing: https://chatgpt.com/share/f38d79db-eb3f-44ba-ab6d-ed718333ba51

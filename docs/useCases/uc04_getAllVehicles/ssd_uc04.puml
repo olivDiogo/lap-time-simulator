@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor User
+participant Frontend
+participant Server
+participant Database
+
+User -> Frontend: I want to get the list of all available vehicles
+activate Frontend
+
+Frontend -> Server: getVehicles()
+activate Server
+
+Server -> Database: SELECT * FROM vehicles
+activate Database
+
+Database --> Server: vehicleDataModels
+deactivate Database
+
+Server --> Frontend: vehicleDTOList
+deactivate Server
+
+Frontend --> User: vehicleDTOList
+deactivate Frontend
+
+@enduml

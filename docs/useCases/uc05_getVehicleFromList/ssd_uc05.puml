@@ -1,0 +1,29 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+actor User
+participant Frontend
+participant Server
+participant Database
+
+User -> Frontend: I want to select a vehicle
+activate Frontend
+
+Frontend -> Server: getVehicle(vehicleID)
+activate Server
+
+Server -> Database: SELECT * FROM vehicles WHERE id = vehicleID
+activate Database
+
+Database --> Server: vehicleDataModel
+deactivate Database
+
+Server --> Frontend: vehicleDTO
+deactivate Server
+
+Frontend --> User: vehicleDTO
+deactivate Frontend
+
+@enduml

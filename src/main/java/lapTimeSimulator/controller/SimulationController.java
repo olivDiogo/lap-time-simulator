@@ -1,6 +1,5 @@
 package lapTimeSimulator.controller;
 
-import lapTimeSimulator.domain.simulation.Simulation;
 import lapTimeSimulator.domain.valueObject.Name;
 import lapTimeSimulator.domain.valueObject.TrackID;
 import lapTimeSimulator.domain.valueObject.VehicleID;
@@ -34,10 +33,6 @@ public class SimulationController {
      */
     @PostMapping
     public ResponseEntity<EntityModel<SimulationDataOutDTO>> startSimulation(@RequestBody SimulationDataInDTO simulationDataInDTO) {
-        if (simulationDataInDTO == null) {
-            throw new IllegalArgumentException("Simulation data cannot be null.");
-        }
-
         Name simulationName = new Name(simulationDataInDTO.simulationName);
         VehicleID vehicleID = new VehicleID(simulationDataInDTO.vehicleID);
         TrackID trackID = new TrackID(simulationDataInDTO.trackID);

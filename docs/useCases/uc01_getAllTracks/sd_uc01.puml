@@ -22,16 +22,16 @@ activate REPO
 REPO --> SERV: tracks
 deactivate REPO
 
-SERV --> CTRL: tracks
-deactivate SERV
-
-CTRL -> ASSEMBLER: toDTO(tracks)
+SERV -> ASSEMBLER: toDTO(tracks)
 activate ASSEMBLER
 
-ASSEMBLER --> CTRL: tracksDTO
+ASSEMBLER --> SERV: trackDataOutDTOList
 deactivate ASSEMBLER
 
-CTRL --> " ": tracksDTO
+SERV --> CTRL: tracksDataOutDTOList
+deactivate SERV
+
+CTRL --> " ": tracksDataOutDTOList
 deactivate CTRL
 
 @enduml

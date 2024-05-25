@@ -16,17 +16,6 @@ import java.util.List;
 public class VehicleDataModelAssembler implements IDataModelAssembler<Vehicle, VehicleDataModel>{
     private final IVehicleFactory vehicleFactory;
 
-//    /**
-//     * Constructor of the class.
-//     *
-//     * @param vehicleFactory is the vehicle factory.
-//     */
-//    public VehicleDataModelAssembler(IVehicleFactory vehicleFactory) {
-//        if (vehicleFactory == null)
-//            throw new IllegalArgumentException("The vehicle factory must be not null.");
-//        this.vehicleFactory = vehicleFactory;
-//    }
-
     /**
      * Method to convert a vehicle domain entity to a vehicle data model.
      *
@@ -42,7 +31,14 @@ public class VehicleDataModelAssembler implements IDataModelAssembler<Vehicle, V
         AeroModel aeroModel = new AeroModel(dataModel.getDownforce(), dataModel.getDrag());
         BrakeModel brakeModel = new BrakeModel(dataModel.getPressureToTorqueRatio());
         ChassisModel chassisModel = new ChassisModel(dataModel.getMass());
-        PowertrainModel powertrainModel = new PowertrainModel(dataModel.getPowerMax(), dataModel.getTorqueMax(), dataModel.getRpmPowerMax(), dataModel.getRpmTorqueMax());
+
+        PowertrainModel powertrainModel;
+        if(dataModel.getRpmPowerMax() <= 0 || dataModel.getRpmTorqueMax() <= 0) {
+            powertrainModel = new PowertrainModel(dataModel.getPowerMax(), dataModel.getTorqueMax());
+        } else {
+            powertrainModel = new PowertrainModel(dataModel.getPowerMax(), dataModel.getTorqueMax(), dataModel.getRpmPowerMax(), dataModel.getRpmTorqueMax());
+        }
+
         TyreModel tyreModel = new TyreModel(dataModel.getLongitudinalGrip(), dataModel.getLateralGrip(), dataModel.getTyreRadius());
         Name vehicleName = new Name(dataModel.getVehicleName());
 

@@ -1,7 +1,6 @@
 package lapTimeSimulator.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lapTimeSimulator.domain.simulation.Simulation;
 import lapTimeSimulator.domain.track.ITrackFactory;
 import lapTimeSimulator.domain.track.Track;
 import lapTimeSimulator.domain.track.TrackFactory;
@@ -32,9 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 class SimulationControllerTest {
-    @MockBean
-    private ISimulationRepository simulationRepository;
-
     @MockBean
     private IVehicleRepository vehicleRepository;
 

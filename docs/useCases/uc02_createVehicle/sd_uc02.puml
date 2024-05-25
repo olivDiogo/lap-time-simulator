@@ -4,17 +4,39 @@
 autonumber
 
 participant " "
-participant VehicleController as CTRL
-participant VehicleService as SERV
-participant VehicleRepository as REPO
-participant VehicleAssembler as ASSEMBLER
+participant ":VehicleController" as CTRL
+participant VehicleParametersUtils as VehicleParametersUtils
+participant "vehicleParameters:VehicleParameters" as vehicleParameters
+participant ":VehicleService" as SERV
+participant ":VehicleFactory" as FACTORY
+participant ":VehicleRepository" as REPO
+participant ":VehicleAssembler" as ASSEMBLER
 
 
-" "-> CTRL: createVehicle(vehicleDataDTO)
+" " -> CTRL: createVehicle(vehicleDataInDTO)
 activate CTRL
 
-CTRL -> SERV: createVehicle(vehicle)
+CTRL -> VehicleParametersUtils: getVehicleParameters(vehicleDataInDTO)
+activate VehicleParametersUtils
+
+create vehicleParameters
+VehicleParametersUtils -> vehicleParameters: vehicleParameters
+activate vehicleParameters
+
+vehicleParameters --> VehicleParametersUtils: vehicleParameters
+deactivate vehicleParameters
+
+VehicleParametersUtils --> CTRL: vehicleParameters
+deactivate VehicleParametersUtils
+
+CTRL -> SERV: createVehicle(vehicleParameters)
 activate SERV
+
+SERV -> FACTORY: create(vehicleParameters)
+activate FACTORY
+
+FACTORY -> SERV: vehicle
+deactivate FACTORY
 
 SERV -> REPO: save(vehicle)
 activate REPO
@@ -22,16 +44,16 @@ activate REPO
 REPO --> SERV: vehicle
 deactivate REPO
 
-SERV --> CTRL: vehicle
-deactivate SERV
-
-CTRL -> ASSEMBLER: toDTO(vehicle)
+SERV -> ASSEMBLER: toDTO(vehicle)
 activate ASSEMBLER
 
-ASSEMBLER --> CTRL: vehicleDTO
+ASSEMBLER --> SERV: vehicleDataOutDTO
 deactivate ASSEMBLER
 
-CTRL --> " ": vehicleDTO
+SERV --> CTRL: vehicleDataOutDTO
+deactivate SERV
+
+CTRL --> " ": vehicleDataOutDTO
 deactivate CTRL
 
 @enduml
