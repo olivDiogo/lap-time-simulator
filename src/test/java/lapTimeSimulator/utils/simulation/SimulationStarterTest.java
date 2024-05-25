@@ -17,6 +17,7 @@ class SimulationStarterTest {
     void shouldCreateJSONFileAndGetResultFileBack_whenSimulationDataOutDTOIsValid() {
         // Arrange
         String simulationID = "123456789";
+        String simulationName = "Simulation";
 
         String vehicleID = "kjdf@984";
         String vehicleName = "Carocha";
@@ -38,7 +39,7 @@ class SimulationStarterTest {
         String trackID = "trackID";
         String trackName = "trackName";
 
-        SimulationDataOutDTO simulationDataOutDTO = new SimulationDataOutDTO(simulationID, vehicleID, vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio,
+        SimulationDataOutDTO simulationDataOutDTO = new SimulationDataOutDTO(simulationID, simulationName, vehicleID, vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio,
                 mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius, trackID, trackName);
 
         // Act

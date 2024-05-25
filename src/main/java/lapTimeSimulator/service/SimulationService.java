@@ -15,6 +15,8 @@ import lapTimeSimulator.utils.simulation.SimulationStarter;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 
 @Service
 @AllArgsConstructor
@@ -33,17 +35,24 @@ public class SimulationService {
      * @param trackID is the track identifier.
      * @return the simulation entity.
      */
-    public Simulation startSimulation(Name simulationName, VehicleID vehicleID, TrackID trackID) {
+    public SimulationDataOutDTO startSimulation(Name simulationName, VehicleID vehicleID, TrackID trackID) {
         Simulation simulation = simulationFactory.createSimulation(simulationName, vehicleID, trackID);
         simulationRepository.save(simulation);
 
-        Vehicle vehicle = vehicleRepository.ofIdentity(vehicleID).get();
-        Track track = trackRepository.ofIdentity(trackID).get();
+        Optional<Vehicle> vehicle = vehicleRepository.ofIdentity(vehicleID);
+        if (vehicle.isEmpty()) {
+            throw new IllegalArgumentException("Vehicle not found.");
+        }
 
-        SimulationDataOutDTO simulationDataOutDTO = simulationMapper.toDTO(simulation, vehicle, track);
+        Optional<Track> track = trackRepository.ofIdentity(trackID);
+        if (track.isEmpty()) {
+            throw new IllegalArgumentException("Track not found.");
+        }
+
+        SimulationDataOutDTO simulationDataOutDTO = simulationMapper.toDTO(simulation, vehicle.get(), track.get());
 
         SimulationStarter.startSimulation(simulationDataOutDTO);
 
-        return simulation;
+        return simulationDataOutDTO;
     }
 }

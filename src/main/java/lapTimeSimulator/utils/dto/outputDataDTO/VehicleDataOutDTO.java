@@ -1,11 +1,12 @@
 package lapTimeSimulator.utils.dto.outputDataDTO;
 
 import lombok.AllArgsConstructor;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
 
 @AllArgsConstructor
-public class VehicleDataOutDTO {
+public class VehicleDataOutDTO extends RepresentationModel<VehicleDataOutDTO> {
     public final String vehicleID;
     public final String vehicleName;
     public final double downforceCoefficient;

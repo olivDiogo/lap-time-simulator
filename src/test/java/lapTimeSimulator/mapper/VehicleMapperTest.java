@@ -76,8 +76,7 @@ class VehicleMapperTest {
         Exception e = assertThrows(IllegalArgumentException.class, () -> vehicleMapper.toDTO((Vehicle) null));
 
         // Assert
-        String actualMessage = e.getMessage();
-        assertEquals(expectedMessage, actualMessage);
+        assertEquals(expectedMessage, e.getMessage());
     }
 
     @Test
@@ -131,5 +130,19 @@ class VehicleMapperTest {
 
         // Assert
         assertEquals(vehicleID.getId(), vehiclesDataOutDTO.get(0).vehicleID);
+    }
+
+    @Test
+    void shouldThrowException_whenVehicleListIsNull() {
+        // Arrange
+        VehicleMapper vehicleMapper = new VehicleMapper();
+
+        String expectedMessage = "The list of vehicles cannot be null.";
+
+        // Act + Assert
+        Exception e = assertThrows(IllegalArgumentException.class, () -> vehicleMapper.toDTO((List<Vehicle>) null));
+
+        // Assert
+        assertEquals(expectedMessage, e.getMessage());
     }
 }

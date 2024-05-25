@@ -7,6 +7,7 @@ import java.util.List;
 @AllArgsConstructor
 public class SimulationDataOutDTO {
     public final String simulationID;
+    public final String simulationName;
     public final String vehicleID;
     public final String vehicleName;
     public final double sCz; // downforce coefficient

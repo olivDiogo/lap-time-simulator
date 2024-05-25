@@ -23,20 +23,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @AllArgsConstructor
 public class TrackController {
     private TrackService trackService;
-    private IMapper<Track, TrackDataOutDTO> trackMapper;
 
-//    /**
-//     * Constructs a new TrackController instance with the specified track service.
-//     *
-//     * @param trackService The track service. Must not be null.
-//     */
-//    public TrackController(@Valid TrackService trackService, @Valid IMapper<Track, TrackDataOutDTO> trackMapper) {
-//        if (trackService == null || trackMapper == null) {
-//            throw new IllegalArgumentException("Track service and mapper cannot be null.");
-//        }
-//        this.trackService = trackService;
-//        this.trackMapper = trackMapper;
-//    }
 
     /**
      * Gets all tracks in the database.
@@ -45,8 +32,7 @@ public class TrackController {
      */
     @GetMapping
     public ResponseEntity<List<EntityModel<TrackDataOutDTO>>> getTracks() {
-        List<Track> tracks = trackService.getTracks();
-        List<TrackDataOutDTO> tracksDTO = trackMapper.toDTO(tracks);
+        List<TrackDataOutDTO> tracksDTO = trackService.getTracks();
 
         Link selfLink = linkTo(methodOn(TrackController.class).getTracks()).withSelfRel();
 

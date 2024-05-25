@@ -1,10 +1,13 @@
 package lapTimeSimulator.service;
 
+import lapTimeSimulator.ddd.IMapper;
 import lapTimeSimulator.domain.track.ITrackFactory;
 import lapTimeSimulator.domain.track.Track;
 import lapTimeSimulator.domain.track.TrackFactory;
 import lapTimeSimulator.domain.valueObject.Name;
+import lapTimeSimulator.domain.valueObject.TrackID;
 import lapTimeSimulator.persistence.track.ITrackRepository;
+import lapTimeSimulator.utils.dto.outputDataDTO.TrackDataOutDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -21,61 +24,53 @@ class TrackServiceTest {
     @MockBean
     ITrackRepository trackRepository;
 
+    @MockBean
+    IMapper<Track, TrackDataOutDTO> trackMapper;
+
     @Test
     void shouldInstantiateTrackService_whenParametersAreValid() {
         // Act
-        TrackService trackService = new TrackService(trackRepository);
+        TrackService trackService = new TrackService(trackRepository, trackMapper);
 
         // Assert
         assertNotNull(trackService);
     }
 
-//    @Test
-//    void shouldThrowIllegalArgumentException_whenRepositoryIsNull() {
-//        // Arrange
-//        String expectedMessage = "Repository cannot be null.";
-//
-//        // Act & Assert
-//        IllegalArgumentException exception =
-//            assertThrows(IllegalArgumentException.class, () -> {
-//                new TrackService(null);
-//            });
-//
-//        // Assert
-//        String actualMessage = exception.getMessage();
-//        assertEquals(expectedMessage, actualMessage);
-//    }
-
     @Test
     void shouldGetTracks_whenTheRepositoryHasTracks() {
         // Arrange
-        TrackService trackService = new TrackService(trackRepository);
+        TrackService trackService = new TrackService(trackRepository, trackMapper);
 
         Name trackName = mock(Name.class);
-        when(trackName.getStrName()).thenReturn("AIA");
 
         Track track = mock(Track.class);
+        when(track.getTrackID()).thenReturn(mock(TrackID.class));
+        when(track.getTrackID().getId()).thenReturn("1");
+
         ITrackFactory trackFactory = mock(TrackFactory.class);
         when(trackFactory.createTrack(trackName)).thenReturn(track);
 
         when(trackRepository.findAll()).thenReturn(List.of(track));
+        when(trackMapper.toDTO(List.of(track))).thenReturn(List.of(new TrackDataOutDTO("1", "AIA")));
+
+        TrackDataOutDTO expected = new TrackDataOutDTO("1", "AIA");
 
         // Act
-        List<Track> tracks = trackService.getTracks();
+        List<TrackDataOutDTO> tracks = trackService.getTracks();
 
         // Assert
-        assertEquals(track, tracks.get(0));
+        assertEquals(expected.trackID, tracks.get(0).trackID);
     }
 
     @Test
     void shouldGetEmptyList_whenNoTracksInRepository() {
         // Arrange
-        TrackService trackService = new TrackService(trackRepository);
+        TrackService trackService = new TrackService(trackRepository, trackMapper);
 
         when(trackRepository.findAll()).thenReturn(List.of());
 
         // Act
-        List<Track> tracks = trackService.getTracks();
+        List<TrackDataOutDTO> tracks = trackService.getTracks();
 
         // Assert
         assertTrue(tracks.isEmpty());

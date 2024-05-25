@@ -25,15 +25,6 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @AllArgsConstructor
 public class VehicleController {
     private VehicleService vehicleService;
-    private IMapper<Vehicle, VehicleDataOutDTO> vehicleMapper;
-
-//    public VehicleController(VehicleService vehicleService, IMapper<Vehicle, VehicleDataOutDTO> vehicleMapper) {
-//        if (vehicleService == null || vehicleMapper == null) {
-//            throw new IllegalArgumentException("Vehicle service and mapper cannot be null.");
-//        }
-//        this.vehicleService = vehicleService;
-//        this.vehicleMapper = vehicleMapper;
-//    }
 
     /**
      * Method to create a vehicle.
@@ -55,12 +46,11 @@ public class VehicleController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        Vehicle vehicle = vehicleService.createVehicle(vehicleParameters);
-        VehicleDataOutDTO vehicleDTO = vehicleMapper.toDTO(vehicle);
+        VehicleDataOutDTO vehicleDataOutDTO = vehicleService.createVehicle(vehicleParameters);
 
         Link selfLink = linkTo(methodOn(VehicleController.class).createVehicle(vehicleDataInDTO)).withSelfRel();
 
-        EntityModel<VehicleDataOutDTO> response = EntityModel.of(vehicleDTO, selfLink);
+        EntityModel<VehicleDataOutDTO> response = EntityModel.of(vehicleDataOutDTO, selfLink);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 }

@@ -25,6 +25,7 @@ public class SimulationMapper {
         }
 
         String simulationID = simulation.getSimulationID().getId();
+        String simulationName = simulation.getSimulationName().getStrName();
         String vehicleID = vehicle.getVehicleID().getId();
         String vehicleName = vehicle.getVehicleName().getStrName();
         double sCz = vehicle.getAeroModel().getDownforceCoefficient();
@@ -44,7 +45,7 @@ public class SimulationMapper {
         String trackID = track.getTrackID().getId();
         String trackName = track.getTrackName().getStrName();
 
-        return new SimulationDataOutDTO(simulationID, vehicleID, vehicleName, sCz, sCx,
+        return new SimulationDataOutDTO(simulationID, simulationName, vehicleID, vehicleName, sCz, sCx,
                 rBrkF2P, mCar, pEngMax, tEngMax, nEngPMax, nEngTMax, numberOfGears, gears,
                 finalDriveRatio, mux, muy, rrTyre, trackID, trackName);
     }

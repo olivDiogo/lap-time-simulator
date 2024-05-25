@@ -88,7 +88,6 @@ public class SimulationStarter {
         try (BufferedReader reader = new BufferedReader(new FileReader(responseFilePath.toFile()))) {
             // Read response
             String response = reader.readLine();
-            System.out.println(response);
 
             // Convert response to SimulationResultDTO
             return objectMapper.readValue(response, SimulationResultDTO.class);

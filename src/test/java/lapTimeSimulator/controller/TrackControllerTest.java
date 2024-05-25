@@ -37,53 +37,20 @@ class TrackControllerTest {
     private ObjectMapper objectMapper;
 
     @MockBean
-    ITrackRepository trackRepository;
+    private ITrackRepository trackRepository;
 
     @Test
     void shouldInstantiateTrackController_whenParametersAreValid() {
         // Arrange
-        TrackService trackService = new TrackService(trackRepository);
         IMapper<Track, TrackDataOutDTO> trackMapper = new TrackMapper();
+        TrackService trackService = new TrackService(trackRepository, trackMapper);
 
         // Act
-        TrackController trackController = new TrackController(trackService, trackMapper);
+        TrackController trackController = new TrackController(trackService);
 
         // Assert
         assertNotNull(trackController);
     }
-
-//    @Test
-//    void shouldThrowException_whenTrackServiceIsNull() {
-//        // Arrange
-//        IMapper<Track, TrackDataOutDTO> trackMapper = new TrackMapper();
-//
-//        String expectedMessage = "Track service and mapper cannot be null.";
-//
-//        // Act & Assert
-//        Exception e = assertThrows(IllegalArgumentException.class, () ->
-//                new TrackController(null, trackMapper));
-//
-//
-//        // Assert
-//        String actualMessage = e.getMessage();
-//        assertEquals(expectedMessage, actualMessage);
-//    }
-//
-//    @Test
-//    void shouldThrowException_whenTrackMapperIsNull() {
-//        // Arrange
-//        TrackService trackService = new TrackService(trackRepository);
-//
-//        String expectedMessage = "Track service and mapper cannot be null.";
-//
-//        // Act & Assert
-//        Exception e = assertThrows(IllegalArgumentException.class, () ->
-//                new TrackController(trackService, null));
-//
-//        // Assert
-//        String actualMessage = e.getMessage();
-//        assertEquals(expectedMessage, actualMessage);
-//    }
 
     @Test
     void shouldGetTracks_whenTracksExist() throws Exception {

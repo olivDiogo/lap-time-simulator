@@ -41,48 +41,15 @@ class VehicleControllerTest {
     void shouldInstantiateVehicleController_whenParametersAreValid() {
         // Arrange
         IVehicleFactory vehicleFactory = new VehicleFactory();
-        VehicleService vehicleService = new VehicleService(vehicleFactory, vehicleRepository);
         IMapper<Vehicle, VehicleDataOutDTO> vehicleMapper = new VehicleMapper();
+        VehicleService vehicleService = new VehicleService(vehicleFactory, vehicleRepository, vehicleMapper);
 
         // Act
-        VehicleController vehicleController = new VehicleController(vehicleService, vehicleMapper);
+        VehicleController vehicleController = new VehicleController(vehicleService);
 
         // Assert
         assertNotNull(vehicleController);
     }
-
-//    @Test
-//    void shouldThrowException_whenVehicleServiceIsNull() {
-//        // Arrange
-//        IMapper<Vehicle, VehicleDataOutDTO> vehicleMapper = new VehicleMapper();
-//
-//        String expectedMessage = "Vehicle service and mapper cannot be null.";
-//
-//        // Act & Assert
-//        Exception e = assertThrows(IllegalArgumentException.class, () ->
-//                new VehicleController(null, vehicleMapper));
-//
-//        // Assert
-//        String actualMessage = e.getMessage();
-//        assertEquals(expectedMessage, actualMessage);
-//    }
-//
-//    @Test
-//    void shouldThrowException_whenVehicleMapperIsNull() {
-//        // Arrange
-//        IVehicleFactory vehicleFactory = new VehicleFactory();
-//        VehicleService vehicleService = new VehicleService(vehicleFactory, vehicleRepository);
-//
-//        String expectedMessage = "Vehicle service and mapper cannot be null.";
-//
-//        // Act & Assert
-//        Exception e = assertThrows(IllegalArgumentException.class, () ->
-//                new VehicleController(vehicleService, null));
-//
-//        // Assert
-//        String actualMessage = e.getMessage();
-//        assertEquals(expectedMessage, actualMessage);
-//    }
 
     @Test
     void shouldCreateCombustionVehicle_whenParametersAreValid() throws Exception {
@@ -192,9 +159,10 @@ class VehicleControllerTest {
     void shouldThrowException_whenVehicleDTOIsNull() {
         // Arrange
         IVehicleFactory vehicleFactory = new VehicleFactory();
-        VehicleService vehicleService = new VehicleService(vehicleFactory, vehicleRepository);
         IMapper<Vehicle, VehicleDataOutDTO> vehicleMapper = new VehicleMapper();
-        VehicleController vehicleController = new VehicleController(vehicleService, vehicleMapper);
+        VehicleService vehicleService = new VehicleService(vehicleFactory, vehicleRepository, vehicleMapper);
+
+        VehicleController vehicleController = new VehicleController(vehicleService);
 
         String expectedMessage = "Vehicle DTO cannot be null.";
 

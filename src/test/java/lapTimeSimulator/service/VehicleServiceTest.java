@@ -1,12 +1,17 @@
 package lapTimeSimulator.service;
 
+import lapTimeSimulator.ddd.IMapper;
+import lapTimeSimulator.domain.valueObject.VehicleID;
 import lapTimeSimulator.domain.valueObject.VehicleParameters;
 import lapTimeSimulator.domain.vehicle.IVehicleFactory;
 import lapTimeSimulator.domain.vehicle.Vehicle;
 import lapTimeSimulator.persistence.vehicle.IVehicleRepository;
+import lapTimeSimulator.utils.dto.outputDataDTO.VehicleDataOutDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
@@ -21,65 +26,44 @@ class VehicleServiceTest {
     @MockBean
     IVehicleFactory vehicleFactory;
 
+    @MockBean
+    IMapper<Vehicle, VehicleDataOutDTO> vehicleMapper;
+
     @Test
     void shouldInstantiateVehicleService_whenParametersAreValid() {
         // Act
-        VehicleService vehicleService = new VehicleService(vehicleFactory, vehicleRepository);
+        VehicleService vehicleService = new VehicleService(vehicleFactory, vehicleRepository, vehicleMapper);
 
         // Assert
         assertNotNull(vehicleService);
     }
 
-//    @Test
-//    void shouldThrowException_whenVehicleFactoryIsNull() {
-//        // Arrange
-//        String expectedMessage = "Vehicle factory and repository cannot be null.";
-//
-//        // Act & Assert
-//        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-//            new VehicleService(null, vehicleRepository);
-//        });
-//
-//        // Assert
-//        String actualMessage = exception.getMessage();
-//        assertEquals(expectedMessage, actualMessage);
-//    }
-//
-//    @Test
-//    void shouldThrowException_whenVehicleRepositoryIsNull() {
-//        // Arrange
-//        String expectedMessage = "Vehicle factory and repository cannot be null.";
-//
-//        // Act & Assert
-//        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-//            new VehicleService(vehicleFactory, null);
-//        });
-//
-//        // Assert
-//        String actualMessage = exception.getMessage();
-//        assertEquals(expectedMessage, actualMessage);
-//    }
-
     @Test
     void shouldCreateVehicle_whenParametersAreValid() {
         // Arrange
-        VehicleService vehicleService = new VehicleService(vehicleFactory, vehicleRepository);
+        VehicleService vehicleService = new VehicleService(vehicleFactory, vehicleRepository, vehicleMapper);
 
         VehicleParameters vehicleParameters = mock(VehicleParameters.class);
         Vehicle vehicle = mock(Vehicle.class);
+        when(vehicle.getVehicleID()).thenReturn(mock(VehicleID.class));
+        when(vehicle.getVehicleID().getId()).thenReturn("1");
         when(vehicleFactory.createVehicle(vehicleParameters)).thenReturn(vehicle);
 
+        VehicleDataOutDTO expected = new VehicleDataOutDTO("1", "vehicle", 1, -1, 1, 1, 1, 1,
+                1.0, 1.0, 1, List.of(1.0), 1, 1, 1, 1);
+        when(vehicleMapper.toDTO(vehicle)).thenReturn(expected);
+
         // Act
-        Vehicle result = vehicleService.createVehicle(vehicleParameters);
+        VehicleDataOutDTO result = vehicleService.createVehicle(vehicleParameters);
 
         // Assert
-        assertEquals(vehicle, result);
+        assertEquals(expected.vehicleID, result.vehicleID);
     }
 
     @Test
     void shouldThrowException_whenVehicleParametersAreNull(){
         // Arrange
-        VehicleService vehicleService = new VehicleService(vehicleFactory, vehicleRepository);
+        VehicleService vehicleService = new VehicleService(vehicleFactory, vehicleRepository, vehicleMapper);
 
         String expectedMessage = "Vehicle parameters cannot be null.";
 
