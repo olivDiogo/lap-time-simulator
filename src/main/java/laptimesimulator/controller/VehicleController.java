@@ -31,21 +31,74 @@ public class VehicleController {
      */
     @PostMapping
     public ResponseEntity<EntityModel<VehicleDataOutDTO>> createVehicle(@RequestBody VehicleDataInDTO vehicleDataInDTO) {
-        VehicleParameters vehicleParameters;
 
+        // Try to get the vehicle parameters from the vehicle data input transfer object
+        VehicleParameters vehicleParameters;
         try {
             vehicleParameters = VehicleParametersUtils.getVehicleParameters(vehicleDataInDTO);
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        VehicleDataOutDTO vehicleDataOutDTO = vehicleService.createVehicle(vehicleParameters);
+        // Try to create the vehicle
+        VehicleDataOutDTO vehicleDataOutDTO;
+        try {
+             vehicleDataOutDTO = vehicleService.createVehicle(vehicleParameters);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
 
-        Link selfLink = linkTo(methodOn(VehicleController.class).createVehicle(vehicleDataInDTO)).withSelfRel();
-        Link getLink = linkTo(methodOn(VehicleController.class).getVehicleById(vehicleDataOutDTO.vehicleID)).withRel("get-vehicle");
+        // Add links to the response
+        Link selfLink = linkTo(methodOn(VehicleController.class).createVehicle(vehicleDataInDTO)).withRel("create-vehicle")
+                .withTitle("Create a new vehicle")
+                .withType("POST");
+        Link getLink = linkTo(methodOn(VehicleController.class).getVehicleById(vehicleDataOutDTO.vehicleID)).withRel("get-vehicle")
+                .withTitle("Get the created vehicle")
+                .withType("GET");
 
         EntityModel<VehicleDataOutDTO> response = EntityModel.of(vehicleDataOutDTO, selfLink, getLink);
+
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    /**
+     * Method to update a vehicle.
+     *
+     * @param strVehicleID is the ID of the vehicle.
+     * @param vehicleDataInDTO is the vehicle data.
+     * @return the vehicle data transfer object.
+     */
+    @PutMapping("/{strVehicleID}")
+    public ResponseEntity<EntityModel<VehicleDataOutDTO>> updateVehicle(@PathVariable String strVehicleID, @RequestBody VehicleDataInDTO vehicleDataInDTO) {
+
+        // Try to get the vehicle parameters from the vehicle data input transfer object
+        VehicleID vehicleID = new VehicleID(strVehicleID);
+        VehicleParameters vehicleParameters;
+        try {
+            vehicleParameters = VehicleParametersUtils.getVehicleParameters(vehicleDataInDTO);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        // Try to update the vehicle
+        VehicleDataOutDTO vehicleDataOutDTO;
+        try {
+            vehicleDataOutDTO = vehicleService.updateVehicle(vehicleID, vehicleParameters);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+
+        // Add links to the response
+        Link selfLink = linkTo(methodOn(VehicleController.class).updateVehicle(strVehicleID, new VehicleDataInDTO())).withRel("update-vehicle")
+                .withTitle("Update the vehicle")
+                .withType("PUT");
+        Link getLink = linkTo(methodOn(VehicleController.class).getVehicleById(strVehicleID)).withRel("get-vehicle")
+                .withTitle("Get the updated vehicle")
+                .withType("GET");
+
+        EntityModel<VehicleDataOutDTO> response = EntityModel.of(vehicleDataOutDTO, selfLink, getLink);
+
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     /**
@@ -59,7 +112,9 @@ public class VehicleController {
 
         List<EntityModel<VehicleDataOutDTO>> response = vehicles.stream()
                 .map(vehicle -> EntityModel.of(vehicle,
-                        linkTo(methodOn(VehicleController.class).getVehicleById(vehicle.vehicleID)).withRel("get-vehicle")))
+                        linkTo(methodOn(VehicleController.class).getVehicleById(vehicle.vehicleID)).withRel("get-vehicle")
+                                .withTitle("Get the vehicle")
+                                .withType("GET")))
                 .toList();
 
         return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -73,16 +128,17 @@ public class VehicleController {
      */
     @GetMapping("/{strVehicleID}")
     public ResponseEntity<EntityModel<VehicleDataOutDTO>> getVehicleById(@PathVariable String strVehicleID) {
-        if (strVehicleID == null) {
-            throw new IllegalArgumentException("Vehicle ID cannot be null.");
-        }
 
         VehicleID vehicleID = new VehicleID(strVehicleID);
         VehicleDataOutDTO vehicleDataOutDTO = vehicleService.getVehicle(vehicleID);
 
-        Link selfLink = linkTo(methodOn(VehicleController.class).getVehicleById(strVehicleID)).withSelfRel();
+        // Add link to update the vehicle
+        Link updateLink = linkTo(methodOn(VehicleController.class).updateVehicle(strVehicleID, new VehicleDataInDTO())).withRel("update-vehicle")
+                .withTitle("Update the vehicle")
+                .withType("PUT");
 
-        EntityModel<VehicleDataOutDTO> response = EntityModel.of(vehicleDataOutDTO, selfLink);
+        EntityModel<VehicleDataOutDTO> response = EntityModel.of(vehicleDataOutDTO, updateLink);
+
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 }

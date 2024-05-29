@@ -21,6 +21,9 @@ public class TrackNameGetter {
      * @return the part of the fileName before the dot
      */
     public static String getName(String fileName) {
+        // Replace underscores with spaces
+        fileName = fileName.replace("_", " ");
+
         // Find the index of the first dot
         int dotIndex = fileName.indexOf('.');
 

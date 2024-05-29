@@ -1,0 +1,56 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+
+autonumber
+
+participant " "
+participant ":VehicleController" as CTRL
+participant ":VehicleService" as SERV
+participant ":VehicleRepository" as REPO
+participant "vehicle:Vehicle" as VEHICLE
+participant ":VehicleAssembler" as ASSEMBLER
+
+
+" "-> CTRL: updateVehicle(strVehicleID, vehicleDataInDTO)
+activate CTRL
+
+note right of CTRL
+    The controller instantiates
+    all the necessary VOs from
+    the data in VehicleDataInDTO
+end note
+
+CTRL -> SERV: updateVehicle(vehicleID, vehicleParameters)
+activate SERV
+
+SERV -> REPO: ofIdentity(vehicleID))
+activate REPO
+
+REPO --> SERV: vehicle
+deactivate REPO
+
+SERV -> VEHICLE: update(vehicleParameters)
+activate VEHICLE
+
+VEHICLE --> SERV: vehicle
+deactivate VEHICLE
+
+SERV -> REPO: update(vehicle)
+activate REPO
+
+REPO --> SERV: vehicle
+deactivate REPO
+
+SERV -> ASSEMBLER: toDTO(vehicle)
+activate ASSEMBLER
+
+ASSEMBLER --> SERV: vehicleDataOutDTO
+deactivate ASSEMBLER
+
+SERV --> CTRL: vehicleDataOutDTO
+deactivate SERV
+
+CTRL --> " ": vehicleDataOutDTO
+deactivate CTRL
+
+@enduml

@@ -42,8 +42,6 @@
 
 ## Future Development
 ### Code
-- add length to Track
-- refactor HATEOAS
 - handle exceptions
 - database connection and deployment: https://chatgpt.com/share/6b34b476-87e0-473e-8d06-7466cee36c9b
 ### Algorithm

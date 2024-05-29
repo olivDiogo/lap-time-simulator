@@ -58,4 +58,24 @@ public class VehicleService {
 
         return vehicleMapper.toDTO(vehicle.get());
     }
+
+    /**
+     * Updates a vehicle.
+     *
+     * @param vehicleID is the ID of the vehicle.
+     * @param vehicleParameters is the parameters of the vehicle.
+     * @return the updated vehicle.
+     */
+    public VehicleDataOutDTO updateVehicle(VehicleID vehicleID, VehicleParameters vehicleParameters) {
+        Optional<Vehicle> vehicle = vehicleRepository.ofIdentity(vehicleID);
+
+        if (vehicle.isEmpty()) {
+            throw new IllegalArgumentException("Vehicle not found.");
+        }
+
+        Vehicle updatedVehicle = vehicleFactory.createVehicle(vehicleID, vehicleParameters);
+        vehicleRepository.save(updatedVehicle);
+
+        return vehicleMapper.toDTO(updatedVehicle);
+    }
 }

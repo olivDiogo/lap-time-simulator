@@ -33,11 +33,17 @@ public class SimulationController {
      */
     @PostMapping
     public ResponseEntity<EntityModel<SimulationDataOutDTO>> startSimulation(@RequestBody SimulationDataInDTO simulationDataInDTO) {
-        Name simulationName = new Name(simulationDataInDTO.simulationName);
-        VehicleID vehicleID = new VehicleID(simulationDataInDTO.vehicleID);
-        TrackID trackID = new TrackID(simulationDataInDTO.trackID);
 
-        SimulationDataOutDTO simulation = simulationService.startSimulation(simulationName, vehicleID, trackID);
+        SimulationDataOutDTO simulation;
+
+        try {
+            Name simulationName = new Name(simulationDataInDTO.simulationName);
+            VehicleID vehicleID = new VehicleID(simulationDataInDTO.vehicleID);
+            TrackID trackID = new TrackID(simulationDataInDTO.trackID);
+            simulation = simulationService.startSimulation(simulationName, vehicleID, trackID);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
 
         Link selfLink = linkTo(methodOn(SimulationController.class).startSimulation(simulationDataInDTO)).withSelfRel();
         EntityModel<SimulationDataOutDTO> response = EntityModel.of(simulation, selfLink);

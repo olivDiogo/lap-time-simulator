@@ -97,4 +97,15 @@ class TrackControllerTest {
         List<TrackDataOutDTO> actualTracks = objectMapper.readValue(actualResponseBody, new TypeReference<>() {});
         assertTrue(actualTracks.isEmpty());
     }
+
+    @Test
+    void shouldReturnInternalServerError_whenListOfTracksIsNull() throws Exception {
+        // Arrange
+        when(trackRepository.findAll()).thenReturn(null);
+
+        // Act + Assert
+        mockMvc.perform(get("/tracks")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isInternalServerError());
+    }
 }

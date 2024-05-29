@@ -8,13 +8,19 @@ participant Frontend
 participant Server
 participant Database
 
-User -> Frontend: I want to select a vehicle
+User -> Frontend: I want to update a vehicle
 activate Frontend
 
-Frontend -> Server: getVehicle(vehicleID)
+Frontend -> Server: updateVehicle(vehicleID, vehicleDataInDTO)
 activate Server
 
 Server -> Database: SELECT * FROM vehicles WHERE id = vehicleID
+activate Database
+
+Database --> Server: vehicleDataModel
+deactivate Database
+
+Server --> Database: UPDATE vehicles SET ... WHERE id = vehicleID
 activate Database
 
 Database --> Server: vehicleDataModel

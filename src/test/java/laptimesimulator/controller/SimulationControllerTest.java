@@ -1,5 +1,6 @@
 package laptimesimulator.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import laptimesimulator.domain.track.ITrackFactory;
 import laptimesimulator.domain.track.Track;
@@ -86,4 +87,157 @@ class SimulationControllerTest {
         assertEquals(simulationName, simulation.simulationName);
     }
 
+    @Test
+    void shouldReturnBadRequest_whenStartSimulationIsCalledWithNoVehicle() throws Exception {
+        // Arrange
+        String simulationName = "simulationName";
+
+        String strVehicleID = "vehicleID";
+        VehicleID vehicleID = new VehicleID(strVehicleID);
+        String strTrackID = "trackID";
+        TrackID trackID = new TrackID(strTrackID);
+        String strTrackName = "AIA";
+        Name trackName = new Name(strTrackName);
+        TrackLength trackLength = new TrackLength(1000);
+
+        SimulationDataInDTO simulationDataInDTO = new SimulationDataInDTO(simulationName, strVehicleID, strTrackID);
+
+
+        when(vehicleRepository.ofIdentity(vehicleID)).thenReturn(java.util.Optional.empty());
+
+        ITrackFactory trackFactory = new TrackFactory();
+        Track track = trackFactory.createTrack(trackID, trackName, trackLength);
+        when(trackRepository.ofIdentity(trackID)).thenReturn(java.util.Optional.of(track));
+
+        // Act + Assert
+        mockMvc.perform(post("/simulations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(simulationDataInDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturnBadRequest_whenStartSimulationIsCalledWithNoTrack() throws Exception {
+        // Arrange
+        String simulationName = "simulationName";
+
+        String strVehicleID = "vehicleID";
+        VehicleID vehicleID = new VehicleID(strVehicleID);
+        String strTrackID = "trackID";
+        TrackID trackID = new TrackID(strTrackID);
+
+        SimulationDataInDTO simulationDataInDTO = new SimulationDataInDTO(simulationName, strVehicleID, strTrackID);
+
+        AeroModel aeroModel = mock(AeroModel.class);
+        BrakeModel brakeModel = mock(BrakeModel.class);
+        ChassisModel chassisModel = mock(ChassisModel.class);
+        Name vehicleName = mock(Name.class);
+        PowertrainModel powertrainModel = mock(PowertrainModel.class);
+        TransmissionModel transmissionModel = mock(TransmissionModel.class);
+        TyreModel tyreModel = mock(TyreModel.class);
+        VehicleParameters vehicleParameters = new VehicleParameters(aeroModel, brakeModel, chassisModel, vehicleName, powertrainModel, transmissionModel, tyreModel);
+
+        IVehicleFactory vehicleFactory = new VehicleFactory();
+        Vehicle vehicle = vehicleFactory.createVehicle(vehicleID, vehicleParameters);
+        when(vehicleRepository.ofIdentity(vehicleID)).thenReturn(java.util.Optional.of(vehicle));
+
+        when(trackRepository.ofIdentity(trackID)).thenReturn(java.util.Optional.empty());
+
+        // Act + Assert
+        mockMvc.perform(post("/simulations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(simulationDataInDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturnBadRequest_whenStartSimulationIsCalledWithNullSimulationName() throws Exception {
+        // Arrange
+        String strVehicleID = "vehicleID";
+        String strTrackID = "trackID";
+
+        SimulationDataInDTO simulationDataInDTO = new SimulationDataInDTO(null, strVehicleID, strTrackID);
+
+        // Act + Assert
+        mockMvc.perform(post("/simulations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(simulationDataInDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturnBadRequest_whenStartSimulationIsCalledWithEmptySimulationName() throws Exception {
+        // Arrange
+        String strVehicleID = "vehicleID";
+        String strTrackID = "trackID";
+
+        SimulationDataInDTO simulationDataInDTO = new SimulationDataInDTO("", strVehicleID, strTrackID);
+
+        // Act + Assert
+        mockMvc.perform(post("/simulations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(simulationDataInDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
+
+    @Test
+    void shouldReturnBadRequest_whenStartSimulationIsCalledWithNullVehicleID() throws Exception {
+        // Arrange
+        String simulationName = "simulationName";
+        String strTrackID = "trackID";
+
+        SimulationDataInDTO simulationDataInDTO = new SimulationDataInDTO(simulationName, null, strTrackID);
+
+        // Act + Assert
+        mockMvc.perform(post("/simulations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(simulationDataInDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturnBadRequest_whenStartSimulationIsCalledWithEmptyVehicleID() throws Exception {
+        // Arrange
+        String simulationName = "simulationName";
+        String strTrackID = "trackID";
+
+        SimulationDataInDTO simulationDataInDTO = new SimulationDataInDTO(simulationName, "", strTrackID);
+
+        // Act + Assert
+        mockMvc.perform(post("/simulations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(simulationDataInDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturnBadRequest_whenStartSimulationIsCalledWithNullTrackID() throws Exception {
+        // Arrange
+        String simulationName = "simulationName";
+        String strVehicleID = "vehicleID";
+
+        SimulationDataInDTO simulationDataInDTO = new SimulationDataInDTO(simulationName, strVehicleID, null);
+
+        // Act + Assert
+        mockMvc.perform(post("/simulations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(simulationDataInDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldReturnBadRequest_whenStartSimulationIsCalledWithEmptyTrackID() throws Exception {
+        // Arrange
+        String simulationName = "simulationName";
+        String strVehicleID = "vehicleID";
+
+        SimulationDataInDTO simulationDataInDTO = new SimulationDataInDTO(simulationName, strVehicleID, "");
+
+        // Act + Assert
+        mockMvc.perform(post("/simulations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(simulationDataInDTO)))
+                .andExpect(status().isBadRequest());
+    }
 }

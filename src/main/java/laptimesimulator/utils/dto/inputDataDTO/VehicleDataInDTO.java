@@ -1,9 +1,11 @@
 package laptimesimulator.utils.dto.inputDataDTO;
 
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+@NoArgsConstructor(force = true)
 @AllArgsConstructor
 public class VehicleDataInDTO {
     public final String vehicleName;

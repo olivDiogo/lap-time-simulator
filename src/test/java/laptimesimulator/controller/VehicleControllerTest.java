@@ -2,14 +2,11 @@ package laptimesimulator.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import laptimesimulator.ddd.IMapper;
 import laptimesimulator.domain.valueObject.VehicleParameters;
 import laptimesimulator.domain.vehicle.IVehicleFactory;
 import laptimesimulator.domain.vehicle.Vehicle;
 import laptimesimulator.domain.vehicle.VehicleFactory;
-import laptimesimulator.mapper.VehicleMapper;
 import laptimesimulator.persistence.vehicle.IVehicleRepository;
-import laptimesimulator.service.VehicleService;
 import laptimesimulator.utils.dto.inputDataDTO.VehicleDataInDTO;
 import laptimesimulator.utils.dto.outputDataDTO.VehicleDataOutDTO;
 import laptimesimulator.utils.vehicleParameters.VehicleParametersUtils;
@@ -26,9 +23,8 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -41,20 +37,6 @@ class VehicleControllerTest {
 
     @MockBean
     private IVehicleRepository vehicleRepository;
-
-    @Test
-    void shouldInstantiateVehicleController_whenParametersAreValid() {
-        // Arrange
-        IVehicleFactory vehicleFactory = new VehicleFactory();
-        IMapper<Vehicle, VehicleDataOutDTO> vehicleMapper = new VehicleMapper();
-        VehicleService vehicleService = new VehicleService(vehicleFactory, vehicleRepository, vehicleMapper);
-
-        // Act
-        VehicleController vehicleController = new VehicleController(vehicleService);
-
-        // Assert
-        assertNotNull(vehicleController);
-    }
 
     @Test
     void shouldCreateCombustionVehicle_whenParametersAreValid() throws Exception {
@@ -265,22 +247,114 @@ class VehicleControllerTest {
     }
 
     @Test
-    void shouldThrowException_whenVehicleIDIsNull() {
+    void shouldUpdateVehicle_whenParametersAreValid() throws Exception {
         // Arrange
+        String vehicleName = "ElectricVehicle";
+        double downforceCoefficient = 1.0;
+        double dragCoefficient = -1.0;
+        double pressureToTorqueRatio = 1.0;
+        double mass = 1.0;
+        double powerMax = 1.0;
+        double torqueMax = 1.0;
+        Double rpmPowerMax = null;
+        Double rpmTorqueMax = null;
+        int numberOfGears = 1;
+        List<Double> gears = List.of(1.0);
+        double finalDriveRatio = 1.0;
+        double longitudinalGrip = 1.0;
+        double lateralGrip = 1.0;
+        double tyreRadius = 1.0;
+
+        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+
+        VehicleParameters vehicleParameters = VehicleParametersUtils.getVehicleParameters(vehicleDataDTO);
         IVehicleFactory vehicleFactory = new VehicleFactory();
-        IMapper<Vehicle, VehicleDataOutDTO> vehicleMapper = new VehicleMapper();
-        VehicleService vehicleService = new VehicleService(vehicleFactory, vehicleRepository, vehicleMapper);
+        Vehicle vehicle = vehicleFactory.createVehicle(vehicleParameters);
 
-        VehicleController vehicleController = new VehicleController(vehicleService);
+        when(vehicleRepository.ofIdentity(vehicle.getVehicleID())).thenReturn(java.util.Optional.of(vehicle));
 
-        String expectedMessage = "Vehicle ID cannot be null.";
 
-        // Act & Assert
-        Exception e = assertThrows(IllegalArgumentException.class, () ->
-                vehicleController.getVehicleById(null));
+        /* Update vehicle name */
+        vehicleName = "ElectricVehicleUpdated";
+        VehicleDataInDTO updateVehicleDataInDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+
+        // Act + Assert
+        MvcResult result = mockMvc.perform(put("/vehicles/" + vehicle.getVehicleID().getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateVehicleDataInDTO)))
+                .andExpect(status().isOk())
+                .andReturn();
 
         // Assert
-        String actualMessage = e.getMessage();
-        assertEquals(expectedMessage, actualMessage);
+        String content = result.getResponse().getContentAsString();
+        VehicleDataOutDTO vehicleDataOutDTO = objectMapper.readValue(content, VehicleDataOutDTO.class);
+        assertEquals(vehicleName, vehicleDataOutDTO.vehicleName);
+    }
+
+    @Test
+    void shouldGetBadRequest_whenVehicleParametersAreInvalidForUpdate() throws Exception {
+        // Arrange
+        String vehicleName = "ElectricVehicle";
+        double downforceCoefficient = 1.0;
+        double dragCoefficient = 111.0;
+        double pressureToTorqueRatio = 1.0;
+        double mass = 1.0;
+        double powerMax = 1.0;
+        double torqueMax = 1.0;
+        double rpmPowerMax = 0.0;
+        double rpmTorqueMax = 0.0;
+        int numberOfGears = 1;
+        List<Double> gears = List.of(1.0);
+        double finalDriveRatio = 1.0;
+        double longitudinalGrip = 1.0;
+        double lateralGrip = 1.0;
+        double tyreRadius = 1.0;
+
+        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+
+        // Act + Assert
+        mockMvc.perform(put("/vehicles/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(vehicleDataDTO)))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    void shouldGetNotFound_whenVehicleDoesNotExist() throws Exception {
+        // Arrange
+        String vehicleName = "ElectricVehicle";
+        double downforceCoefficient = 1.0;
+        double dragCoefficient = -1.0;
+        double pressureToTorqueRatio = 1.0;
+        double mass = 1.0;
+        double powerMax = 1.0;
+        double torqueMax = 1.0;
+        Double rpmPowerMax = null;
+        Double rpmTorqueMax = null;
+        int numberOfGears = 1;
+        List<Double> gears = List.of(1.0);
+        double finalDriveRatio = 1.0;
+        double longitudinalGrip = 1.0;
+        double lateralGrip = 1.0;
+        double tyreRadius = 1.0;
+
+        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+
+        VehicleParameters vehicleParameters = VehicleParametersUtils.getVehicleParameters(vehicleDataDTO);
+        IVehicleFactory vehicleFactory = new VehicleFactory();
+        Vehicle vehicle = vehicleFactory.createVehicle(vehicleParameters);
+
+        when(vehicleRepository.ofIdentity(vehicle.getVehicleID())).thenReturn(java.util.Optional.empty());
+
+
+        /* Update vehicle name */
+        vehicleName = "ElectricVehicleUpdated";
+        VehicleDataInDTO updateVehicleDataInDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+
+        // Act + Assert
+        mockMvc.perform(put("/vehicles/" + vehicle.getVehicleID().getId())
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateVehicleDataInDTO)))
+                .andExpect(status().isNotFound());
     }
 }
