@@ -1,7 +1,8 @@
 package laptimesimulator.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
+import laptimesimulator.domain.simulation.Simulation;
 import laptimesimulator.domain.track.ITrackFactory;
 import laptimesimulator.domain.track.Track;
 import laptimesimulator.domain.track.TrackFactory;
@@ -9,10 +10,14 @@ import laptimesimulator.domain.valueObject.*;
 import laptimesimulator.domain.vehicle.IVehicleFactory;
 import laptimesimulator.domain.vehicle.Vehicle;
 import laptimesimulator.domain.vehicle.VehicleFactory;
+import laptimesimulator.mapper.SimulationMapper;
+import laptimesimulator.persistence.dataModel.SimulationDataModel;
+import laptimesimulator.persistence.simulation.ISimulationRepository;
 import laptimesimulator.persistence.track.ITrackRepository;
 import laptimesimulator.persistence.vehicle.IVehicleRepository;
 import laptimesimulator.utils.dto.inputDataDTO.SimulationDataInDTO;
 import laptimesimulator.utils.dto.outputDataDTO.SimulationDataOutDTO;
+import laptimesimulator.utils.dto.outputDataDTO.SimulationInfoOutDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -22,10 +27,14 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -36,6 +45,12 @@ class SimulationControllerTest {
 
     @MockBean
     private ITrackRepository trackRepository;
+
+    @MockBean
+    private ISimulationRepository simulationRepository;
+
+    @MockBean
+    private SimulationMapper simulationMapper;
 
     @Autowired
     private ObjectMapper objectMapper;
@@ -50,6 +65,7 @@ class SimulationControllerTest {
 
         String strVehicleID = "vehicleID";
         VehicleID vehicleID = new VehicleID(strVehicleID);
+        String strVehicleName = "vehicleName";
         String strTrackID = "trackID";
         TrackID trackID = new TrackID(strTrackID);
         Name trackName = new Name("trackName");
@@ -58,7 +74,7 @@ class SimulationControllerTest {
         AeroModel aeroModel = mock(AeroModel.class);
         BrakeModel brakeModel = mock(BrakeModel.class);
         ChassisModel chassisModel = mock(ChassisModel.class);
-        Name vehicleName = mock(Name.class);
+        Name vehicleName = new Name(strVehicleName);
         PowertrainModel powertrainModel = mock(PowertrainModel.class);
         TransmissionModel transmissionModel = mock(TransmissionModel.class);
         TyreModel tyreModel = mock(TyreModel.class);
@@ -84,6 +100,7 @@ class SimulationControllerTest {
         // Assert
         String content = result.getResponse().getContentAsString();
         SimulationDataOutDTO simulation = objectMapper.readValue(content, SimulationDataOutDTO.class);
+        System.out.println(result.getResponse().getContentAsString());
         assertEquals(simulationName, simulation.simulationName);
     }
 
@@ -240,4 +257,5 @@ class SimulationControllerTest {
                         .content(objectMapper.writeValueAsString(simulationDataInDTO)))
                 .andExpect(status().isBadRequest());
     }
+
 }

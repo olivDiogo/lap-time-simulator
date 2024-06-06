@@ -14,7 +14,7 @@ public interface ISimulationFactory {
      * @param trackID is the ID of the track.
      * @return Simulation
      */
-    Simulation createSimulation(Name simulationName, VehicleID vehicleID, TrackID trackID);
+    Simulation createSimulation(Name simulationName, VehicleID vehicleID, TrackID trackID, Name vehicleName, Name trackName);
 
     /**
      * Create a simulation
@@ -25,5 +25,5 @@ public interface ISimulationFactory {
      * @param trackID is the ID of the track.
      * @return Simulation
      */
-    Simulation createSimulation(SimulationID simulationID, Name simulationName, VehicleID vehicleID, TrackID trackID);
+    Simulation createSimulation(SimulationID simulationID, Name simulationName, VehicleID vehicleID, TrackID trackID, Name vehicleName, Name trackName);
 }

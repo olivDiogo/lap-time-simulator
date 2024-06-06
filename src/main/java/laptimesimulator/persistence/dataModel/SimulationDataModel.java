@@ -15,7 +15,9 @@ public class SimulationDataModel {
     private String simulationID;
     private String simulationName;
     private String vehicleID;
+    private String vehicleName;
     private String trackID;
+    private String trackName;
 
     @Version
     private long version;
@@ -36,6 +38,8 @@ public class SimulationDataModel {
         this.simulationID = simulation.getSimulationID().getId();
         this.simulationName = simulation.getSimulationName().getStrName();
         this.vehicleID = simulation.getVehicleID().getId();
+        this.vehicleName = simulation.getVehicleName().getStrName();
         this.trackID = simulation.getTrackID().getId();
+        this.trackName = simulation.getTrackName().getStrName();
     }
 }

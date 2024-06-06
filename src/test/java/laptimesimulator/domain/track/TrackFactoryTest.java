@@ -19,11 +19,14 @@ class TrackFactoryTest {
         // Assert
         Name trackName = mock(Name.class);
         TrackLength trackLength = mock(TrackLength.class);
+        String trackIconPath = "path";
+        String trackLocation = "location";
+        String trackRaceLapRecord = "record";
         ITrackFactory trackFactory = new TrackFactory();
 
         try (MockedConstruction<TrackID> trackIDMocked = mockConstruction(TrackID.class)) {
             //Act
-            Track result = trackFactory.createTrack(trackName, trackLength);
+            Track result = trackFactory.createTrack(trackName, trackLength, trackIconPath, trackLocation, trackRaceLapRecord);
 
             //Assert
             assertNotNull(result);
@@ -34,12 +37,15 @@ class TrackFactoryTest {
     void shouldThrowException_whenNameIsNull(){
         // Assert
         TrackLength trackLength = mock(TrackLength.class);
+        String trackIconPath = "path";
+        String trackLocation = "location";
+        String trackRaceLapRecord = "record";
         ITrackFactory trackFactory = new TrackFactory();
 
         String expectedMessage = "Track parameters cannot be null.";
 
         //Act + Assert
-        Exception e = assertThrows(IllegalArgumentException.class, () -> trackFactory.createTrack(null, trackLength));
+        Exception e = assertThrows(IllegalArgumentException.class, () -> trackFactory.createTrack(null, trackLength, trackIconPath, trackLocation, trackRaceLapRecord));
 
         //Assert
         String actualMessage = e.getMessage();
@@ -50,12 +56,15 @@ class TrackFactoryTest {
     void shouldThrowException_whenTrackLengthIsNull(){
         // Assert
         Name trackName = mock(Name.class);
+        String trackIconPath = "path";
+        String trackLocation = "location";
+        String trackRaceLapRecord = "record";
         ITrackFactory trackFactory = new TrackFactory();
 
         String expectedMessage = "Track parameters cannot be null.";
 
         //Act + Assert
-        Exception e = assertThrows(IllegalArgumentException.class, () -> trackFactory.createTrack(trackName, null));
+        Exception e = assertThrows(IllegalArgumentException.class, () -> trackFactory.createTrack(trackName, null, trackIconPath, trackLocation, trackRaceLapRecord));
 
         //Assert
         String actualMessage = e.getMessage();
@@ -69,9 +78,12 @@ class TrackFactoryTest {
         TrackLength trackLength = mock(TrackLength.class);
         TrackID trackID = mock(TrackID.class);
         ITrackFactory trackFactory = new TrackFactory();
+        String trackIconPath = "path";
+        String trackLocation = "location";
+        String trackRaceLapRecord = "record";
 
         //Act
-        Track result = trackFactory.createTrack(trackID, trackName, trackLength);
+        Track result = trackFactory.createTrack(trackID, trackName, trackLength, trackIconPath, trackLocation, trackRaceLapRecord);
 
         //Assert
         assertNotNull(result);
@@ -83,11 +95,14 @@ class TrackFactoryTest {
         TrackLength trackLength = mock(TrackLength.class);
         TrackID trackID = mock(TrackID.class);
         ITrackFactory trackFactory = new TrackFactory();
+        String trackIconPath = "path";
+        String trackLocation = "location";
+        String trackRaceLapRecord = "record";
 
         String expectedMessage = "Track parameters cannot be null.";
 
         //Act + Assert
-        Exception e = assertThrows(IllegalArgumentException.class, () -> trackFactory.createTrack(trackID, null, trackLength));
+        Exception e = assertThrows(IllegalArgumentException.class, () -> trackFactory.createTrack(trackID, null, trackLength, trackIconPath, trackLocation, trackRaceLapRecord));
 
         //Assert
         String actualMessage = e.getMessage();
@@ -100,11 +115,14 @@ class TrackFactoryTest {
         Name trackName = mock(Name.class);
         TrackID trackID = mock(TrackID.class);
         ITrackFactory trackFactory = new TrackFactory();
+        String trackIconPath = "path";
+        String trackLocation = "location";
+        String trackRaceLapRecord = "record";
 
         String expectedMessage = "Track parameters cannot be null.";
 
         //Act + Assert
-        Exception e = assertThrows(IllegalArgumentException.class, () -> trackFactory.createTrack(trackID,trackName, null));
+        Exception e = assertThrows(IllegalArgumentException.class, () -> trackFactory.createTrack(trackID,trackName, null, trackIconPath, trackLocation, trackRaceLapRecord));
 
         //Assert
         String actualMessage = e.getMessage();
@@ -116,13 +134,16 @@ class TrackFactoryTest {
         // Assert
         Name trackName = mock(Name.class);
         TrackLength trackLength = mock(TrackLength.class);
+        String trackIconPath = "path";
+        String trackLocation = "location";
+        String trackRaceLapRecord = "record";
 
         ITrackFactory trackFactory = new TrackFactory();
 
         String expectedMessage = "Track parameters cannot be null.";
 
         //Act + Assert
-        Exception e = assertThrows(IllegalArgumentException.class, () -> trackFactory.createTrack(null, trackName, trackLength));
+        Exception e = assertThrows(IllegalArgumentException.class, () -> trackFactory.createTrack(null, trackName, trackLength, trackIconPath, trackLocation, trackRaceLapRecord));
 
         //Assert
         String actualMessage = e.getMessage();

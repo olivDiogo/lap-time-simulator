@@ -24,7 +24,13 @@ public class TrackMapper implements IMapper<Track, TrackDataOutDTO> {
         String trackID = track.getTrackID().getId();
         String trackName = track.getTrackName().getStrName();
         int trackLength = track.getTrackLength().getLength();
-        return new TrackDataOutDTO(trackID, trackName, trackLength);
+        String trackLocation = track.getTrackLocation();
+        String trackIconPath = track.getTrackIconPath();
+        String trackRaceLapRecord = track.getTrackRaceLapRecord();
+        String numberOfCorners = track.getNumberOfCorners();
+        String trackLayout = track.getTrackLayout();
+
+        return new TrackDataOutDTO(trackID, trackName, trackLength, trackLocation, trackIconPath, trackRaceLapRecord, numberOfCorners, trackLayout);
     }
 
     /**

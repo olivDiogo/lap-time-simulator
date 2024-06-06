@@ -19,11 +19,13 @@ class SimulationFactoryTest {
         SimulationFactory simulationFactory = new SimulationFactory();
         Name simulationName = mock(Name.class);
         VehicleID vehicleID = mock(VehicleID.class);
+        Name vehicleName = mock(Name.class);
         TrackID trackID = mock(TrackID.class);
+        Name trackName = mock(Name.class);
 
         try(MockedConstruction<SimulationID> mocked = mockConstruction(SimulationID.class)) {
             // Act
-            Simulation simulation = simulationFactory.createSimulation(simulationName, vehicleID, trackID);
+            Simulation simulation = simulationFactory.createSimulation(simulationName, vehicleID, trackID, vehicleName, trackName);
 
             // Assert
             assertNotNull(simulation);
@@ -35,12 +37,14 @@ class SimulationFactoryTest {
         // Arrange
         SimulationFactory simulationFactory = new SimulationFactory();
         VehicleID vehicleID = mock(VehicleID.class);
+        Name vehicleName = mock(Name.class);
         TrackID trackID = mock(TrackID.class);
+        Name trackName = mock(Name.class);
 
         String expectedMessage = "Simulation parameters cannot be null.";
 
         // Act & Assert
-        Exception e = assertThrows(IllegalArgumentException.class, () -> simulationFactory.createSimulation(null, vehicleID, trackID));
+        Exception e = assertThrows(IllegalArgumentException.class, () -> simulationFactory.createSimulation(null, vehicleID, trackID, vehicleName, trackName));
 
         // Assert
         assertEquals(expectedMessage, e.getMessage());
@@ -51,12 +55,32 @@ class SimulationFactoryTest {
         // Arrange
         SimulationFactory simulationFactory = new SimulationFactory();
         Name simulationName = mock(Name.class);
+        Name vehicleName = mock(Name.class);
         TrackID trackID = mock(TrackID.class);
+        Name trackName = mock(Name.class);
 
         String expectedMessage = "Simulation parameters cannot be null.";
 
         // Act & Assert
-        Exception e = assertThrows(IllegalArgumentException.class, () -> simulationFactory.createSimulation(simulationName, null, trackID));
+        Exception e = assertThrows(IllegalArgumentException.class, () -> simulationFactory.createSimulation(simulationName, null, trackID, vehicleName, trackName));
+
+        // Assert
+        assertEquals(expectedMessage, e.getMessage());
+    }
+
+    @Test
+    void shouldThrowException_whenVehicleNameIsNull(){
+        // Arrange
+        SimulationFactory simulationFactory = new SimulationFactory();
+        Name simulationName = mock(Name.class);
+        VehicleID vehicleID = mock(VehicleID.class);
+        TrackID trackID = mock(TrackID.class);
+        Name trackName = mock(Name.class);
+
+        String expectedMessage = "Simulation parameters cannot be null.";
+
+        // Act & Assert
+        Exception e = assertThrows(IllegalArgumentException.class, () -> simulationFactory.createSimulation(simulationName, vehicleID, trackID, null, trackName));
 
         // Assert
         assertEquals(expectedMessage, e.getMessage());
@@ -68,11 +92,31 @@ class SimulationFactoryTest {
         SimulationFactory simulationFactory = new SimulationFactory();
         Name simulationName = mock(Name.class);
         VehicleID vehicleID = mock(VehicleID.class);
+        Name vehicleName = mock(Name.class);
+        Name trackName = mock(Name.class);
 
         String expectedMessage = "Simulation parameters cannot be null.";
 
         // Act & Assert
-        Exception e = assertThrows(IllegalArgumentException.class, () -> simulationFactory.createSimulation(simulationName, vehicleID, null));
+        Exception e = assertThrows(IllegalArgumentException.class, () -> simulationFactory.createSimulation(simulationName, vehicleID, null, vehicleName, trackName));
+
+        // Assert
+        assertEquals(expectedMessage, e.getMessage());
+    }
+
+    @Test
+    void shouldThrowException_whenTrackNameIsNull(){
+        // Arrange
+        SimulationFactory simulationFactory = new SimulationFactory();
+        Name simulationName = mock(Name.class);
+        VehicleID vehicleID = mock(VehicleID.class);
+        Name vehicleName = mock(Name.class);
+        TrackID trackID = mock(TrackID.class);
+
+        String expectedMessage = "Simulation parameters cannot be null.";
+
+        // Act & Assert
+        Exception e = assertThrows(IllegalArgumentException.class, () -> simulationFactory.createSimulation(simulationName, vehicleID, trackID, vehicleName, null));
 
         // Assert
         assertEquals(expectedMessage, e.getMessage());
@@ -85,10 +129,12 @@ class SimulationFactoryTest {
         SimulationID simulationID = mock(SimulationID.class);
         Name simulationName = mock(Name.class);
         VehicleID vehicleID = mock(VehicleID.class);
+        Name vehicleName = mock(Name.class);
         TrackID trackID = mock(TrackID.class);
+        Name trackName = mock(Name.class);
 
         // Act
-        Simulation simulation = simulationFactory.createSimulation(simulationID, simulationName, vehicleID, trackID);
+        Simulation simulation = simulationFactory.createSimulation(simulationID, simulationName, vehicleID, trackID, vehicleName, trackName);
 
         // Assert
         assertNotNull(simulation);
@@ -100,12 +146,14 @@ class SimulationFactoryTest {
         SimulationFactory simulationFactory = new SimulationFactory();
         Name simulationName = mock(Name.class);
         VehicleID vehicleID = mock(VehicleID.class);
+        Name vehicleName = mock(Name.class);
         TrackID trackID = mock(TrackID.class);
+        Name trackName = mock(Name.class);
 
         String expectedMessage = "Simulation parameters cannot be null.";
 
         // Act & Assert
-        Exception e = assertThrows(IllegalArgumentException.class, () -> simulationFactory.createSimulation(null, simulationName, vehicleID, trackID));
+        Exception e = assertThrows(IllegalArgumentException.class, () -> simulationFactory.createSimulation(null, simulationName, vehicleID, trackID, vehicleName, trackName));
 
         // Assert
         assertEquals(expectedMessage, e.getMessage());

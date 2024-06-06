@@ -27,15 +27,23 @@ class SimulationServiceTest {
         // Arrange
         Name simulationName = mock(Name.class);
         VehicleID vehicleID = mock(VehicleID.class);
+        Name vehicleName = mock(Name.class);
         TrackID trackID = mock(TrackID.class);
+        Name trackName = mock(Name.class);
+
+        Vehicle mockVehicle = mock(Vehicle.class);
+        Track mockTrack = mock(Track.class);
 
         Simulation simulation = mock(Simulation.class);
         SimulationDataOutDTO simulationDataOutDTO = mock(SimulationDataOutDTO.class);
-        Optional<Vehicle> vehicle = Optional.of(mock(Vehicle.class));
-        Optional<Track> track = Optional.of(mock(Track.class));
+        Optional<Vehicle> vehicle = Optional.of(mockVehicle);
+        Optional<Track> track = Optional.of(mockTrack);
 
         ISimulationFactory simulationFactory = mock(ISimulationFactory.class);
-        when(simulationFactory.createSimulation(simulationName, vehicleID, trackID)).thenReturn(simulation);
+
+        when(mockVehicle.getVehicleName()).thenReturn(vehicleName);
+        when(mockTrack.getTrackName()).thenReturn(trackName);
+        when(simulationFactory.createSimulation(simulationName, vehicleID, trackID, vehicleName, trackName)).thenReturn(simulation);
 
         ISimulationRepository simulationRepository = mock(ISimulationRepository.class);
         when(simulationRepository.save(simulation)).thenReturn(simulation);
@@ -47,7 +55,7 @@ class SimulationServiceTest {
         when(trackRepository.ofIdentity(trackID)).thenReturn(track);
 
         SimulationMapper simulationMapper = mock(SimulationMapper.class);
-        when(simulationMapper.toDTO(simulation, vehicle.get(), track.get())).thenReturn(simulationDataOutDTO);
+        when(simulationMapper.toDTO(simulation, mockVehicle, mockTrack)).thenReturn(simulationDataOutDTO);
 
         SimulationService simulationService = new SimulationService(simulationFactory, simulationRepository, trackRepository, vehicleRepository, simulationMapper);
 
@@ -63,7 +71,9 @@ class SimulationServiceTest {
         // Arrange
         Name simulationName = mock(Name.class);
         VehicleID vehicleID = mock(VehicleID.class);
+        Name vehicleName = mock(Name.class);
         TrackID trackID = mock(TrackID.class);
+        Name trackName = mock(Name.class);
 
         Simulation simulation = mock(Simulation.class);
         SimulationDataOutDTO simulationDataOutDTO = mock(SimulationDataOutDTO.class);
@@ -71,7 +81,7 @@ class SimulationServiceTest {
         Optional<Track> track = Optional.of(mock(Track.class));
 
         ISimulationFactory simulationFactory = mock(ISimulationFactory.class);
-        when(simulationFactory.createSimulation(simulationName, vehicleID, trackID)).thenReturn(simulation);
+        when(simulationFactory.createSimulation(simulationName, vehicleID, trackID, vehicleName, trackName)).thenReturn(simulation);
 
         ISimulationRepository simulationRepository = mock(ISimulationRepository.class);
         when(simulationRepository.save(simulation)).thenReturn(simulation);
@@ -99,7 +109,9 @@ class SimulationServiceTest {
         // Arrange
         Name simulationName = mock(Name.class);
         VehicleID vehicleID = mock(VehicleID.class);
+        Name vehicleName = mock(Name.class);
         TrackID trackID = mock(TrackID.class);
+        Name trackName = mock(Name.class);
 
         Simulation simulation = mock(Simulation.class);
         SimulationDataOutDTO simulationDataOutDTO = mock(SimulationDataOutDTO.class);
@@ -107,7 +119,7 @@ class SimulationServiceTest {
         Optional<Track> track = Optional.empty();
 
         ISimulationFactory simulationFactory = mock(ISimulationFactory.class);
-        when(simulationFactory.createSimulation(simulationName, vehicleID, trackID)).thenReturn(simulation);
+        when(simulationFactory.createSimulation(simulationName, vehicleID, trackID, vehicleName, trackName)).thenReturn(simulation);
 
         ISimulationRepository simulationRepository = mock(ISimulationRepository.class);
         when(simulationRepository.save(simulation)).thenReturn(simulation);

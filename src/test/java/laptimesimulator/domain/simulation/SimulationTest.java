@@ -17,11 +17,13 @@ class SimulationTest {
         // Arrange
         Name simulationName = mock(Name.class);
         VehicleID vehicleID = mock(VehicleID.class);
+        Name vehicleName = mock(Name.class);
         TrackID trackID = mock(TrackID.class);
+        Name trackName = mock(Name.class);
 
         try(MockedConstruction<SimulationID> simulationIDMocked = mockConstruction(SimulationID.class)) {
             // Act
-            Simulation simulation = new Simulation(simulationName, vehicleID, trackID);
+            Simulation simulation = new Simulation(simulationName, vehicleID, trackID, vehicleName, trackName);
 
             // Assert
             assertNotNull(simulation);
@@ -33,11 +35,13 @@ class SimulationTest {
         // Arrange
         Name simulationName = mock(Name.class);
         VehicleID vehicleID = mock(VehicleID.class);
+        Name vehicleName = mock(Name.class);
         TrackID trackID = mock(TrackID.class);
+        Name trackName = mock(Name.class);
         SimulationID simulationID = mock(SimulationID.class);
 
         // Act
-        Simulation simulation = new Simulation(simulationID, simulationName, vehicleID, trackID);
+        Simulation simulation = new Simulation(simulationID, simulationName, vehicleID, trackID, vehicleName, trackName);
 
         // Assert
         assertNotNull(simulation);

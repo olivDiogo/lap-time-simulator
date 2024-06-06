@@ -15,6 +15,11 @@ public class TrackDataModel {
     private String trackID;
     private String trackName;
     private int trackLength;
+    private String trackIconPath;
+    private String trackLocation;
+    private String trackRaceLapRecord;
+    private String numberOfCorners;
+    private String trackLayout;
 
     @Version
     private long version;
@@ -37,5 +42,10 @@ public class TrackDataModel {
         this.trackID = track.getTrackID().getId();
         this.trackName = track.getTrackName().getStrName();
         this.trackLength = track.getTrackLength().getLength();
+        this.trackIconPath = track.getTrackIconPath();
+        this.trackLocation = track.getTrackLocation();
+        this.trackRaceLapRecord = track.getTrackRaceLapRecord();
+        this.numberOfCorners = track.getNumberOfCorners();
+        this.trackLayout = track.getTrackLayout();
     }
 }

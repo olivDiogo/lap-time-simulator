@@ -18,10 +18,10 @@ public class SimulationFactory implements ISimulationFactory{
      * @return the created simulation.
      */
     @Override
-    public Simulation createSimulation(Name simulationName, VehicleID vehicleID, TrackID trackID) {
-        if (simulationName == null || vehicleID == null || trackID == null)
+    public Simulation createSimulation(Name simulationName, VehicleID vehicleID, TrackID trackID, Name vehicleName, Name trackName) {
+        if (simulationName == null || vehicleID == null || trackID == null || vehicleName == null || trackName == null)
             throw new IllegalArgumentException("Simulation parameters cannot be null.");
-        return new Simulation(simulationName, vehicleID, trackID);
+        return new Simulation(simulationName, vehicleID, trackID, vehicleName, trackName);
     }
 
     /**
@@ -34,9 +34,9 @@ public class SimulationFactory implements ISimulationFactory{
      * @return the created simulation.
      */
     @Override
-    public Simulation createSimulation(SimulationID simulationID, Name simulationName, VehicleID vehicleID, TrackID trackID) {
-        if (simulationID == null || simulationName == null || vehicleID == null || trackID == null)
+    public Simulation createSimulation(SimulationID simulationID, Name simulationName, VehicleID vehicleID, TrackID trackID, Name vehicleName, Name trackName) {
+        if (simulationID == null || simulationName == null || vehicleID == null || trackID == null || vehicleName == null || trackName == null)
             throw new IllegalArgumentException("Simulation parameters cannot be null.");
-        return new Simulation(simulationID, simulationName, vehicleID, trackID);
+        return new Simulation(simulationID, simulationName, vehicleID, trackID, vehicleName, trackName);
     }
 }

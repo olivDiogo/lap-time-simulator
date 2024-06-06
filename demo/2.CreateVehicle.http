@@ -1,0 +1,114 @@
+### POST Create Vehicle
+POST http://localhost:8080/vehicles
+Content-Type: application/json
+
+{
+  "vehicleName": "Porsche 911 GT3 Cup - Setup 1",
+  "downforceCoefficient": 0.5,
+  "dragCoefficient": -0.5,
+  "pressureToTorqueRatio": 0.5,
+  "mass": 1200,
+  "powerMax": 300,
+  "torqueMax": 400,
+  "rpmPowerMax": 6000,
+  "rpmTorqueMax": 5000,
+  "numberOfGears": 6,
+  "gears": [3.5, 2.5, 1.8, 1.4, 1.2, 1.0],
+  "finalDriveRatio": 3.5,
+  "longitudinalGrip": 1.5,
+  "lateralGrip": 1.2,
+  "tyreRadius": 0.3
+}
+###
+
+POST http://localhost:8080/vehicles
+Content-Type: application/json
+
+{
+  "vehicleName": "Porsche 911 GT3 Cup - Setup 2",
+  "downforceCoefficient": 0.6,
+  "dragCoefficient": -0.5,
+  "pressureToTorqueRatio": 0.5,
+  "mass": 1190,
+  "powerMax": 300,
+  "torqueMax": 400,
+  "rpmPowerMax": 6000,
+  "rpmTorqueMax": 5000,
+  "numberOfGears": 6,
+  "gears": [3.5, 2.5, 1.8, 1.4, 1.2, 1.0],
+  "finalDriveRatio": 3.3,
+  "longitudinalGrip": 1.5,
+  "lateralGrip": 1.2,
+  "tyreRadius": 0.3
+}
+
+###
+
+POST http://localhost:8080/vehicles
+Content-Type: application/json
+
+{
+  "vehicleName": "Porsche 911 GT3 Cup - Setup 3",
+  "downforceCoefficient": 0.5,
+  "dragCoefficient": -0.3,
+  "pressureToTorqueRatio": 0.5,
+  "mass": 1200,
+  "powerMax": 300,
+  "torqueMax": 400,
+  "rpmPowerMax": 6000,
+  "rpmTorqueMax": 5000,
+  "numberOfGears": 6,
+  "gears": [3.5, 2.5, 1.8, 1.4, 1.2, 1.0],
+  "finalDriveRatio": 3.5,
+  "longitudinalGrip": 1.5,
+  "lateralGrip": 1.2,
+  "tyreRadius": 0.3
+}
+
+###
+
+POST http://localhost:8080/vehicles
+Content-Type: application/json
+
+{
+  "vehicleName": "Ferrari 488 GT3 - Setup 1",
+  "downforceCoefficient": 0.4,
+  "dragCoefficient": -0.4,
+  "pressureToTorqueRatio": 0.6,
+  "mass": 1150,
+  "powerMax": 500,
+  "torqueMax": 400,
+  "rpmPowerMax": 6000,
+  "rpmTorqueMax": 5000,
+  "numberOfGears": 6,
+  "gears": [3.3, 2.5, 1.8, 1.4, 1.2, 1.0],
+  "finalDriveRatio": 3.5,
+  "longitudinalGrip": 1.5,
+  "lateralGrip": 1.2,
+  "tyreRadius": 0.3
+}
+
+###
+
+POST http://localhost:8080/vehicles
+Content-Type: application/json
+
+{
+  "vehicleName": "Ferrari 488 GT3 - Setup 2",
+  "downforceCoefficient": 0.5,
+  "dragCoefficient": -0.5,
+  "pressureToTorqueRatio": 0.6,
+  "mass": 1155,
+  "powerMax": 510,
+  "torqueMax": 410,
+  "rpmPowerMax": 6000,
+  "rpmTorqueMax": 5000,
+  "numberOfGears": 6,
+  "gears": [3.3, 2.5, 1.8, 1.4, 1.2, 1.0],
+  "finalDriveRatio": 3.5,
+  "longitudinalGrip": 1.5,
+  "lateralGrip": 1.2,
+  "tyreRadius": 0.3
+}
+
+

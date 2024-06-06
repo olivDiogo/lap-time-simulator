@@ -42,15 +42,21 @@ public class TrackLoader {
             for (File file : trackFiles) {
                 // Extract the part before the dot
                 String fileName = file.getName();
+
                 String strTrackName = TrackNameGetter.getName(fileName);
                 int nTrackLength = TrackLengthGetter.getLength(file.getPath());
+                String strTrackIconPath = TrackIconPathGetter.getTrackIconPath(file.getPath());
+                String strTrackLocation = TrackLocationGetter.getTrackLocation(file.getPath());
+                String strTrackRaceLapRecord = TrackRaceLapRecordGetter.getTrackRaceLapRecord(file.getPath());
+                String strNumberOfCorners = TrackNumberOfCornersGetter.getTrackNumberOfCorners(file.getPath());
+                String strTrackLayout = TrackLayoutGetter.getTrackLayout(file.getPath());
 
                 // Instantiate a Name object
                 Name trackName = new Name(strTrackName);
                 TrackLength trackLength = new TrackLength(nTrackLength);
 
                 // Create a new track and save it
-                Track track = trackFactory.createTrack(trackName, trackLength);
+                Track track = trackFactory.createTrack(trackName, trackLength, strTrackIconPath, strTrackLocation, strTrackRaceLapRecord, strNumberOfCorners, strTrackLayout);
                 trackRepository.save(track);
             }
         } else {

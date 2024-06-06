@@ -11,10 +11,14 @@ import laptimesimulator.domain.valueObject.VehicleID;
 import laptimesimulator.domain.vehicle.Vehicle;
 import laptimesimulator.mapper.SimulationMapper;
 import laptimesimulator.utils.dto.outputDataDTO.SimulationDataOutDTO;
+import laptimesimulator.utils.dto.outputDataDTO.SimulationInfoOutDTO;
 import laptimesimulator.utils.simulation.SimulationStarter;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 
@@ -35,24 +39,49 @@ public class SimulationService {
      * @param trackID is the track identifier.
      * @return the simulation entity.
      */
+    @Transactional
     public SimulationDataOutDTO startSimulation(Name simulationName, VehicleID vehicleID, TrackID trackID) {
-        Simulation simulation = simulationFactory.createSimulation(simulationName, vehicleID, trackID);
-        simulationRepository.save(simulation);
 
-        Optional<Vehicle> vehicle = vehicleRepository.ofIdentity(vehicleID);
-        if (vehicle.isEmpty()) {
+        Optional<Vehicle> optVehicle = vehicleRepository.ofIdentity(vehicleID);
+        if (optVehicle.isEmpty()) {
             throw new IllegalArgumentException("Vehicle not found.");
         }
 
-        Optional<Track> track = trackRepository.ofIdentity(trackID);
-        if (track.isEmpty()) {
+        Optional<Track> optTrack = trackRepository.ofIdentity(trackID);
+        if (optTrack.isEmpty()) {
             throw new IllegalArgumentException("Track not found.");
         }
 
-        SimulationDataOutDTO simulationDataOutDTO = simulationMapper.toDTO(simulation, vehicle.get(), track.get());
+        Vehicle vehicle = optVehicle.get();
+        Name vehicleName = vehicle.getVehicleName();
+        Track track = optTrack.get();
+        Name trackName = track.getTrackName();
+
+        Simulation simulation = simulationFactory.createSimulation(simulationName, vehicleID, trackID, vehicleName, trackName);
+        simulationRepository.save(simulation);
+
+        SimulationDataOutDTO simulationDataOutDTO = simulationMapper.toDTO(simulation, vehicle, track);
 
         SimulationStarter.startSimulation(simulationDataOutDTO);
 
         return simulationDataOutDTO;
+    }
+
+    public List<SimulationInfoOutDTO> getSimulations() {
+        List<SimulationInfoOutDTO> simulationInfoOutDTOList = new ArrayList<>();
+
+        simulationRepository.findAll().forEach(simulation -> {
+            Optional<Vehicle> vehicle = vehicleRepository.ofIdentity(simulation.getVehicleID());
+            Optional<Track> track = trackRepository.ofIdentity(simulation.getTrackID());
+            if (vehicle.isPresent() && track.isPresent()) {
+                simulationInfoOutDTOList.add(simulationMapper.toInfoDTO(simulation));
+            }
+        });
+        return simulationInfoOutDTOList;
+    }
+
+    public SimulationInfoOutDTO getSimulationByID(SimulationID simulationID) {
+        Simulation simulation = simulationRepository.ofIdentity(simulationID).orElseThrow(() -> new IllegalArgumentException("Simulation not found."));
+        return simulationMapper.toInfoDTO(simulation);
     }
 }

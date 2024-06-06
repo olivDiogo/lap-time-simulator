@@ -40,8 +40,13 @@ public class TrackDataModelAssembler implements IDataModelAssembler<Track, Track
         TrackID trackID = new TrackID(dataModel.getTrackID());
         Name trackName = new Name(dataModel.getTrackName());
         TrackLength trackLength = new TrackLength(dataModel.getTrackLength());
+        String trackIconPath = dataModel.getTrackIconPath();
+        String trackLocation = dataModel.getTrackLocation();
+        String trackRaceLapRecord = dataModel.getTrackRaceLapRecord();
+        String numberOfCorners = dataModel.getNumberOfCorners();
+        String trackLayout = dataModel.getTrackLayout();
 
-        return trackFactory.createTrack(trackID, trackName, trackLength);
+        return trackFactory.createTrack(trackID, trackName, trackLength, trackIconPath, trackLocation, trackRaceLapRecord, numberOfCorners, trackLayout);
     }
 
     /**

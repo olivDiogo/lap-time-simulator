@@ -18,7 +18,9 @@ public class Simulation implements IAggregateRoot<SimulationID> {
     private final SimulationID simulationID;
     private Name simulationName;
     private VehicleID vehicleID;
+    private Name vehicleName;
     private TrackID trackID;
+    private Name trackName;
 
     /**
      * Constructor of the class Simulation
@@ -27,12 +29,14 @@ public class Simulation implements IAggregateRoot<SimulationID> {
      * @param vehicleID      is the ID of the vehicle.
      * @param trackID        is the ID of the track.
      */
-    Simulation(Name simulationName, VehicleID vehicleID, TrackID trackID) {
+    Simulation(Name simulationName, VehicleID vehicleID, TrackID trackID, Name vehicleName, Name trackName) {
         // Parameter validation is done in the factory
         this.simulationID = new SimulationID(UUID.randomUUID().toString());
         this.simulationName = simulationName;
         this.vehicleID = vehicleID;
         this.trackID = trackID;
+        this.vehicleName = vehicleName;
+        this.trackName = trackName;
     }
 
     /**
@@ -43,11 +47,13 @@ public class Simulation implements IAggregateRoot<SimulationID> {
      * @param vehicleID      is the ID of the vehicle.
      * @param trackID        is the ID of the track.
      */
-    Simulation(SimulationID simulationID, Name simulationName, VehicleID vehicleID, TrackID trackID) {
+    Simulation(SimulationID simulationID, Name simulationName, VehicleID vehicleID, TrackID trackID, Name vehicleName, Name trackName) {
         // Parameter validation is done in the factory
         this.simulationID = simulationID;
         this.simulationName = simulationName;
         this.vehicleID = vehicleID;
         this.trackID = trackID;
+        this.vehicleName = vehicleName;
+        this.trackName = trackName;
     }
 }

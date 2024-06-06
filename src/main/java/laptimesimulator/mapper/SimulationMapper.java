@@ -4,8 +4,10 @@ import laptimesimulator.domain.simulation.Simulation;
 import laptimesimulator.domain.track.Track;
 import laptimesimulator.domain.vehicle.Vehicle;
 import laptimesimulator.utils.dto.outputDataDTO.SimulationDataOutDTO;
+import laptimesimulator.utils.dto.outputDataDTO.SimulationInfoOutDTO;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -48,5 +50,47 @@ public class SimulationMapper {
         return new SimulationDataOutDTO(simulationID, simulationName, vehicleID, vehicleName, sCz, sCx,
                 rBrkF2P, mCar, pEngMax, tEngMax, nEngPMax, nEngTMax, numberOfGears, gears,
                 finalDriveRatio, mux, muy, rrTyre, trackID, trackName);
+    }
+
+
+    /**
+     * Maps the simulation to an info DTO.
+     *
+     * @param simulation are the simulation parameters.
+     * @return the simulation info data transfer object.
+     */
+    public SimulationInfoOutDTO toInfoDTO(Simulation simulation){
+        if (simulation == null) {
+            throw new IllegalArgumentException("The simulation parameters cannot be null.");
+        }
+
+        String simulationID = simulation.getSimulationID().getId();
+        String simulationName = simulation.getSimulationName().getStrName();
+        String vehicleID = simulation.getVehicleID().getId();
+        String vehicleName = simulation.getVehicleName().getStrName();
+        String trackID = simulation.getTrackID().getId();
+        String trackName = simulation.getTrackName().getStrName();
+
+        return new SimulationInfoOutDTO(simulationID, simulationName, vehicleID, vehicleName, trackID, trackName);
+    }
+
+    /**
+     * Maps a list of simulations to a list of simulation info DTOs.
+     *
+     * @param simulations are the simulations.
+     * @return the simulation data transfer object.
+     */
+    public List<SimulationInfoOutDTO> toInfoDTO(List<Simulation> simulations) {
+        if (simulations == null) {
+            throw new IllegalArgumentException("The simulation parameters cannot be null.");
+        }
+
+        List<SimulationInfoOutDTO> simulationInfoOutDTOs = new ArrayList<>();
+
+        for (Simulation simulation : simulations) {
+            simulationInfoOutDTOs.add(toInfoDTO(simulation));
+        }
+
+        return simulationInfoOutDTOs;
     }
 }

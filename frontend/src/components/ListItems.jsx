@@ -2,71 +2,71 @@ import * as React from 'react';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import ListSubheader from '@mui/material/ListSubheader';
-import DashboardIcon from '@mui/icons-material/Dashboard';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import LayersIcon from '@mui/icons-material/Layers';
-import AssignmentIcon from '@mui/icons-material/Assignment';
+import track_icon from "../assets/track_icon.png";
+import car_icon from "../assets/car_icon.svg";
+import dashboard_icon from "../assets/dashboard_icon.png";
+import simResults_icon from "../assets/simResults_icon.png";
+import settings_icon from "../assets/settings_icon.png";
+import logOut_icon from "../assets/logOut_icon.png";
+import {Link} from "react-router-dom";
 
 export const mainListItems = (
-    <React.Fragment>
-        <ListItemButton>
-            <ListItemIcon>
-                <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="Dashboard" />
-        </ListItemButton>
-        <ListItemButton>
-            <ListItemIcon>
-                <ShoppingCartIcon />
-            </ListItemIcon>
-            <ListItemText primary="Simulations" />
-        </ListItemButton>
-        <ListItemButton>
-            <ListItemIcon>
-                <PeopleIcon />
-            </ListItemIcon>
-            <ListItemText primary="Customers" />
-        </ListItemButton>
-        <ListItemButton>
-            <ListItemIcon>
-                <BarChartIcon />
-            </ListItemIcon>
-            <ListItemText primary="Reports" />
-        </ListItemButton>
-        <ListItemButton>
-            <ListItemIcon>
-                <LayersIcon />
-            </ListItemIcon>
-            <ListItemText primary="Integrations" />
-        </ListItemButton>
-    </React.Fragment>
-);
+        <React.Fragment>
+            <Link to={"/dashboard"} style={{textDecoration: 'none'}}>
+                <ListItemButton>
+
+                    <ListItemIcon>
+                        <img src={dashboard_icon} alt="dashboard" width={"24"} height={"24"}/>
+                    </ListItemIcon>
+
+                    <ListItemText primary="Dashboard" sx={{color: 'black'}}/>
+                </ListItemButton>
+            </Link>
+
+            <Link to={"/tracks"} style={{textDecoration: 'none'}}>
+                <ListItemButton>
+
+                    <ListItemIcon>
+                        <img src={track_icon} alt="tracks" width={"24"} height={"24"}/>
+                    </ListItemIcon>
+
+                    <ListItemText primary="Tracks" sx={{color: 'black'}}/>
+                </ListItemButton>
+            </Link>
+
+            <Link to={"/vehicleModels"} style={{color: 'black', textDecoration: 'none'}}>
+                <ListItemButton>
+                    <ListItemIcon>
+                        <img src={car_icon} alt="cars" width={"24"} height={"24"}/>
+                    </ListItemIcon>
+                    <ListItemText primary="Vehicle Models"/>
+                </ListItemButton>
+            </Link>
+
+            <ListItemButton>
+                <ListItemIcon>
+                    <img src={simResults_icon} alt="results" width={"24"} height={"24"}/>
+                </ListItemIcon>
+                <ListItemText primary="Results"/>
+            </ListItemButton>
+        </React.Fragment>
+    )
+;
 
 export const secondaryListItems = (
     <React.Fragment>
-        <ListSubheader component="div" inset>
-            Saved reports
-        </ListSubheader>
         <ListItemButton>
             <ListItemIcon>
-                <AssignmentIcon />
+                <img src={settings_icon} alt="settings" width={"23"} height={"23"}/>
             </ListItemIcon>
-            <ListItemText primary="Current month" />
+            <ListItemText primary="Settings"/>
         </ListItemButton>
+
         <ListItemButton>
             <ListItemIcon>
-                <AssignmentIcon />
+                <img src={logOut_icon} alt="logOut" width={"23"} height={"23"}/>
             </ListItemIcon>
-            <ListItemText primary="Last quarter" />
-        </ListItemButton>
-        <ListItemButton>
-            <ListItemIcon>
-                <AssignmentIcon />
-            </ListItemIcon>
-            <ListItemText primary="Year-end sale" />
+            <ListItemText primary="Log out"/>
         </ListItemButton>
     </React.Fragment>
 );

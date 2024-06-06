@@ -3,6 +3,7 @@ package laptimesimulator.persistence.assembler;
 import laptimesimulator.domain.simulation.ISimulationFactory;
 import laptimesimulator.domain.simulation.Simulation;
 import laptimesimulator.domain.valueObject.Name;
+import laptimesimulator.domain.valueObject.SimulationID;
 import laptimesimulator.domain.valueObject.TrackID;
 import laptimesimulator.domain.valueObject.VehicleID;
 import laptimesimulator.persistence.dataModel.SimulationDataModel;
@@ -39,11 +40,14 @@ public class SimulationDataModelAssembler implements IDataModelAssembler<Simulat
             throw new IllegalArgumentException("The simulation data model must be not null.");
         }
 
+        SimulationID simulationID = new SimulationID(dataModel.getSimulationID());
         Name name = new Name(dataModel.getSimulationName());
         VehicleID vehicleID = new VehicleID(dataModel.getVehicleID());
+        Name vehicleName = new Name(dataModel.getVehicleName());
         TrackID trackID = new TrackID(dataModel.getTrackID());
+        Name trackName = new Name(dataModel.getTrackName());
 
-        return simulationFactory.createSimulation(name, vehicleID, trackID);
+        return simulationFactory.createSimulation(simulationID, name, vehicleID, trackID, vehicleName, trackName);
     }
 
     /**

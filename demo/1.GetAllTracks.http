@@ -1,0 +1,4 @@
+### Get all tracks
+GET http://localhost:8080/tracks
+
+###

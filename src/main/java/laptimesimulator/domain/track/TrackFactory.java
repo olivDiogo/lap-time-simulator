@@ -15,10 +15,10 @@ public class TrackFactory implements ITrackFactory { //Review need for this clas
      * @return The new track instance.
      */
     @Override
-    public Track createTrack(Name trackName, TrackLength trackLength) {
-        if (trackName == null || trackLength == null)
+    public Track createTrack(Name trackName, TrackLength trackLength, String trackIconPath, String trackLocation, String trackRaceLapRecord, String numberOfCorners, String trackLayout) {
+        if (trackName == null || trackLength == null || trackIconPath == null || trackLocation == null || trackRaceLapRecord == null || numberOfCorners == null || trackLayout == null)
             throw new IllegalArgumentException("Track parameters cannot be null.");
-        return new Track(trackName, trackLength);
+        return new Track(trackName, trackLength, trackIconPath, trackLocation, trackRaceLapRecord, numberOfCorners, trackLayout);
     }
 
     /**
@@ -29,9 +29,9 @@ public class TrackFactory implements ITrackFactory { //Review need for this clas
      * @return The new track instance.
      */
     @Override
-    public Track createTrack(TrackID trackID, Name trackName, TrackLength trackLength) {
-        if(trackID == null || trackName == null || trackLength == null)
+    public Track createTrack(TrackID trackID, Name trackName, TrackLength trackLength, String trackIconPath, String trackLocation, String trackRaceLapRecord, String numberOfCorners, String trackLayout) {
+        if(trackID == null || trackName == null || trackLength == null || trackIconPath == null || trackLocation == null || trackRaceLapRecord == null || numberOfCorners == null || trackLayout == null)
             throw new IllegalArgumentException("Track parameters cannot be null.");
-        return new Track(trackID, trackName, trackLength);
+        return new Track(trackID, trackName, trackLength, trackIconPath, trackLocation, trackRaceLapRecord, numberOfCorners, trackLayout);
     }
 }
