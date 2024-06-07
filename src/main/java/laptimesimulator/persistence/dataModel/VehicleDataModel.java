@@ -23,14 +23,14 @@ public class VehicleDataModel {
     private double rpmPowerMax;
     private double rpmTorqueMax;
     private int numberOfGears;
-    private double firstGear;
-    private double secondGear;
-    private double thirdGear;
-    private double fourthGear;
-    private double fifthGear;
-    private double sixthGear;
-    private double seventhGear;
-    private double eighthGear;
+    private Double firstGear;
+    private Double secondGear;
+    private Double thirdGear;
+    private Double fourthGear;
+    private Double fifthGear;
+    private Double sixthGear;
+    private Double seventhGear;
+    private Double eighthGear;
     private double finalDriveRatio;
     private double longitudinalGrip;
     private double lateralGrip;
@@ -68,14 +68,14 @@ public class VehicleDataModel {
         this.lateralGrip = vehicle.getTyreModel().getLateralGrip();
         this.tyreRadius = vehicle.getTyreModel().getTyreRadius();
 
-        this.firstGear = numberOfGears > 0 ? vehicle.getTransmissionModel().getGears().get(0) : 0;
-        this.secondGear = numberOfGears > 1 ? vehicle.getTransmissionModel().getGears().get(1) : 0;
-        this.thirdGear = numberOfGears > 2 ? vehicle.getTransmissionModel().getGears().get(2) : 0;
-        this.fourthGear = numberOfGears > 3 ? vehicle.getTransmissionModel().getGears().get(3) : 0;
-        this.fifthGear = numberOfGears > 4 ? vehicle.getTransmissionModel().getGears().get(4) : 0;
-        this.sixthGear = numberOfGears > 5 ? vehicle.getTransmissionModel().getGears().get(5) : 0;
-        this.seventhGear = numberOfGears > 6 ? vehicle.getTransmissionModel().getGears().get(6) : 0;
-        this.eighthGear = numberOfGears > 7 ? vehicle.getTransmissionModel().getGears().get(7) : 0;
+        this.firstGear = numberOfGears > 0 ? vehicle.getTransmissionModel().getGears().get(0) : null;
+        this.secondGear = numberOfGears > 1 ? vehicle.getTransmissionModel().getGears().get(1) : null;
+        this.thirdGear = numberOfGears > 2 ? vehicle.getTransmissionModel().getGears().get(2) : null;
+        this.fourthGear = numberOfGears > 3 ? vehicle.getTransmissionModel().getGears().get(3) : null;
+        this.fifthGear = numberOfGears > 4 ? vehicle.getTransmissionModel().getGears().get(4) : null;
+        this.sixthGear = numberOfGears > 5 ? vehicle.getTransmissionModel().getGears().get(5) : null;
+        this.seventhGear = numberOfGears > 6 ? vehicle.getTransmissionModel().getGears().get(6) : null;
+        this.eighthGear = numberOfGears > 7 ? vehicle.getTransmissionModel().getGears().get(7) : null;
     }
 
 

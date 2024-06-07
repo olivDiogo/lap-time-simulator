@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Component
 @AllArgsConstructor
@@ -42,7 +45,9 @@ public class VehicleDataModelAssembler implements IDataModelAssembler<Vehicle, V
         TyreModel tyreModel = new TyreModel(dataModel.getLongitudinalGrip(), dataModel.getLateralGrip(), dataModel.getTyreRadius());
         Name vehicleName = new Name(dataModel.getVehicleName());
 
-        List<Double> gears = List.of(dataModel.getFirstGear(), dataModel.getSecondGear(), dataModel.getThirdGear(), dataModel.getFourthGear(), dataModel.getFifthGear(), dataModel.getSixthGear(), dataModel.getSeventhGear(), dataModel.getEighthGear());
+        List<Double> gears = Stream.of(dataModel.getFirstGear(), dataModel.getSecondGear(), dataModel.getThirdGear(), dataModel.getFourthGear(), dataModel.getFifthGear(), dataModel.getSixthGear(), dataModel.getSeventhGear(), dataModel.getEighthGear())
+                .filter(Objects::nonNull)
+                .collect(Collectors.toList());
         TransmissionModel transmissionModel = new TransmissionModel(dataModel.getNumberOfGears(), gears, dataModel.getFinalDriveRatio());
 
         VehicleParameters vehicleParameters = new VehicleParameters(aeroModel, brakeModel, chassisModel, vehicleName,

@@ -21,7 +21,7 @@ import { mainListItems, secondaryListItems } from '../components/ListItems.jsx';
 import TrackListDashboard from '../components/TrackListDashboard.jsx';
 import VehicleModelListDashboard from '../components/VehicleModelListDashboard.jsx';
 import SimulationsList from '../components/SimulationsList.jsx';
-import backgroundImage from '../assets/checkered_flag_background.jpg';
+import backgroundImage from '../assets/chequered_flag.jpg';
 
 function Copyright(props) {
     return (
@@ -78,6 +78,19 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
                     width: theme.spacing(9),
                 },
             }),
+            '&::after': {
+                content: '""',
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                width: '100%',
+                height: '100%', // adjust this value to change the height of the image
+                backgroundImage: `url(${backgroundImage})`, // source: https://stock.adobe.com/search?k=checkered+flag+background&asset_id=122185112
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                zIndex: -1,
+                opacity: 0.3,
+            },
         },
     }),
 );
