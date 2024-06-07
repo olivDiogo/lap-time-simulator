@@ -15,7 +15,7 @@ class VehicleParametersTest {
         ChassisModel chassisModel = new ChassisModel(1.0);
         Name vehicleName = new Name("vehicleName");
         PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 20.3, 400.0);
-        TransmissionModel transmissionModel = new TransmissionModel(1, List.of(1.0, 2.0, 3.0), 4);
+        TransmissionModel transmissionModel = new TransmissionModel(3, List.of(1.0, 2.0, 3.0), 4);
         TyreModel tyreModel = new TyreModel(1.0, 1.0, 4);
 
         // Act
@@ -33,7 +33,7 @@ class VehicleParametersTest {
         ChassisModel chassisModel = new ChassisModel(1.0);
         Name vehicleName = new Name("vehicleName");
         PowertrainModel powertrainModel = new PowertrainModel(1.0, 2.0);
-        TransmissionModel transmissionModel = new TransmissionModel(1, List.of(1.0, 2.0, 3.0), 4);
+        TransmissionModel transmissionModel = new TransmissionModel(3, List.of(1.0, 2.0, 3.0), 4);
         TyreModel tyreModel = new TyreModel(1.0, 1.0, 4);
 
         // Act
@@ -50,7 +50,7 @@ class VehicleParametersTest {
         ChassisModel chassisModel = new ChassisModel(1.0);
         Name vehicleName = new Name("vehicleName");
         PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 2.0, 4.0);
-        TransmissionModel transmissionModel = new TransmissionModel(1, List.of(1.0, 2.0, 3.0), 4);
+        TransmissionModel transmissionModel = new TransmissionModel(3, List.of(1.0, 2.0, 3.0), 4);
         TyreModel tyreModel = new TyreModel(1.0, 1.0, 4);
 
         // Act + Assert
@@ -65,7 +65,7 @@ class VehicleParametersTest {
         ChassisModel chassisModel = new ChassisModel(1.0);
         Name vehicleName = new Name("vehicleName");
         PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 2.0, 4.0);
-        TransmissionModel transmissionModel = new TransmissionModel(1, List.of(1.0, 2.0, 3.0), 4);
+        TransmissionModel transmissionModel = new TransmissionModel(3, List.of(1.0, 2.0, 3.0), 4);
         TyreModel tyreModel = new TyreModel(1.0, 1.0, 4);
 
         // Act + Assert
@@ -80,7 +80,7 @@ class VehicleParametersTest {
         BrakeModel brakeModel = new BrakeModel(1.0);
         Name vehicleName = new Name("vehicleName");
         PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 2.0, 4.0);
-        TransmissionModel transmissionModel = new TransmissionModel(1, List.of(1.0, 2.0, 3.0), 4);
+        TransmissionModel transmissionModel = new TransmissionModel(3, List.of(1.0, 2.0, 3.0), 4);
         TyreModel tyreModel = new TyreModel(1.0, 1.0, 4);
 
         // Act + Assert
@@ -95,7 +95,7 @@ class VehicleParametersTest {
         BrakeModel brakeModel = new BrakeModel(1.0);
         ChassisModel chassisModel = new ChassisModel(1.0);
         PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 2.0, 4.0);
-        TransmissionModel transmissionModel = new TransmissionModel(1, List.of(1.0, 2.0, 3.0), 4);
+        TransmissionModel transmissionModel = new TransmissionModel(3, List.of(1.0, 2.0, 3.0), 4);
         TyreModel tyreModel = new TyreModel(1.0, 1.0, 4);
 
         // Act + Assert
@@ -110,7 +110,7 @@ class VehicleParametersTest {
         BrakeModel brakeModel = new BrakeModel(1.0);
         ChassisModel chassisModel = new ChassisModel(1.0);
         Name vehicleName = new Name("vehicleName");
-        TransmissionModel transmissionModel = new TransmissionModel(1, List.of(1.0, 2.0, 3.0), 4);
+        TransmissionModel transmissionModel = new TransmissionModel(3, List.of(1.0, 2.0, 3.0), 4);
         TyreModel tyreModel = new TyreModel(1.0, 1.0, 4);
 
         // Act + Assert
@@ -141,7 +141,7 @@ class VehicleParametersTest {
         ChassisModel chassisModel = new ChassisModel(1.0);
         Name vehicleName = new Name("vehicleName");
         PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 2.0, 4.0);
-        TransmissionModel transmissionModel = new TransmissionModel(1, List.of(1.0, 2.0, 3.0), 4);
+        TransmissionModel transmissionModel = new TransmissionModel(3, List.of(1.0, 2.0, 3.0), 4);
 
         // Act + Assert
         assertThrows(NullPointerException.class, () ->

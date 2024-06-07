@@ -45,7 +45,7 @@ class TransmissionModelTest {
     void shouldThrowIllegalArgumentException_whenNumberOfGearsIsZero() {
         // Arrange
         int numberOfGears = 0;
-        List<Double> gears = Arrays.asList(3.5, 2.5, 1.8, 1.4, 1.0, 0.8);
+        List<Double> gears = List.of();
         double finalDriveRatio = 3.9;
 
         String expectedMessage = "Number of gears and final drive ratio must be positive.";
@@ -106,6 +106,24 @@ class TransmissionModelTest {
         // Act & Assert
         IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
             new TransmissionModel(numberOfGears, null, finalDriveRatio);
+        });
+
+        // Assert
+        assertEquals(expectedMessage, exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentException_whenGearsSizeIsDifferentFromNumberOfGears() {
+        // Arrange
+        int numberOfGears = 6;
+        List<Double> gears = Arrays.asList(3.5, 2.5, 1.8, 1.4, 1.0);
+        double finalDriveRatio = 3.9;
+
+        String expectedMessage = "The number of gears must be equal to the size of the list of gears.";
+
+        // Act & Assert
+        IllegalArgumentException exception = org.junit.jupiter.api.Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            new TransmissionModel(numberOfGears, gears, finalDriveRatio);
         });
 
         // Assert

@@ -28,6 +28,10 @@ public class TransmissionModel implements IValueObject {
             throw new IllegalArgumentException("The list of gears must not be null.");
         }
 
+        if (gears.size() != numberOfGears) {
+            throw new IllegalArgumentException("The number of gears must be equal to the size of the list of gears.");
+        }
+
         this.numberOfGears = numberOfGears;
         this.gears = gears;
         this.finalDriveRatio = finalDriveRatio;
