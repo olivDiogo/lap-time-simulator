@@ -6,9 +6,8 @@ import laptimesimulator.domain.valueObject.TrackID;
 import laptimesimulator.domain.valueObject.VehicleID;
 import laptimesimulator.service.SimulationService;
 import laptimesimulator.utils.dto.inputDataDTO.SimulationDataInDTO;
-import laptimesimulator.utils.dto.outputDataDTO.SimulationDataOutDTO;
+import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationVehicleDataOutDTO;
 import laptimesimulator.utils.dto.outputDataDTO.SimulationInfoOutDTO;
-import laptimesimulator.utils.dto.outputDataDTO.VehicleDataOutDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
@@ -16,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -36,24 +34,25 @@ public class SimulationController {
      * @return the simulation entity.
      */
     @PostMapping
-    public ResponseEntity<EntityModel<SimulationDataOutDTO>> startSimulation(@RequestBody SimulationDataInDTO simulationDataInDTO) {
-
-        SimulationDataOutDTO simulation;
-
+    public ResponseEntity<EntityModel<SimulationInfoOutDTO>> startSimulation(@RequestBody SimulationDataInDTO simulationDataInDTO) {
+        SimulationInfoOutDTO simulation;
         try {
             Name simulationName = new Name(simulationDataInDTO.simulationName);
             VehicleID vehicleID = new VehicleID(simulationDataInDTO.vehicleID);
             TrackID trackID = new TrackID(simulationDataInDTO.trackID);
+
             simulation = simulationService.startSimulation(simulationName, vehicleID, trackID);
         } catch (IllegalArgumentException e) {
+            e.printStackTrace();  // Log the stack trace for debugging
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
         Link selfLink = linkTo(methodOn(SimulationController.class).startSimulation(simulationDataInDTO)).withSelfRel();
-        EntityModel<SimulationDataOutDTO> response = EntityModel.of(simulation, selfLink);
+        EntityModel<SimulationInfoOutDTO> response = EntityModel.of(simulation, selfLink);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
+
 
     /**
      * Gets all the simulations.

@@ -4,7 +4,10 @@ import laptimesimulator.domain.simulation.Simulation;
 import laptimesimulator.domain.track.Track;
 import laptimesimulator.domain.valueObject.*;
 import laptimesimulator.domain.vehicle.Vehicle;
-import laptimesimulator.utils.dto.outputDataDTO.SimulationDataOutDTO;
+import laptimesimulator.utils.dto.outputDataDTO.SimulationInfoOutDTO;
+import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationOptionsDataOutDTO;
+import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationTrackDataOutDTO;
+import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationVehicleDataOutDTO;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -16,7 +19,7 @@ import static org.mockito.Mockito.when;
 class SimulationMapperTest {
 
     @Test
-    void shouldCreateSimulationDataOutDTO_whenParametersAreValid() {
+    void shouldCreateSimulationVehicleDataOutDTO_whenParametersAreValid() {
         // Arrange
         String simulationID = "1";
         Simulation simulation = mock(Simulation.class);
@@ -25,9 +28,10 @@ class SimulationMapperTest {
         when(simulation.getSimulationName()).thenReturn(mock(Name.class));
         when(simulation.getSimulationName().getStrName()).thenReturn("Simulation");
 
+        String strVehicleID = "1";
         Vehicle vehicle = mock(Vehicle.class);
         when(vehicle.getVehicleID()).thenReturn(mock(VehicleID.class));
-        when(vehicle.getVehicleID().getId()).thenReturn("2");
+        when(vehicle.getVehicleID().getId()).thenReturn(strVehicleID);
         when(vehicle.getVehicleName()).thenReturn(mock(Name.class));
         when(vehicle.getVehicleName().getStrName()).thenReturn("F1");
         when(vehicle.getAeroModel()).thenReturn(mock(AeroModel.class));
@@ -68,53 +72,126 @@ class SimulationMapperTest {
         SimulationMapper simulationMapper = new SimulationMapper();
 
         // Act
-        SimulationDataOutDTO simulationDataOutDTO = simulationMapper.toDTO(simulation, vehicle, track);
+        SimulationVehicleDataOutDTO simulationVehicleDataOutDTO = simulationMapper.toDTO(vehicle);
 
         // Assert
-        assertEquals(simulationID, simulationDataOutDTO.simulationID);
+        assertEquals(strVehicleID, simulationVehicleDataOutDTO.vehicleID);
+    }
+
+
+    @Test
+    void shouldCreateSimulationTrackDataOutDTO_whenParametersAreValid() {
+        // Arrange
+        String strTrackID = "1";
+        Track track = mock(Track.class);
+        when(track.getTrackID()).thenReturn(mock(laptimesimulator.domain.valueObject.TrackID.class));
+        when(track.getTrackID().getId()).thenReturn(strTrackID);
+        when(track.getTrackName()).thenReturn(mock(Name.class));
+        when(track.getTrackName().getStrName()).thenReturn("Monza");
+
+        SimulationMapper simulationMapper = new SimulationMapper();
+
+        // Act
+        SimulationTrackDataOutDTO simulationTrackDataOutDTO = simulationMapper.toDTO(track);
+
+        // Assert
+        assertEquals(strTrackID, simulationTrackDataOutDTO.trackID);
+    }
+
+    @Test
+    void shouldCreateSimulationOptionsDataOutDTO_whenParametersAreValid() {
+        // Arrange
+        String simulationID = "1";
+        Simulation simulation = mock(Simulation.class);
+        when(simulation.getSimulationID()).thenReturn(mock(SimulationID.class));
+        when(simulation.getSimulationID().getId()).thenReturn(simulationID);
+        when(simulation.getSimulationName()).thenReturn(mock(Name.class));
+        when(simulation.getSimulationName().getStrName()).thenReturn("Simulation");
+
+        SimulationMapper simulationMapper = new SimulationMapper();
+
+        // Act
+        SimulationOptionsDataOutDTO simulationOptionsDataOutDTO = simulationMapper.toDTO(simulation);
+
+        // Assert
+        assertEquals(simulationID, simulationOptionsDataOutDTO.simulationID);
     }
 
     @Test
     void shouldThrowIllegalArgumentException_whenSimulationIsNull() {
         // Arrange
         Simulation simulation = null;
-        Vehicle vehicle = mock(Vehicle.class);
-        Track track = mock(Track.class);
 
         SimulationMapper simulationMapper = new SimulationMapper();
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> simulationMapper.toDTO(simulation, vehicle, track));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> simulationMapper.toDTO(simulation));
         assertNotNull(exception);
-        assertEquals("The simulation parameters cannot be null.", exception.getMessage());
+        assertEquals("The simulation options cannot be null.", exception.getMessage());
     }
 
     @Test
     void shouldThrowIllegalArgumentException_whenVehicleIsNull() {
         // Arrange
-        Simulation simulation = mock(Simulation.class);
         Vehicle vehicle = null;
-        Track track = mock(Track.class);
 
         SimulationMapper simulationMapper = new SimulationMapper();
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> simulationMapper.toDTO(simulation, vehicle, track));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> simulationMapper.toDTO(vehicle));
         assertNotNull(exception);
-        assertEquals("The simulation parameters cannot be null.", exception.getMessage());
+        assertEquals("The vehicle parameters cannot be null.", exception.getMessage());
     }
 
     @Test
     void shouldThrowIllegalArgumentException_whenTrackIsNull() {
         // Arrange
-        Simulation simulation = mock(Simulation.class);
-        Vehicle vehicle = mock(Vehicle.class);
         Track track = null;
 
         SimulationMapper simulationMapper = new SimulationMapper();
 
         // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> simulationMapper.toDTO(simulation, vehicle, track));
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> simulationMapper.toDTO(track));
+        assertNotNull(exception);
+        assertEquals("The track parameters cannot be null.", exception.getMessage());
+    }
+
+    @Test
+    void shouldGetSimulationInfoOutDTO_whenParametersAreValid() {
+        // Arrange
+        String simulationID = "1";
+        Simulation simulation = mock(Simulation.class);
+        when(simulation.getSimulationID()).thenReturn(mock(SimulationID.class));
+        when(simulation.getSimulationID().getId()).thenReturn(simulationID);
+        when(simulation.getSimulationName()).thenReturn(mock(Name.class));
+        when(simulation.getSimulationName().getStrName()).thenReturn("Simulation");
+
+        String strVehicleID = "1";
+        when(simulation.getVehicleID()).thenReturn(mock(VehicleID.class));
+        when(simulation.getVehicleID().getId()).thenReturn(strVehicleID);
+        when(simulation.getVehicleName()).thenReturn(mock(Name.class));
+        when(simulation.getVehicleName().getStrName()).thenReturn("F1");
+        when(simulation.getTrackID()).thenReturn(mock(TrackID.class));
+        when(simulation.getTrackID().getId()).thenReturn("1");
+        when(simulation.getTrackName()).thenReturn(mock(Name.class));
+        when(simulation.getTrackName().getStrName()).thenReturn("Monza");
+
+        SimulationMapper simulationMapper = new SimulationMapper();
+
+        // Act
+        SimulationInfoOutDTO simulationInfoOutDTO = simulationMapper.toInfoDTO(simulation);
+
+        // Assert
+        assertEquals(simulationID, simulationInfoOutDTO.simulationID);
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentException_whenSimulationIsNullWhenCallingToInfoDTO() {
+        // Arrange
+        SimulationMapper simulationMapper = new SimulationMapper();
+
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> simulationMapper.toInfoDTO(null));
         assertNotNull(exception);
         assertEquals("The simulation parameters cannot be null.", exception.getMessage());
     }

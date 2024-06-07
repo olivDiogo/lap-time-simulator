@@ -3,7 +3,9 @@ package laptimesimulator.mapper;
 import laptimesimulator.domain.simulation.Simulation;
 import laptimesimulator.domain.track.Track;
 import laptimesimulator.domain.vehicle.Vehicle;
-import laptimesimulator.utils.dto.outputDataDTO.SimulationDataOutDTO;
+import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationOptionsDataOutDTO;
+import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationTrackDataOutDTO;
+import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationVehicleDataOutDTO;
 import laptimesimulator.utils.dto.outputDataDTO.SimulationInfoOutDTO;
 import org.springframework.stereotype.Component;
 
@@ -12,22 +14,19 @@ import java.util.List;
 
 @Component
 public class SimulationMapper {
+    private static final String NULL_VEHICLE_PARAMETERS = "The simulation parameters cannot be null.";
 
     /**
-     * Maps the simulation, vehicle and track to a DTO.
+     * Maps the simulation vehicle data to a DTO.
      *
-     * @param simulation are the simulation parameters.
      * @param vehicle are the vehicle parameters.
-     * @param track are the track parameters.
      * @return the simulation data transfer object.
      */
-    public SimulationDataOutDTO toDTO(Simulation simulation, Vehicle vehicle, Track track) {
-        if (simulation == null || vehicle == null || track == null) { // Can't implement IMapper because method has only 1 parameter
-            throw new IllegalArgumentException("The simulation parameters cannot be null.");
+    public SimulationVehicleDataOutDTO toDTO(Vehicle vehicle) {
+        if (vehicle == null) { // Can't implement IMapper because method has only 1 parameter
+            throw new IllegalArgumentException("The vehicle parameters cannot be null.");
         }
 
-        String simulationID = simulation.getSimulationID().getId();
-        String simulationName = simulation.getSimulationName().getStrName();
         String vehicleID = vehicle.getVehicleID().getId();
         String vehicleName = vehicle.getVehicleName().getStrName();
         double sCz = vehicle.getAeroModel().getDownforceCoefficient();
@@ -44,12 +43,44 @@ public class SimulationMapper {
         double mux = vehicle.getTyreModel().getLongitudinalGrip();
         double muy = vehicle.getTyreModel().getLateralGrip();
         double rrTyre = vehicle.getTyreModel().getTyreRadius();
+
+        return new SimulationVehicleDataOutDTO(vehicleID, vehicleName, sCz, sCx,
+                rBrkF2P, mCar, pEngMax, tEngMax, nEngPMax, nEngTMax, numberOfGears, gears,
+                finalDriveRatio, mux, muy, rrTyre);
+    }
+
+    /**
+     * Maps the track to a DTO.
+     *
+     * @param track are the track parameters.
+     * @return the simulation data transfer object.
+     */
+    public SimulationTrackDataOutDTO toDTO(Track track) {
+        if (track == null) {
+            throw new IllegalArgumentException("The track parameters cannot be null.");
+        }
+
         String trackID = track.getTrackID().getId();
         String trackName = track.getTrackName().getStrName();
 
-        return new SimulationDataOutDTO(simulationID, simulationName, vehicleID, vehicleName, sCz, sCx,
-                rBrkF2P, mCar, pEngMax, tEngMax, nEngPMax, nEngTMax, numberOfGears, gears,
-                finalDriveRatio, mux, muy, rrTyre, trackID, trackName);
+        return new SimulationTrackDataOutDTO(trackID, trackName);
+    }
+
+    /**
+     * Maps the simulation to a DTO.
+     *
+     * @param simulation are the simulation parameters.
+     * @return the simulation data transfer object.
+     */
+    public SimulationOptionsDataOutDTO toDTO(Simulation simulation) {
+        if (simulation == null) {
+            throw new IllegalArgumentException("The simulation options cannot be null.");
+        }
+
+        String simulationID = simulation.getSimulationID().getId();
+        String simulationName = simulation.getSimulationName().getStrName();
+
+        return new SimulationOptionsDataOutDTO(simulationID, simulationName);
     }
 
 
@@ -61,7 +92,7 @@ public class SimulationMapper {
      */
     public SimulationInfoOutDTO toInfoDTO(Simulation simulation){
         if (simulation == null) {
-            throw new IllegalArgumentException("The simulation parameters cannot be null.");
+            throw new IllegalArgumentException(NULL_VEHICLE_PARAMETERS);
         }
 
         String simulationID = simulation.getSimulationID().getId();
@@ -72,25 +103,5 @@ public class SimulationMapper {
         String trackName = simulation.getTrackName().getStrName();
 
         return new SimulationInfoOutDTO(simulationID, simulationName, vehicleID, vehicleName, trackID, trackName);
-    }
-
-    /**
-     * Maps a list of simulations to a list of simulation info DTOs.
-     *
-     * @param simulations are the simulations.
-     * @return the simulation data transfer object.
-     */
-    public List<SimulationInfoOutDTO> toInfoDTO(List<Simulation> simulations) {
-        if (simulations == null) {
-            throw new IllegalArgumentException("The simulation parameters cannot be null.");
-        }
-
-        List<SimulationInfoOutDTO> simulationInfoOutDTOs = new ArrayList<>();
-
-        for (Simulation simulation : simulations) {
-            simulationInfoOutDTOs.add(toInfoDTO(simulation));
-        }
-
-        return simulationInfoOutDTOs;
     }
 }

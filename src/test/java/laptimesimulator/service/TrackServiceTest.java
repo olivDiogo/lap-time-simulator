@@ -42,20 +42,33 @@ class TrackServiceTest {
         // Arrange
         TrackService trackService = new TrackService(trackRepository, trackMapper);
 
+        String trackID = "1";
+        String trackNameString = "AIA";
+        int trackLengthInt = 1000;
         Name trackName = mock(Name.class);
         TrackLength trackLength = mock(TrackLength.class);
 
         Track track = mock(Track.class);
         when(track.getTrackID()).thenReturn(mock(TrackID.class));
-        when(track.getTrackID().getId()).thenReturn("1");
+        when(track.getTrackID().getId()).thenReturn(trackID);
+        when(track.getTrackName()).thenReturn(trackName);
+        when(track.getTrackName().getStrName()).thenReturn(trackNameString);
+        when(track.getTrackLength()).thenReturn(trackLength);
+        when(track.getTrackLength().getLength()).thenReturn(trackLengthInt);
+
+        String trackIconPath = "path";
+        String trackLocation = "location";
+        String trackRaceLapRecord = "lapRecord";
+        String numberOfCorners = "20";
+        String trackLayout = "layout";
 
         ITrackFactory trackFactory = mock(TrackFactory.class);
-        when(trackFactory.createTrack(trackName, trackLength)).thenReturn(track);
+        when(trackFactory.createTrack(trackName, trackLength, trackIconPath, trackLocation, trackRaceLapRecord, numberOfCorners, trackLayout)).thenReturn(track);
 
         when(trackRepository.findAll()).thenReturn(List.of(track));
-        when(trackMapper.toDTO(List.of(track))).thenReturn(List.of(new TrackDataOutDTO("1", "AIA", 1000)));
+        when(trackMapper.toDTO(List.of(track))).thenReturn(List.of(new TrackDataOutDTO("1", "AIA", 1000, trackLocation, trackRaceLapRecord, numberOfCorners, trackLayout, trackIconPath)));
 
-        TrackDataOutDTO expected = new TrackDataOutDTO("1", "AIA", 1000);
+        TrackDataOutDTO expected = new TrackDataOutDTO("1", "AIA", 1000, trackLocation, trackRaceLapRecord, numberOfCorners, trackLayout, trackIconPath);
 
         // Act
         List<TrackDataOutDTO> tracks = trackService.getTracks();

@@ -22,10 +22,12 @@ class TrackTest {
         String trackIconPath = "path";
         String trackLocation = "location";
         String trackRaceLapRecord = "record";
+        String numberOfCorners = "13";
+        String trackLayout = "layout";
 
         try (MockedConstruction<TrackID> trackIDMocked = mockConstruction(TrackID.class)) {
             //Act
-            Track track = new Track(trackName, trackLength, trackIconPath, trackLocation, trackRaceLapRecord);
+            Track track = new Track(trackName, trackLength, trackIconPath, trackLocation, trackRaceLapRecord, numberOfCorners, trackLayout);
 
             //Assert
             assertNotNull(track);
@@ -42,9 +44,11 @@ class TrackTest {
         String trackIconPath = "path";
         String trackLocation = "location";
         String trackRaceLapRecord = "record";
+        String numberOfCorners = "13";
+        String trackLayout = "layout";
 
         //Act
-        Track track = new Track(trackID, trackName, trackLength, trackIconPath, trackLocation, trackRaceLapRecord);
+        Track track = new Track(trackID, trackName, trackLength, trackIconPath, trackLocation, trackRaceLapRecord, numberOfCorners, trackLayout);
 
         //Assert
         assertNotNull(track);

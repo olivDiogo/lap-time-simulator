@@ -10,9 +10,11 @@ import laptimesimulator.domain.valueObject.TrackID;
 import laptimesimulator.domain.valueObject.VehicleID;
 import laptimesimulator.domain.vehicle.Vehicle;
 import laptimesimulator.mapper.SimulationMapper;
-import laptimesimulator.utils.dto.outputDataDTO.SimulationDataOutDTO;
+import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationOptionsDataOutDTO;
+import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationTrackDataOutDTO;
+import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationVehicleDataOutDTO;
 import laptimesimulator.utils.dto.outputDataDTO.SimulationInfoOutDTO;
-import laptimesimulator.utils.simulation.SimulationStarter;
+import laptimesimulator.utils.simulationStarter.SimulationStarter;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,7 +42,7 @@ public class SimulationService {
      * @return the simulation entity.
      */
     @Transactional
-    public SimulationDataOutDTO startSimulation(Name simulationName, VehicleID vehicleID, TrackID trackID) {
+    public SimulationInfoOutDTO startSimulation(Name simulationName, VehicleID vehicleID, TrackID trackID) {
 
         Optional<Vehicle> optVehicle = vehicleRepository.ofIdentity(vehicleID);
         if (optVehicle.isEmpty()) {
@@ -60,13 +62,20 @@ public class SimulationService {
         Simulation simulation = simulationFactory.createSimulation(simulationName, vehicleID, trackID, vehicleName, trackName);
         simulationRepository.save(simulation);
 
-        SimulationDataOutDTO simulationDataOutDTO = simulationMapper.toDTO(simulation, vehicle, track);
+        SimulationVehicleDataOutDTO simulationVehicleDataOutDTO = simulationMapper.toDTO(vehicle);
+        SimulationTrackDataOutDTO simulationTrackDataOutDTO = simulationMapper.toDTO(track);
+        SimulationOptionsDataOutDTO simulationOptionsDataOutDTO = new SimulationOptionsDataOutDTO(simulation.getSimulationID().getId(), simulation.getSimulationName().getStrName());
 
-        SimulationStarter.startSimulation(simulationDataOutDTO);
+        SimulationStarter.startSimulation(simulationVehicleDataOutDTO, simulationTrackDataOutDTO, simulationOptionsDataOutDTO);
 
-        return simulationDataOutDTO;
+        return simulationMapper.toInfoDTO(simulation);
     }
 
+    /**
+     * Gets all the simulations.
+     *
+     * @return the list of simulation info DTOs.
+     */
     public List<SimulationInfoOutDTO> getSimulations() {
         List<SimulationInfoOutDTO> simulationInfoOutDTOList = new ArrayList<>();
 
@@ -80,6 +89,12 @@ public class SimulationService {
         return simulationInfoOutDTOList;
     }
 
+    /**
+     * Gets a simulation by its ID.
+     *
+     * @param simulationID is the simulation identifier.
+     * @return the simulation info DTO.
+     */
     public SimulationInfoOutDTO getSimulationByID(SimulationID simulationID) {
         Simulation simulation = simulationRepository.ofIdentity(simulationID).orElseThrow(() -> new IllegalArgumentException("Simulation not found."));
         return simulationMapper.toInfoDTO(simulation);

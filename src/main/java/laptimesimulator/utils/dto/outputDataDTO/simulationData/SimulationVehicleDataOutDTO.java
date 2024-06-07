@@ -1,13 +1,11 @@
-package laptimesimulator.utils.dto.outputDataDTO;
+package laptimesimulator.utils.dto.outputDataDTO.simulationData;
 
 import lombok.AllArgsConstructor;
 
 import java.util.List;
 
 @AllArgsConstructor
-public class SimulationDataOutDTO {
-    public final String simulationID;
-    public final String simulationName;
+public class SimulationVehicleDataOutDTO {
     public final String vehicleID;
     public final String vehicleName;
     public final double sCz; // downforce coefficient
@@ -24,6 +22,4 @@ public class SimulationDataOutDTO {
     public final double mux; // longitudinal grip coefficient
     public final double muy; // lateral grip coefficient
     public final double rrTyre; // tyre radius
-    public final String trackID;
-    public final String trackName;
 }

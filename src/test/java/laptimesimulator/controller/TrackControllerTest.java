@@ -12,6 +12,7 @@ import laptimesimulator.mapper.TrackMapper;
 import laptimesimulator.persistence.track.ITrackRepository;
 import laptimesimulator.service.TrackService;
 import laptimesimulator.utils.dto.outputDataDTO.TrackDataOutDTO;
+import laptimesimulator.utils.trackLoader.TrackIconPathGetter;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -60,7 +61,13 @@ class TrackControllerTest {
 
         Name trackName = new Name("Laguna Seca");
         TrackLength trackLength = new TrackLength(3600);
-        Track track = trackFactory.createTrack(trackName, trackLength);
+        String trackIconPath = "path";
+        String trackLocation = "location";
+        String trackRecord = "record";
+        String numberOfCorners = "12";
+        String trackLayout = "layout";
+
+        Track track = trackFactory.createTrack(trackName, trackLength, trackIconPath, trackLocation, trackRecord, numberOfCorners, trackLayout);
 
         when(trackRepository.findAll()).thenReturn(List.of(track));
 

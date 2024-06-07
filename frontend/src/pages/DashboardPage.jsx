@@ -96,7 +96,7 @@ export default function DashboardPage() {
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
                 <AppBar position="absolute" open={open}
-                sx={{backgroundColor: 'white'}}>
+                sx={{backgroundColor: 'black'}}>
                     <Toolbar
                         sx={{
                             pr: '24px', // keep right padding when drawer closed
@@ -104,7 +104,7 @@ export default function DashboardPage() {
                     >
                         <IconButton
                             edge="start"
-                            color="black"
+                            color="inherit"
                             aria-label="open drawer"
                             onClick={toggleDrawer}
                             sx={{
@@ -117,13 +117,13 @@ export default function DashboardPage() {
                         <Typography
                             component="h1"
                             variant="h6"
-                            color="black"
+                            color="inherit"
                             noWrap
                             sx={{ flexGrow: 1 }}
                         >
                             Dashboard
                         </Typography>
-                        <IconButton color="black">
+                        <IconButton color="inherit">
                             <Badge badgeContent={4} color="secondary">
                                 <NotificationsIcon />
                             </Badge>
@@ -153,14 +153,14 @@ export default function DashboardPage() {
                 <Box
                     component="main"
                     sx={{
-                        // backgroundColor: (theme) =>
-                        //     theme.palette.mode === 'light'
-                        //         ? theme.palette.grey[100]
-                        //         : theme.palette.grey[900],
+                        backgroundColor: (theme) =>
+                            theme.palette.mode === 'light'
+                                ? theme.palette.grey[100]
+                                : theme.palette.grey[900],
 
-                        backgroundImage: `url(${backgroundImage})`,
-                        backgroundRepeat: 'no-repeat',
-                        backgroundSize: 'cover',
+                        // backgroundImage: `url(${backgroundImage})`,
+                        // backgroundRepeat: 'no-repeat',
+                        // backgroundSize: 'cover',
                         flexGrow: 1,
                         height: '100vh',
                         overflow: 'auto',

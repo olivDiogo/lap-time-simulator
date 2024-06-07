@@ -4,6 +4,7 @@ import laptimesimulator.domain.simulation.ISimulationFactory;
 import laptimesimulator.domain.simulation.Simulation;
 import laptimesimulator.domain.track.Track;
 import laptimesimulator.domain.valueObject.Name;
+import laptimesimulator.domain.valueObject.SimulationID;
 import laptimesimulator.domain.valueObject.TrackID;
 import laptimesimulator.domain.valueObject.VehicleID;
 import laptimesimulator.domain.vehicle.Vehicle;
@@ -11,13 +12,19 @@ import laptimesimulator.mapper.SimulationMapper;
 import laptimesimulator.persistence.simulation.ISimulationRepository;
 import laptimesimulator.persistence.track.ITrackRepository;
 import laptimesimulator.persistence.vehicle.IVehicleRepository;
-import laptimesimulator.utils.dto.outputDataDTO.SimulationDataOutDTO;
+import laptimesimulator.utils.dto.outputDataDTO.SimulationInfoOutDTO;
+import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationOptionsDataOutDTO;
+import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationTrackDataOutDTO;
+import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationVehicleDataOutDTO;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -26,6 +33,7 @@ class SimulationServiceTest {
     void shouldStartSimulation_whenParametersAreValid() {
         // Arrange
         Name simulationName = mock(Name.class);
+        when(simulationName.toString()).thenReturn("Simulation");
         VehicleID vehicleID = mock(VehicleID.class);
         Name vehicleName = mock(Name.class);
         TrackID trackID = mock(TrackID.class);
@@ -35,7 +43,18 @@ class SimulationServiceTest {
         Track mockTrack = mock(Track.class);
 
         Simulation simulation = mock(Simulation.class);
-        SimulationDataOutDTO simulationDataOutDTO = mock(SimulationDataOutDTO.class);
+        when(simulation.getSimulationID()).thenReturn(mock(SimulationID.class));
+        when(simulation.getSimulationID().getId()).thenReturn("1");
+        when(simulation.getSimulationName()).thenReturn(simulationName);
+        when(simulation.getVehicleID()).thenReturn(vehicleID);
+        when(simulation.getVehicleName()).thenReturn(vehicleName);
+        when(simulation.getTrackID()).thenReturn(trackID);
+        when(simulation.getTrackName()).thenReturn(trackName);
+
+        SimulationInfoOutDTO simulationInfoOutDTO = new SimulationInfoOutDTO(simulation.getSimulationID().getId(), simulation.getSimulationName().toString(), simulation.getVehicleID().getId(), simulation.getVehicleName().toString(), simulation.getTrackID().getId(), simulation.getTrackName().toString());
+
+        SimulationTrackDataOutDTO simulationTrackDataOutDTO = mock(SimulationTrackDataOutDTO.class);
+        SimulationVehicleDataOutDTO simulationVehicleDataOutDTO = mock(SimulationVehicleDataOutDTO.class);
         Optional<Vehicle> vehicle = Optional.of(mockVehicle);
         Optional<Track> track = Optional.of(mockTrack);
 
@@ -55,15 +74,19 @@ class SimulationServiceTest {
         when(trackRepository.ofIdentity(trackID)).thenReturn(track);
 
         SimulationMapper simulationMapper = mock(SimulationMapper.class);
-        when(simulationMapper.toDTO(simulation, mockVehicle, mockTrack)).thenReturn(simulationDataOutDTO);
+        when(simulationMapper.toDTO(vehicle.get())).thenReturn(simulationVehicleDataOutDTO);
+        when(simulationMapper.toDTO(track.get())).thenReturn(simulationTrackDataOutDTO);
+        when(simulationMapper.toInfoDTO(simulation)).thenReturn(simulationInfoOutDTO);
 
         SimulationService simulationService = new SimulationService(simulationFactory, simulationRepository, trackRepository, vehicleRepository, simulationMapper);
 
+        String expectedSimulationName = "Simulation";
+
         // Act
-        SimulationDataOutDTO result = simulationService.startSimulation(simulationName, vehicleID, trackID);
+        SimulationInfoOutDTO result = simulationService.startSimulation(simulationName, vehicleID, trackID);
 
         // Assert
-        assertEquals(simulationDataOutDTO, result);
+        assertEquals(expectedSimulationName, result.simulationName);
     }
 
     @Test
@@ -76,7 +99,7 @@ class SimulationServiceTest {
         Name trackName = mock(Name.class);
 
         Simulation simulation = mock(Simulation.class);
-        SimulationDataOutDTO simulationDataOutDTO = mock(SimulationDataOutDTO.class);
+        SimulationVehicleDataOutDTO simulationVehicleDataOutDTO = mock(SimulationVehicleDataOutDTO.class);
         Optional<Vehicle> vehicle = Optional.empty();
         Optional<Track> track = Optional.of(mock(Track.class));
 
@@ -93,7 +116,7 @@ class SimulationServiceTest {
         when(trackRepository.ofIdentity(trackID)).thenReturn(track);
 
         SimulationMapper simulationMapper = mock(SimulationMapper.class);
-        when(simulationMapper.toDTO(simulation, null, track.get())).thenReturn(simulationDataOutDTO);
+        when(simulationMapper.toDTO((Vehicle) null)).thenReturn(simulationVehicleDataOutDTO);
 
         SimulationService simulationService = new SimulationService(simulationFactory, simulationRepository, trackRepository, vehicleRepository, simulationMapper);
 
@@ -114,7 +137,7 @@ class SimulationServiceTest {
         Name trackName = mock(Name.class);
 
         Simulation simulation = mock(Simulation.class);
-        SimulationDataOutDTO simulationDataOutDTO = mock(SimulationDataOutDTO.class);
+        SimulationTrackDataOutDTO simulationTrackDataOutDTO = mock(SimulationTrackDataOutDTO.class);
         Optional<Vehicle> vehicle = Optional.of(mock(Vehicle.class));
         Optional<Track> track = Optional.empty();
 
@@ -131,7 +154,7 @@ class SimulationServiceTest {
         when(trackRepository.ofIdentity(trackID)).thenReturn(track);
 
         SimulationMapper simulationMapper = mock(SimulationMapper.class);
-        when(simulationMapper.toDTO(simulation, vehicle.get(), null)).thenReturn(simulationDataOutDTO);
+        when(simulationMapper.toDTO((Track) null)).thenReturn(simulationTrackDataOutDTO);
 
         SimulationService simulationService = new SimulationService(simulationFactory, simulationRepository, trackRepository, vehicleRepository, simulationMapper);
 
@@ -141,4 +164,259 @@ class SimulationServiceTest {
         // Assert
         assertEquals("Track not found.", exception.getMessage());
     }
+
+    @Test
+    void shouldGetSimulations_whenSimulationsExist() {
+        // Arrange
+        ISimulationFactory simulationFactory = mock(ISimulationFactory.class);
+        SimulationMapper simulationMapper = mock(SimulationMapper.class);
+
+        SimulationInfoOutDTO simulationInfoOutDTO = mock(SimulationInfoOutDTO.class);
+        SimulationInfoOutDTO simulationInfoOutDTO2 = mock(SimulationInfoOutDTO.class);
+        SimulationInfoOutDTO simulationInfoOutDTO3 = mock(SimulationInfoOutDTO.class);
+
+        Simulation simulation1 = mock(Simulation.class);
+        Simulation simulation2 = mock(Simulation.class);
+        Simulation simulation3 = mock(Simulation.class);
+
+        VehicleID vehicleID1 = mock(VehicleID.class);
+        VehicleID vehicleID2 = mock(VehicleID.class);
+        VehicleID vehicleID3 = mock(VehicleID.class);
+        when(simulation1.getVehicleID()).thenReturn(vehicleID1);
+        when(simulation2.getVehicleID()).thenReturn(vehicleID2);
+        when(simulation3.getVehicleID()).thenReturn(vehicleID3);
+
+        TrackID trackID1 = mock(TrackID.class);
+        TrackID trackID2 = mock(TrackID.class);
+        TrackID trackID3 = mock(TrackID.class);
+        when(simulation1.getTrackID()).thenReturn(trackID1);
+        when(simulation2.getTrackID()).thenReturn(trackID2);
+        when(simulation3.getTrackID()).thenReturn(trackID3);
+
+        ISimulationRepository simulationRepository = mock(ISimulationRepository.class);
+        when(simulationRepository.findAll()).thenReturn(List.of(simulation1, simulation2, simulation3));
+
+        Vehicle vehicle1 = mock(Vehicle.class);
+        Vehicle vehicle2 = mock(Vehicle.class);
+        Vehicle vehicle3 = mock(Vehicle.class);
+
+        Track track1 = mock(Track.class);
+        Track track2 = mock(Track.class);
+        Track track3 = mock(Track.class);
+
+        ITrackRepository trackRepository = mock(ITrackRepository.class);
+        when(trackRepository.ofIdentity(trackID1)).thenReturn(Optional.of(track1));
+        when(trackRepository.ofIdentity(trackID2)).thenReturn(Optional.of(track2));
+        when(trackRepository.ofIdentity(trackID3)).thenReturn(Optional.of(track3));
+
+        IVehicleRepository vehicleRepository = mock(IVehicleRepository.class);
+        when(vehicleRepository.ofIdentity(vehicleID1)).thenReturn(Optional.of(vehicle1));
+        when(vehicleRepository.ofIdentity(vehicleID2)).thenReturn(Optional.of(vehicle2));
+        when(vehicleRepository.ofIdentity(vehicleID3)).thenReturn(Optional.of(vehicle3));
+
+        SimulationService simulationService = new SimulationService(simulationFactory, simulationRepository, trackRepository, vehicleRepository, simulationMapper);
+
+        when(simulationMapper.toInfoDTO(simulation1)).thenReturn(simulationInfoOutDTO);
+        when(simulationMapper.toInfoDTO(simulation2)).thenReturn(simulationInfoOutDTO2);
+        when(simulationMapper.toInfoDTO(simulation3)).thenReturn(simulationInfoOutDTO3);
+
+        // Act
+        List<SimulationInfoOutDTO> result = simulationService.getSimulations();
+
+        // Assert
+        assertEquals(3, result.size());
+        assertEquals(simulationInfoOutDTO, result.get(0));
+        assertEquals(simulationInfoOutDTO2, result.get(1));
+        assertEquals(simulationInfoOutDTO3, result.get(2));
+    }
+
+    @Test
+    void shouldGetEmptyListOfSimulations_whenNoSimulationsExist() {
+        // Arrange
+        ISimulationFactory simulationFactory = mock(ISimulationFactory.class);
+        SimulationMapper simulationMapper = mock(SimulationMapper.class);
+
+        ISimulationRepository simulationRepository = mock(ISimulationRepository.class);
+        when(simulationRepository.findAll()).thenReturn(new ArrayList<>());
+
+        ITrackRepository trackRepository = mock(ITrackRepository.class);
+        IVehicleRepository vehicleRepository = mock(IVehicleRepository.class);
+
+        SimulationService simulationService = new SimulationService(simulationFactory, simulationRepository, trackRepository, vehicleRepository, simulationMapper);
+
+        // Act
+        List<SimulationInfoOutDTO> result = simulationService.getSimulations();
+
+        // Assert
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    void shouldGetEmptyListOfSimulations_whenNoVehicleExists() {
+        // Arrange
+        ISimulationFactory simulationFactory = mock(ISimulationFactory.class);
+        SimulationMapper simulationMapper = mock(SimulationMapper.class);
+
+        SimulationInfoOutDTO simulationInfoOutDTO = mock(SimulationInfoOutDTO.class);
+        SimulationInfoOutDTO simulationInfoOutDTO2 = mock(SimulationInfoOutDTO.class);
+        SimulationInfoOutDTO simulationInfoOutDTO3 = mock(SimulationInfoOutDTO.class);
+
+        Simulation simulation1 = mock(Simulation.class);
+        Simulation simulation2 = mock(Simulation.class);
+        Simulation simulation3 = mock(Simulation.class);
+
+        VehicleID vehicleID1 = mock(VehicleID.class);
+        VehicleID vehicleID2 = mock(VehicleID.class);
+        VehicleID vehicleID3 = mock(VehicleID.class);
+        when(simulation1.getVehicleID()).thenReturn(vehicleID1);
+        when(simulation2.getVehicleID()).thenReturn(vehicleID2);
+        when(simulation3.getVehicleID()).thenReturn(vehicleID3);
+
+        TrackID trackID1 = mock(TrackID.class);
+        TrackID trackID2 = mock(TrackID.class);
+        TrackID trackID3 = mock(TrackID.class);
+        when(simulation1.getTrackID()).thenReturn(trackID1);
+        when(simulation2.getTrackID()).thenReturn(trackID2);
+        when(simulation3.getTrackID()).thenReturn(trackID3);
+
+        ISimulationRepository simulationRepository = mock(ISimulationRepository.class);
+        when(simulationRepository.findAll()).thenReturn(List.of(simulation1, simulation2, simulation3));
+
+        Track track1 = mock(Track.class);
+        Track track2 = mock(Track.class);
+        Track track3 = mock(Track.class);
+
+        ITrackRepository trackRepository = mock(ITrackRepository.class);
+        when(trackRepository.ofIdentity(trackID1)).thenReturn(Optional.of(track1));
+        when(trackRepository.ofIdentity(trackID2)).thenReturn(Optional.of(track2));
+        when(trackRepository.ofIdentity(trackID3)).thenReturn(Optional.of(track3));
+
+        IVehicleRepository vehicleRepository = mock(IVehicleRepository.class);
+        when(vehicleRepository.ofIdentity(vehicleID1)).thenReturn(Optional.empty());
+        when(vehicleRepository.ofIdentity(vehicleID2)).thenReturn(Optional.empty());
+        when(vehicleRepository.ofIdentity(vehicleID3)).thenReturn(Optional.empty());
+
+        SimulationService simulationService = new SimulationService(simulationFactory, simulationRepository, trackRepository, vehicleRepository, simulationMapper);
+
+        when(simulationMapper.toInfoDTO(simulation1)).thenReturn(simulationInfoOutDTO);
+        when(simulationMapper.toInfoDTO(simulation2)).thenReturn(simulationInfoOutDTO2);
+        when(simulationMapper.toInfoDTO(simulation3)).thenReturn(simulationInfoOutDTO3);
+
+        // Act
+        List<SimulationInfoOutDTO> result = simulationService.getSimulations();
+
+        // Assert
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    void shouldGetEmptyListOfSimulations_whenNoTrackExists() {
+        // Arrange
+        ISimulationFactory simulationFactory = mock(ISimulationFactory.class);
+        SimulationMapper simulationMapper = mock(SimulationMapper.class);
+
+        SimulationInfoOutDTO simulationInfoOutDTO = mock(SimulationInfoOutDTO.class);
+        SimulationInfoOutDTO simulationInfoOutDTO2 = mock(SimulationInfoOutDTO.class);
+        SimulationInfoOutDTO simulationInfoOutDTO3 = mock(SimulationInfoOutDTO.class);
+
+        Simulation simulation1 = mock(Simulation.class);
+        Simulation simulation2 = mock(Simulation.class);
+        Simulation simulation3 = mock(Simulation.class);
+
+        VehicleID vehicleID1 = mock(VehicleID.class);
+        VehicleID vehicleID2 = mock(VehicleID.class);
+        VehicleID vehicleID3 = mock(VehicleID.class);
+        when(simulation1.getVehicleID()).thenReturn(vehicleID1);
+        when(simulation2.getVehicleID()).thenReturn(vehicleID2);
+        when(simulation3.getVehicleID()).thenReturn(vehicleID3);
+
+        TrackID trackID1 = mock(TrackID.class);
+        TrackID trackID2 = mock(TrackID.class);
+        TrackID trackID3 = mock(TrackID.class);
+        when(simulation1.getTrackID()).thenReturn(trackID1);
+        when(simulation2.getTrackID()).thenReturn(trackID2);
+        when(simulation3.getTrackID()).thenReturn(trackID3);
+
+        ISimulationRepository simulationRepository = mock(ISimulationRepository.class);
+        when(simulationRepository.findAll()).thenReturn(List.of(simulation1, simulation2, simulation3));
+
+        Vehicle vehicle1 = mock(Vehicle.class);
+        Vehicle vehicle2 = mock(Vehicle.class);
+        Vehicle vehicle3 = mock(Vehicle.class);
+
+        ITrackRepository trackRepository = mock(ITrackRepository.class);
+        when(trackRepository.ofIdentity(trackID1)).thenReturn(Optional.empty());
+        when(trackRepository.ofIdentity(trackID2)).thenReturn(Optional.empty());
+        when(trackRepository.ofIdentity(trackID3)).thenReturn(Optional.empty());
+
+        IVehicleRepository vehicleRepository = mock(IVehicleRepository.class);
+        when(vehicleRepository.ofIdentity(vehicleID1)).thenReturn(Optional.of(vehicle1));
+        when(vehicleRepository.ofIdentity(vehicleID2)).thenReturn(Optional.of(vehicle2));
+        when(vehicleRepository.ofIdentity(vehicleID3)).thenReturn(Optional.of(vehicle3));
+
+        SimulationService simulationService = new SimulationService(simulationFactory, simulationRepository, trackRepository, vehicleRepository, simulationMapper);
+
+        when(simulationMapper.toInfoDTO(simulation1)).thenReturn(simulationInfoOutDTO);
+        when(simulationMapper.toInfoDTO(simulation2)).thenReturn(simulationInfoOutDTO2);
+        when(simulationMapper.toInfoDTO(simulation3)).thenReturn(simulationInfoOutDTO3);
+
+        // Act
+        List<SimulationInfoOutDTO> result = simulationService.getSimulations();
+
+        // Assert
+        assertEquals(0, result.size());
+    }
+
+    @Test
+    void shouldGetSimulationById_whenSimulationExists(){
+        // Arrange
+        ISimulationFactory simulationFactory = mock(ISimulationFactory.class);
+        ITrackRepository trackRepository = mock(ITrackRepository.class);
+        IVehicleRepository vehicleRepository = mock(IVehicleRepository.class);
+        SimulationMapper simulationMapper = mock(SimulationMapper.class);
+
+        SimulationInfoOutDTO simulationInfoOutDTO = mock(SimulationInfoOutDTO.class);
+
+        Simulation simulation1 = mock(Simulation.class);
+        SimulationID simulationID = mock(SimulationID.class);
+        when(simulation1.getSimulationID()).thenReturn(simulationID);
+        when(simulationID.getId()).thenReturn("1");
+
+        ISimulationRepository simulationRepository = mock(ISimulationRepository.class);
+        when(simulationRepository.ofIdentity(any(SimulationID.class))).thenReturn(Optional.of(simulation1));
+
+        SimulationService simulationService = new SimulationService(simulationFactory, simulationRepository, trackRepository, vehicleRepository, simulationMapper);
+
+        when(simulationMapper.toInfoDTO(simulation1)).thenReturn(simulationInfoOutDTO);
+
+
+        // Act
+        SimulationInfoOutDTO result = simulationService.getSimulationByID(simulationID);
+
+        // Assert
+        assertEquals(simulationInfoOutDTO.simulationID, result.simulationID);
+    }
+
+    @Test
+    void shouldThrowIllegalArgumentException_whenSimulationNotFound(){
+        // Arrange
+        ISimulationFactory simulationFactory = mock(ISimulationFactory.class);
+        ITrackRepository trackRepository = mock(ITrackRepository.class);
+        IVehicleRepository vehicleRepository = mock(IVehicleRepository.class);
+        SimulationMapper simulationMapper = mock(SimulationMapper.class);
+
+        SimulationID simulationID = mock(SimulationID.class);
+
+        ISimulationRepository simulationRepository = mock(ISimulationRepository.class);
+        when(simulationRepository.ofIdentity(any(SimulationID.class))).thenReturn(Optional.empty());
+
+        SimulationService simulationService = new SimulationService(simulationFactory, simulationRepository, trackRepository, vehicleRepository, simulationMapper);
+
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> simulationService.getSimulationByID(simulationID));
+
+        // Assert
+        assertEquals("Simulation not found.", exception.getMessage());
+    }
+
 }

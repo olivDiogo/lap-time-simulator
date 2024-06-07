@@ -25,7 +25,8 @@ public class Track implements IAggregateRoot<TrackID> {
      *
      * @param trackName The name of the track. Must not be null.
      */
-    Track(Name trackName, TrackLength trackLength, String trackIconPath, String trackLocation, String trackRaceLapRecord, String numberOfCorners, String trackLayout) {
+    Track(Name trackName, TrackLength trackLength, String trackIconPath, String trackLocation,
+          String trackRaceLapRecord, String numberOfCorners, String trackLayout) {
         // Parameter validation is done in the factory.
         this.trackName = trackName;
         this.trackLength = trackLength;
@@ -43,7 +44,8 @@ public class Track implements IAggregateRoot<TrackID> {
      * @param trackID The ID of the track. Must not be null.
      * @param trackName The name of the track. Must not be null.
      */
-    Track(TrackID trackID, Name trackName, TrackLength trackLength, String trackIconPath, String trackLocation, String trackRaceLapRecord, String numberOfCorners, String trackLayout) {
+    Track(TrackID trackID, Name trackName, TrackLength trackLength, String trackIconPath, String trackLocation,
+          String trackRaceLapRecord, String numberOfCorners, String trackLayout) {
         // Parameter validation is done in the factory.
         this.trackID = trackID;
         this.trackName = trackName;
