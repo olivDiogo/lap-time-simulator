@@ -12,11 +12,10 @@ public class SimulationVehicleDataOutDTO {
     public final double sCx; // drag coefficient
     public final double rBrkF2P; // brake pressure to torque ratio
     public final double mCar; // vehicle mass
-    public final double pEngMax; // maximum power
-    public final double tEngMax; // maximum torque
+    public final double PEngMax; // maximum power
+    public final double MEngMax; // maximum torque
     public final double nEngPMax; // rpm at maximum power
-    public final double nEngTMax; // rpm at maximum torque
-    public final int numberOfGears;
+    public final double nEngMMax; // rpm at maximum torque
     public final List<Double> gears;
     public final double finalDriveRatio;
     public final double mux; // longitudinal grip coefficient

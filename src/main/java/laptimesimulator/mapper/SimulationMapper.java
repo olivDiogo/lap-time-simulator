@@ -37,7 +37,6 @@ public class SimulationMapper {
         double tEngMax = vehicle.getPowertrainModel().getTorqueMax();
         Double nEngPMax = vehicle.getPowertrainModel().getRpmPowerMax();
         Double nEngTMax = vehicle.getPowertrainModel().getRpmTorqueMax();
-        int numberOfGears = vehicle.getTransmissionModel().getNumberOfGears();
         List<Double> gears = vehicle.getTransmissionModel().getGears();
         double finalDriveRatio = vehicle.getTransmissionModel().getFinalDriveRatio();
         double mux = vehicle.getTyreModel().getLongitudinalGrip();
@@ -45,7 +44,7 @@ public class SimulationMapper {
         double rrTyre = vehicle.getTyreModel().getTyreRadius();
 
         return new SimulationVehicleDataOutDTO(vehicleID, vehicleName, sCz, sCx,
-                rBrkF2P, mCar, pEngMax, tEngMax, nEngPMax, nEngTMax, numberOfGears, gears,
+                rBrkF2P, mCar, pEngMax, tEngMax, nEngPMax, nEngTMax, gears,
                 finalDriveRatio, mux, muy, rrTyre);
     }
 
