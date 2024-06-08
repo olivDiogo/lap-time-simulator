@@ -13,41 +13,41 @@ import {Link} from "react-router-dom";
 export const mainListItems = (
         <React.Fragment>
             <Link to={"/dashboard"} style={{textDecoration: 'none'}}>
-                <ListItemButton>
+                <ListItemButton sx={{ mb: 1 }}>
 
                     <ListItemIcon>
-                        <img src={dashboard_icon} alt="dashboard" width={"24"} height={"24"}/>
+                        <img src={dashboard_icon} alt="dashboard" width={"30"} height={"30"}/>
                     </ListItemIcon>
 
-                    <ListItemText primary="Dashboard" sx={{color: 'black'}}/>
+                    <ListItemText primary="Dashboard" sx={{'& .MuiTypography-root': { color: 'black', fontWeight: 'bold'}}}/>
                 </ListItemButton>
             </Link>
 
             <Link to={"/tracks"} style={{textDecoration: 'none'}}>
-                <ListItemButton>
+                <ListItemButton sx={{ mb: 1 }}>
 
                     <ListItemIcon>
-                        <img src={track_icon} alt="tracks" width={"24"} height={"24"}/>
+                        <img src={track_icon} alt="tracks" width={"30"} height={"30"}/>
                     </ListItemIcon>
 
-                    <ListItemText primary="Tracks" sx={{color: 'black'}}/>
+                    <ListItemText primary="Tracks" sx={{'& .MuiTypography-root': { color: 'black', fontWeight: 'bold'}}}/>
                 </ListItemButton>
             </Link>
 
             <Link to={"/vehicleModels"} style={{color: 'black', textDecoration: 'none'}}>
-                <ListItemButton>
+                <ListItemButton sx={{ mb: 1 }}>
                     <ListItemIcon>
-                        <img src={car_icon} alt="cars" width={"24"} height={"24"}/>
+                        <img src={car_icon} alt="cars" width={"30"} height={"30"}/>
                     </ListItemIcon>
-                    <ListItemText primary="Vehicle Models"/>
+                    <ListItemText primary="Vehicle Models" sx={{'& .MuiTypography-root': { color: 'black', fontWeight: 'bold'}}}/>
                 </ListItemButton>
             </Link>
 
-            <ListItemButton>
+            <ListItemButton sx={{ mb: 1 }}>
                 <ListItemIcon>
-                    <img src={simResults_icon} alt="results" width={"24"} height={"24"}/>
+                    <img src={simResults_icon} alt="results" width={"30"} height={"30"}/>
                 </ListItemIcon>
-                <ListItemText primary="Results"/>
+                <ListItemText primary="Results" sx={{'& .MuiTypography-root': { color: 'black', fontWeight: 'bold'}}}/>
             </ListItemButton>
         </React.Fragment>
     )
@@ -55,18 +55,18 @@ export const mainListItems = (
 
 export const secondaryListItems = (
     <React.Fragment>
-        <ListItemButton>
+        <ListItemButton sx={{ mb: 1 }}>
             <ListItemIcon>
-                <img src={settings_icon} alt="settings" width={"23"} height={"23"}/>
+                <img src={settings_icon} alt="settings" width={"30"} height={"30"}/>
             </ListItemIcon>
-            <ListItemText primary="Settings"/>
+            <ListItemText primary="Settings" sx={{'& .MuiTypography-root': { color: 'black', fontWeight: 'bold'}}}/>
         </ListItemButton>
 
-        <ListItemButton>
+        <ListItemButton sx={{ mb: 1 }}>
             <ListItemIcon>
-                <img src={logOut_icon} alt="logOut" width={"23"} height={"23"}/>
+                <img src={logOut_icon} alt="logOut" width={"30"} height={"30"}/>
             </ListItemIcon>
-            <ListItemText primary="Log out"/>
+            <ListItemText primary="Log out" sx={{'& .MuiTypography-root': { color: 'black', fontWeight: 'bold'}}}/>
         </ListItemButton>
     </React.Fragment>
 );
