@@ -1,6 +1,8 @@
 #include "Track.h"
 #include <fstream>
 #include <iostream>
+#include <sstream>
+#include <string>
 
 Track::Track(const json &jTrack)
 {

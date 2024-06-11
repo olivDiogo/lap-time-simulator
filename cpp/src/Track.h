@@ -1,7 +1,6 @@
 #ifndef TRACK_H
 #define TRACK_H
 
-#include "Eigen/Dense"
 #include "nlohmann/json.hpp"
 #include <vector>
 
@@ -11,7 +10,7 @@ class Track {
 public:
     std::string trackId;
     std::string trackName;
-    std::string trackPath = "C:/Users/gonca/CLionProjects/TrackData/";
+    std::string trackPath = "../../src/main/resources/tracksCpp/";
 
     // Declaration of dataStruct
     struct dataStruct {
