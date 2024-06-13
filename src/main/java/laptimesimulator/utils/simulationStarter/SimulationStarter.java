@@ -2,9 +2,12 @@ package laptimesimulator.utils.simulationStarter;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import laptimesimulator.utils.dto.inputDataDTO.SimulationResultDTO;
+import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationDataOutDTO;
 import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationOptionsDataOutDTO;
 import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationTrackDataOutDTO;
 import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationVehicleDataOutDTO;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -12,7 +15,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.function.Consumer;
+import java.util.List;
 
 public class SimulationStarter {
 
@@ -51,38 +54,79 @@ public class SimulationStarter {
 
         ObjectMapper objectMapper = new ObjectMapper();
 
-        // Method to write simulation data to JSON file
-        Consumer<Object> writeSimulationDataToFile = data -> {
-            try {
-                File outputFile = null;
-                String simulationDataJson = objectMapper.writeValueAsString(data);
+        try {
+            // Create the output JSON structure
+            SimulationDataOutDTO simulationOutputData = new SimulationDataOutDTO(
+                    new SimJson(simulationOptionsDataOutDTO.simulationID, simulationOptionsDataOutDTO.simulationName),
+                    new VehicleJson(
+                            simulationVehicleDataOutDTO.vehicleID,
+                            simulationVehicleDataOutDTO.vehicleName,
+                            simulationVehicleDataOutDTO.sCz,
+                            simulationVehicleDataOutDTO.sCx,
+                            simulationVehicleDataOutDTO.rBrkF2P,
+                            simulationVehicleDataOutDTO.mCar,
+                            simulationVehicleDataOutDTO.PEngMax,
+                            simulationVehicleDataOutDTO.MEngMax,
+                            simulationVehicleDataOutDTO.nEngPMax,
+                            simulationVehicleDataOutDTO.nEngMMax,
+                            simulationVehicleDataOutDTO.gears,
+                            simulationVehicleDataOutDTO.finalDriveRatio,
+                            simulationVehicleDataOutDTO.mux0,
+                            simulationVehicleDataOutDTO.muy0,
+                            simulationVehicleDataOutDTO.rrTyre
+                    ),
+                    new TrackJson(
+                            simulationTrackDataOutDTO.trackID,
+                            simulationTrackDataOutDTO.trackName
+                    )
+            );
 
-                if (data instanceof SimulationVehicleDataOutDTO) {
-                    outputFile = new File("simulationVehicleData.json");
-                } else if (data instanceof SimulationTrackDataOutDTO) {
-                    outputFile = new File("simulationTrackData.json");
-                } else if (data instanceof SimulationOptionsDataOutDTO) {
-                    outputFile = new File("simulationOptionsData.json");
-                }
+            // Convert the structured data to JSON
+            String simulationDataJson = objectMapper.writeValueAsString(simulationOutputData);
 
-                if (outputFile != null) {
-                    try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
-                        writer.write(simulationDataJson);
-                    }
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
+            // Write JSON to file
+            File outputFile = new File("simulationData.json");
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
+                writer.write(simulationDataJson);
             }
-        };
 
-        // Write vehicle data
-        writeSimulationDataToFile.accept(simulationVehicleDataOutDTO);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
-        // Write track data
-        writeSimulationDataToFile.accept(simulationTrackDataOutDTO);
+    @AllArgsConstructor
+    @Getter
+    public static class SimJson {
+        private String simulationID;
+        private String simulationName;
+    }
 
-        // Write options data
-        writeSimulationDataToFile.accept(simulationOptionsDataOutDTO);
+    @AllArgsConstructor
+    @Getter
+    public static class TrackJson {
+        private String trackId;
+        private String trackName;
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class VehicleJson {
+        private String vehicleId;
+        private String vehicleName;
+        private double sCz;
+        private double sCx;
+        private double rBrkF2P;
+        private double mCar;
+        private double pEngMax;
+        private double mEngMax;
+        private Double nEngPMax;
+        private Double nEngMMax;
+        private List<Double> gears;
+        private double finalDriveRatio;
+        private double mux;
+        private double muy;
+        private double rrTyre;
     }
 
 

@@ -35,12 +35,7 @@ public class VehicleDataModelAssembler implements IDataModelAssembler<Vehicle, V
         BrakeModel brakeModel = new BrakeModel(dataModel.getPressureToTorqueRatio());
         ChassisModel chassisModel = new ChassisModel(dataModel.getMass());
 
-        PowertrainModel powertrainModel;
-        if(dataModel.getRpmPowerMax() <= 0 || dataModel.getRpmTorqueMax() <= 0) {
-            powertrainModel = new PowertrainModel(dataModel.getPowerMax(), dataModel.getTorqueMax());
-        } else {
-            powertrainModel = new PowertrainModel(dataModel.getPowerMax(), dataModel.getTorqueMax(), dataModel.getRpmPowerMax(), dataModel.getRpmTorqueMax());
-        }
+        PowertrainModel powertrainModel = new PowertrainModel(dataModel.getPowerMax(), dataModel.getTorqueMax(), dataModel.getRpmPowerMax(), dataModel.getRpmTorqueMax(), PowertrainType.valueOf(dataModel.getPowertrainType().toUpperCase()));
 
         TyreModel tyreModel = new TyreModel(dataModel.getLongitudinalGrip(), dataModel.getLateralGrip(), dataModel.getTyreRadius());
         Name vehicleName = new Name(dataModel.getVehicleName());
@@ -53,7 +48,9 @@ public class VehicleDataModelAssembler implements IDataModelAssembler<Vehicle, V
         VehicleParameters vehicleParameters = new VehicleParameters(aeroModel, brakeModel, chassisModel, vehicleName,
                 powertrainModel, transmissionModel, tyreModel);
 
-        return vehicleFactory.createVehicle(vehicleID, vehicleParameters);
+        long version = dataModel.getVersion();
+
+        return vehicleFactory.createVehicle(vehicleID, vehicleParameters, version);
     }
 
     /**

@@ -16,11 +16,11 @@ public class VehicleFactory implements IVehicleFactory{
     }
 
     @Override
-    public Vehicle createVehicle(VehicleID vehicleID, VehicleParameters vehicleParameters) {
-        if (vehicleID == null || vehicleParameters == null) {
+    public Vehicle createVehicle(VehicleID vehicleID, VehicleParameters vehicleParameters, long version){
+        if (vehicleID == null || vehicleParameters == null || version < 0) {
             throw new IllegalArgumentException("Vehicle parameters cannot be null.");
         }
 
-        return new Vehicle(vehicleID, vehicleParameters);
+        return new Vehicle(vehicleID, vehicleParameters, version);
     }
 }

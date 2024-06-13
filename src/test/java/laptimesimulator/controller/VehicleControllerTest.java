@@ -50,6 +50,7 @@ class VehicleControllerTest {
         double torqueMax = 1.0;
         double rpmPowerMax = 1.0;
         double rpmTorqueMax = 1.0;
+        String powertrainType = "combusTiON";
         int numberOfGears = 1;
         List<Double> gears = List.of(1.0);
         double finalDriveRatio = 1.0;
@@ -57,7 +58,7 @@ class VehicleControllerTest {
         double lateralGrip = 1.0;
         double tyreRadius = 1.0;
 
-        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powertrainType, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
 
         // Act + Assert
         MvcResult result = mockMvc.perform(post("/vehicles")
@@ -84,6 +85,7 @@ class VehicleControllerTest {
         double torqueMax = 1.0;
         Double rpmPowerMax = null;
         Double rpmTorqueMax = null;
+        String powertrainType = "electric";
         int numberOfGears = 1;
         List<Double> gears = List.of(1.0);
         double finalDriveRatio = 1.0;
@@ -91,7 +93,7 @@ class VehicleControllerTest {
         double lateralGrip = 1.0;
         double tyreRadius = 1.0;
 
-        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powertrainType, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
 
         // Act + Assert
         MvcResult result = mockMvc.perform(post("/vehicles")
@@ -119,6 +121,7 @@ class VehicleControllerTest {
         double torqueMax = 1.0;
         double rpmPowerMax = 0;
         double rpmTorqueMax = 0;
+        String powertrainType = "electric";
         int numberOfGears = 1;
         List<Double> gears = List.of(1.0);
         double finalDriveRatio = 1.0;
@@ -126,7 +129,7 @@ class VehicleControllerTest {
         double lateralGrip = 1.0;
         double tyreRadius = 1.0;
 
-        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powertrainType, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
 
         // Act + Assert
         MvcResult result = mockMvc.perform(post("/vehicles")
@@ -153,6 +156,7 @@ class VehicleControllerTest {
         double torqueMax = 1.0;
         double rpmPowerMax = 0.0;
         double rpmTorqueMax = 0.0;
+        String powertrainType = "electric";
         int numberOfGears = 1;
         List<Double> gears = List.of(1.0);
         double finalDriveRatio = 1.0;
@@ -160,7 +164,7 @@ class VehicleControllerTest {
         double lateralGrip = 1.0;
         double tyreRadius = 1.0;
 
-        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powertrainType, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
 
         // Act + Assert
         mockMvc.perform(post("/vehicles")
@@ -181,6 +185,7 @@ class VehicleControllerTest {
         double torqueMax = 1.0;
         double rpmPowerMax = 0;
         double rpmTorqueMax = 0;
+        String powertrainType = "electric";
         int numberOfGears = 1;
         List<Double> gears = List.of(1.0);
         double finalDriveRatio = 1.0;
@@ -188,7 +193,8 @@ class VehicleControllerTest {
         double lateralGrip = 1.0;
         double tyreRadius = 1.0;
 
-        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass,
+                powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powertrainType, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
 
         VehicleParameters vehicleParameters = VehicleParametersUtils.getVehicleParameters(vehicleDataDTO);
         IVehicleFactory vehicleFactory = new VehicleFactory();
@@ -220,6 +226,7 @@ class VehicleControllerTest {
         double torqueMax = 1.0;
         double rpmPowerMax = 0;
         double rpmTorqueMax = 0;
+        String powertrainType = "electric";
         int numberOfGears = 1;
         List<Double> gears = List.of(1.0);
         double finalDriveRatio = 1.0;
@@ -227,7 +234,8 @@ class VehicleControllerTest {
         double lateralGrip = 1.0;
         double tyreRadius = 1.0;
 
-        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass,
+                powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powertrainType, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
 
         VehicleParameters vehicleParameters = VehicleParametersUtils.getVehicleParameters(vehicleDataDTO);
         IVehicleFactory vehicleFactory = new VehicleFactory();
@@ -258,6 +266,7 @@ class VehicleControllerTest {
         double torqueMax = 1.0;
         Double rpmPowerMax = null;
         Double rpmTorqueMax = null;
+        String powertrainType = "electric";
         int numberOfGears = 1;
         List<Double> gears = List.of(1.0);
         double finalDriveRatio = 1.0;
@@ -265,7 +274,8 @@ class VehicleControllerTest {
         double lateralGrip = 1.0;
         double tyreRadius = 1.0;
 
-        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass,
+                powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powertrainType, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
 
         VehicleParameters vehicleParameters = VehicleParametersUtils.getVehicleParameters(vehicleDataDTO);
         IVehicleFactory vehicleFactory = new VehicleFactory();
@@ -276,7 +286,8 @@ class VehicleControllerTest {
 
         /* Update vehicle name */
         vehicleName = "ElectricVehicleUpdated";
-        VehicleDataInDTO updateVehicleDataInDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+        VehicleDataInDTO updateVehicleDataInDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass,
+                powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powertrainType, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
 
         // Act + Assert
         MvcResult result = mockMvc.perform(put("/vehicles/" + vehicle.getVehicleID().getId())
@@ -303,6 +314,7 @@ class VehicleControllerTest {
         double torqueMax = 1.0;
         double rpmPowerMax = 0.0;
         double rpmTorqueMax = 0.0;
+        String powertrainType = "electric";
         int numberOfGears = 1;
         List<Double> gears = List.of(1.0);
         double finalDriveRatio = 1.0;
@@ -310,7 +322,8 @@ class VehicleControllerTest {
         double lateralGrip = 1.0;
         double tyreRadius = 1.0;
 
-        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass,
+                powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powertrainType, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
 
         // Act + Assert
         mockMvc.perform(put("/vehicles/1")
@@ -331,6 +344,7 @@ class VehicleControllerTest {
         double torqueMax = 1.0;
         Double rpmPowerMax = null;
         Double rpmTorqueMax = null;
+        String powertrainType = "electric";
         int numberOfGears = 1;
         List<Double> gears = List.of(1.0);
         double finalDriveRatio = 1.0;
@@ -338,7 +352,8 @@ class VehicleControllerTest {
         double lateralGrip = 1.0;
         double tyreRadius = 1.0;
 
-        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+        VehicleDataInDTO vehicleDataDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass,
+                powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powertrainType, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
 
         VehicleParameters vehicleParameters = VehicleParametersUtils.getVehicleParameters(vehicleDataDTO);
         IVehicleFactory vehicleFactory = new VehicleFactory();
@@ -349,7 +364,8 @@ class VehicleControllerTest {
 
         /* Update vehicle name */
         vehicleName = "ElectricVehicleUpdated";
-        VehicleDataInDTO updateVehicleDataInDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+        VehicleDataInDTO updateVehicleDataInDTO = new VehicleDataInDTO(vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass,
+                powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powertrainType, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
 
         // Act + Assert
         mockMvc.perform(put("/vehicles/" + vehicle.getVehicleID().getId())

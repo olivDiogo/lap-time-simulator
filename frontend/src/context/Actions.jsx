@@ -1,4 +1,9 @@
-import {fetchSimulationsFromServer, fetchTracksFromServer, fetchVehiclesFromServer} from "../services/Service.jsx";
+import {
+    fetchSelectedVehicleModelFromServer,
+    fetchSimulationsFromServer,
+    fetchTracksFromServer,
+    fetchVehiclesFromServer, postUpdatedVehicleModelToServer
+} from "../services/Service.jsx";
 
 export const FETCH_TRACKS_STARTED = 'FETCH_TRACKS_STARTED';
 export const FETCH_TRACKS_SUCCESS = 'FETCH_TRACKS_SUCCESS';
@@ -12,6 +17,33 @@ export const FETCH_SIMULATIONS_STARTED = 'FETCH_SIMULATIONS_STARTED';
 export const FETCH_SIMULATIONS_SUCCESS = 'FETCH_SIMULATIONS_SUCCESS';
 export const FETCH_SIMULATIONS_FAILURE = 'FETCH_SIMULATIONS_FAILURE';
 
+export const UPDATE_SELECTED_VEHICLE = 'UPDATE_SELECTED_VEHICLE';
+export const UPDATE_SELECTED_TRACK = 'UPDATE_SELECTED_TRACK';
+
+export const UPDATE_DOWNFORCE_COEFFICIENT = 'UPDATE_DOWNFORCE_COEFFICIENT';
+export const UPDATE_DRAG_COEFFICIENT = 'UPDATE_DRAG_COEFFICIENT';
+export const UPDATE_PRESSURE_TO_TORQUE_RATIO = 'UPDATE_PRESSURE_TO_TORQUE_RATIO';
+export const UPDATE_VEHICLE_MASS = 'UPDATE_VEHICLE_MASS';
+export const UPDATE_POWER_MAX = 'UPDATE_POWER_MAX';
+export const UPDATE_TORQUE_MAX = 'UPDATE_TORQUE_MAX';
+export const UPDATE_RPM_POWER_MAX = 'UPDATE_RPM_POWER_MAX';
+export const UPDATE_RPM_TORQUE_MAX = 'UPDATE_RPM_TORQUE_MAX';
+export const UPDATE_POWERTRAIN_TYPE = 'UPDATE_POWERTRAIN_TYPE';
+export const UPDATE_NUMBER_OF_GEARS = 'UPDATE_NUMBER_OF_GEARS';
+export const UPDATE_GEARS = 'UPDATE_GEARS';
+export const UPDATE_GEAR_RATIO = 'UPDATE_GEAR_RATIO';
+export const UPDATE_FINAL_DRIVE_RATIO = 'UPDATE_FINAL_DRIVE_RATIO';
+export const UPDATE_LONGITUDINAL_GRIP = 'UPDATE_LONGITUDINAL_GRIP';
+export const UPDATE_LATERAL_GRIP = 'UPDATE_LATERAL_GRIP';
+export const UPDATE_TYRE_RADIUS = 'UPDATE_TYRE_RADIUS';
+
+export const POST_UPDATED_VEHICLE_MODEL_STARTED = 'POST_UPDATED_VEHICLE_MODEL_STARTED';
+export const POST_UPDATED_VEHICLE_MODEL_SUCCESS = 'POST_UPDATED_VEHICLE_MODEL_SUCCESS';
+export const POST_UPDATED_VEHICLE_MODEL_FAILURE = 'POST_UPDATED_VEHICLE_MODEL_FAILURE';
+
+export const FETCH_VEHICLE_MODEL_BY_ID_STARTED = 'FETCH_VEHICLE_MODEL_BY_ID_STARTED';
+export const FETCH_VEHICLE_MODEL_BY_ID_SUCCESS = 'FETCH_VEHICLE_MODEL_BY_ID_SUCCESS';
+export const FETCH_VEHICLE_MODEL_BY_ID_FAILURE = 'FETCH_VEHICLE_MODEL_BY_ID_FAILURE';
 
 /**
  * Fetch all tracks from the server
@@ -166,8 +198,355 @@ function fetchSimulationsFailure(error) {
     }
 }
 
+/**
+ * Updates the selected vehicle
+ * @param dispatch - dispatch function to dispatch actions
+ * @param vehicle - vehicle
+ */
+export function updateSelectedVehicle(dispatch, vehicle) {
+    const action = {
+        type: UPDATE_SELECTED_VEHICLE,
+        payload: {
+            vehicle: vehicle
+        }
+    };
+    dispatch(action);
+}
 
+/**
+ * Updates the selected track
+ * @param dispatch - dispatch function to dispatch actions
+ * @param trackId - track id
+ * @param trackName - track name
+ */
+export function updateSelectedTrack(dispatch, trackId, trackName) {
+    const action = {
+        type: UPDATE_SELECTED_TRACK,
+        payload: {
+            trackId: trackId,
+            trackName: trackName,
+        }
+    };
+    dispatch(action);
+}
 
+/**
+ * Updates the downforce coefficient
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newDownforceCoefficient - new downforce coefficient
+ */
+export function updateDownforceCoefficient(dispatch, newDownforceCoefficient){
+    const action = {
+        type: UPDATE_DOWNFORCE_COEFFICIENT,
+        payload: {
+            newDownforceCoefficient: newDownforceCoefficient
+        }
+    };
+    dispatch(action);
+}
 
+/**
+ * Updates the drag coefficient
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newDragCoefficient - new drag coefficient
+ */
+export function updateDragCoefficient(dispatch, newDragCoefficient){
+    const action = {
+        type: UPDATE_DRAG_COEFFICIENT,
+        payload: {
+            newDragCoefficient: newDragCoefficient
+        }
+    };
+    dispatch(action);
+}
 
+/**
+ * Updates the pressure to torque ratio
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newPressureToTorqueRatio - new pressure to torque ratio
+ */
+export function updatePressureToTorqueRatio(dispatch, newPressureToTorqueRatio){
+    const action = {
+        type: UPDATE_PRESSURE_TO_TORQUE_RATIO,
+        payload: {
+            newPressureToTorqueRatio: newPressureToTorqueRatio
+        }
+    };
+    dispatch(action);
+}
 
+/**
+ * Updates the vehicle mass
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newVehicleMass - new vehicle mass
+ */
+export function updateVehicleMass(dispatch, newVehicleMass){
+    const action = {
+        type: UPDATE_VEHICLE_MASS,
+        payload: {
+            newVehicleMass: newVehicleMass
+        }
+    };
+    dispatch(action);
+}
+
+/**
+ * Updates the power max
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newPowerMax - new power max
+ */
+export function updatePowerMax(dispatch, newPowerMax){
+    const action = {
+        type: UPDATE_POWER_MAX,
+        payload: {
+            newPowerMax: newPowerMax
+        }
+    };
+    dispatch(action);
+}
+
+/**
+ * Updates the torque max
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newTorqueMax - new torque max
+ */
+export function updateTorqueMax(dispatch, newTorqueMax){
+    const action = {
+        type: UPDATE_TORQUE_MAX,
+        payload: {
+            newTorqueMax: newTorqueMax
+        }
+    };
+    dispatch(action);
+}
+
+/**
+ * Updates the rpm power max
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newRpmPowerMax - new rpm power max
+ */
+export function updateRpmPowerMax(dispatch, newRpmPowerMax){
+    const action = {
+        type: UPDATE_RPM_POWER_MAX,
+        payload: {
+            newRpmPowerMax: newRpmPowerMax
+        }
+    };
+    dispatch(action);
+}
+
+/**
+ * Updates the rpm torque max
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newRpmTorqueMax - new rpm torque max
+ */
+export function updateRpmTorqueMax(dispatch, newRpmTorqueMax){
+    const action = {
+        type: UPDATE_RPM_TORQUE_MAX,
+        payload: {
+            newRpmTorqueMax: newRpmTorqueMax
+        }
+    };
+    dispatch(action);
+}
+
+/**
+ * Updates the powertrain type
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newPowertrainType - new powertrain type
+ */
+export function updatePowertrainType(dispatch, newPowertrainType){
+    const action = {
+        type: UPDATE_POWERTRAIN_TYPE,
+        payload: {
+            newPowertrainType: newPowertrainType
+        }
+    };
+    dispatch(action);
+}
+
+/**
+ * Updates the number of gears
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newNumberOfGears - new number of gears
+ */
+export function updateNumberOfGears(dispatch, newNumberOfGears){
+    const action = {
+        type: UPDATE_NUMBER_OF_GEARS,
+        payload: {
+            newNumberOfGears: newNumberOfGears
+        }
+    };
+    dispatch(action);
+}
+
+/**
+ * Updates the gear ratios
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newGearRatios - new gear ratios array
+ */
+export function updateGearRatios(dispatch, newGearRatios){
+    const action = {
+        type: UPDATE_GEARS,
+        payload: {
+            newGearRatios: newGearRatios
+        }
+    };
+    dispatch(action);
+}
+
+/**
+ * Updates a single gear ratio
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newGearRatio - new gear ratio
+ * @param index - index of the gear ratio
+ */
+export function updateSingleGearRatio(dispatch, newGearRatio, index){
+    const action = {
+        type: UPDATE_GEAR_RATIO,
+        payload: {
+            newGearRatio: newGearRatio,
+            index: index
+        }
+    };
+    dispatch(action);
+}
+
+/**
+ * Updates the final drive ratio
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newFinalDriveRatio - new final drive ratio
+ */
+export function updateFinalDriveRatio(dispatch, newFinalDriveRatio){
+    const action = {
+        type: UPDATE_FINAL_DRIVE_RATIO,
+        payload: {
+            newFinalDriveRatio: newFinalDriveRatio
+        }
+    };
+    dispatch(action);
+}
+
+/**
+ * Updates the longitudinal grip
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newLongitudinalGrip - new longitudinal grip
+ */
+export function updateLongitudinalGrip(dispatch, newLongitudinalGrip){
+    const action = {
+        type: UPDATE_LONGITUDINAL_GRIP,
+        payload: {
+            newLongitudinalGrip: newLongitudinalGrip
+        }
+    };
+    dispatch(action);
+}
+
+/**
+ * Updates the lateral grip
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newLateralGrip - new lateral grip
+ */
+export function updateLateralGrip(dispatch, newLateralGrip){
+    const action = {
+        type: UPDATE_LATERAL_GRIP,
+        payload: {
+            newLateralGrip: newLateralGrip
+        }
+    };
+    dispatch(action);
+}
+
+export function updateTyreRadius(dispatch, newTyreRadius){
+    const action = {
+        type: UPDATE_TYRE_RADIUS,
+        payload: {
+            newTyreRadius: newTyreRadius
+        }
+    };
+    dispatch(action);
+}
+
+/**
+ * Updated the vehicle model and saves it in the database
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newVehicleModel - new vehicle model
+ */
+export function postUpdatedVehicleModel(dispatch, newVehicleModel){
+    const action = {
+        type: POST_UPDATED_VEHICLE_MODEL_STARTED,
+    };
+    dispatch(action);
+
+    const success = (res) => {
+        const action = postUpdatedVehicleModelSuccess(res);
+        dispatch(action);
+    };
+
+    const failure = (err) => {
+        const action = postUpdatedVehicleModelFailure(err);
+        dispatch(action);
+    }
+
+    postUpdatedVehicleModelToServer(newVehicleModel, success, failure);
+}
+
+function postUpdatedVehicleModelSuccess(data) {
+    return {
+        type: POST_UPDATED_VEHICLE_MODEL_SUCCESS,
+        payload: {
+            data: data,
+        }
+    }
+}
+
+function postUpdatedVehicleModelFailure(error) {
+    return {
+        type: POST_UPDATED_VEHICLE_MODEL_FAILURE,
+        payload: {
+            error: error,
+        }
+    }
+}
+
+/**
+ * Fetches the vehicle model by its ID
+ * @param dispatch - dispatch function to dispatch actions
+ * @param vehicleId - vehicle ID
+ */
+export function fetchVehicleModelById(dispatch, vehicleId){
+    const action = {
+        type: FETCH_VEHICLE_MODEL_BY_ID_STARTED,
+    };
+    dispatch(action);
+
+    const success = (res) => {
+        const action = fetchVehicleModelByIdSuccess(res);
+        dispatch(action);
+    };
+
+    const failure = (err) => {
+        const action = fetchVehicleModelByIdFailure(err);
+        dispatch(action);
+    }
+
+    fetchSelectedVehicleModelFromServer(vehicleId, success, failure);
+}
+
+function fetchVehicleModelByIdSuccess(data) {
+    return {
+        type: FETCH_VEHICLE_MODEL_BY_ID_SUCCESS,
+        payload: {
+            data: data,
+        }
+    }
+}
+
+function fetchVehicleModelByIdFailure(error) {
+    return {
+        type: FETCH_VEHICLE_MODEL_BY_ID_FAILURE,
+        payload: {
+            error: error,
+        }
+    }
+}

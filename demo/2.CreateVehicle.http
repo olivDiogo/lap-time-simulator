@@ -12,6 +12,7 @@ Content-Type: application/json
   "torqueMax": 400,
   "rpmPowerMax": 6000,
   "rpmTorqueMax": 5000,
+  "powertrainType": "combustion",
   "numberOfGears": 6,
   "gears": [3.5, 2.5, 1.8, 1.4, 1.2, 1.0],
   "finalDriveRatio": 3.5,
@@ -34,6 +35,7 @@ Content-Type: application/json
   "torqueMax": 400,
   "rpmPowerMax": 6000,
   "rpmTorqueMax": 5000,
+  "powertrainType": "combustion",
   "numberOfGears": 6,
   "gears": [3.5, 2.5, 1.8, 1.4, 1.2, 1.0],
   "finalDriveRatio": 3.3,
@@ -57,6 +59,7 @@ Content-Type: application/json
   "torqueMax": 400,
   "rpmPowerMax": 6000,
   "rpmTorqueMax": 5000,
+  "powertrainType": "combustion",
   "numberOfGears": 6,
   "gears": [3.5, 2.5, 1.8, 1.4, 1.2, 1.0],
   "finalDriveRatio": 3.5,
@@ -80,6 +83,7 @@ Content-Type: application/json
   "torqueMax": 400,
   "rpmPowerMax": 6000,
   "rpmTorqueMax": 5000,
+  "powertrainType": "combustion",
   "numberOfGears": 6,
   "gears": [3.3, 2.5, 1.8, 1.4, 1.2, 1.0],
   "finalDriveRatio": 3.5,
@@ -103,6 +107,55 @@ Content-Type: application/json
   "torqueMax": 410,
   "rpmPowerMax": 6000,
   "rpmTorqueMax": 5000,
+  "powertrainType": "combustion",
+  "numberOfGears": 6,
+  "gears": [3.3, 2.5, 1.8, 1.4, 1.2, 1.0],
+  "finalDriveRatio": 3.5,
+  "longitudinalGrip": 1.5,
+  "lateralGrip": 1.2,
+  "tyreRadius": 0.3
+}
+
+###
+
+POST http://localhost:8080/vehicles
+Content-Type: application/json
+
+{
+  "vehicleName": "Electric Vehicle - Setup 1",
+  "downforceCoefficient": 0.5,
+  "dragCoefficient": -0.5,
+  "pressureToTorqueRatio": 0.6,
+  "mass": 1155,
+  "powerMax": 510,
+  "torqueMax": 410,
+  "rpmPowerMax": 0,
+  "rpmTorqueMax": 0,
+  "powertrainType": "electric",
+  "numberOfGears": 6,
+  "gears": [3.3, 2.5, 1.8, 1.4, 1.2, 1.0],
+  "finalDriveRatio": 3.5,
+  "longitudinalGrip": 1.5,
+  "lateralGrip": 1.2,
+  "tyreRadius": 0.3
+}
+
+###
+
+POST http://localhost:8080/vehicles
+Content-Type: application/json
+
+{
+  "vehicleName": "Electric Vehicle - Setup 2",
+  "downforceCoefficient": 0.5,
+  "dragCoefficient": -0.5,
+  "pressureToTorqueRatio": 0.6,
+  "mass": 1155,
+  "powerMax": 510,
+  "torqueMax": 410,
+  "rpmPowerMax": 2000,
+  "rpmTorqueMax": 3000,
+  "powertrainType": "electric",
   "numberOfGears": 6,
   "gears": [3.3, 2.5, 1.8, 1.4, 1.2, 1.0],
   "finalDriveRatio": 3.5,

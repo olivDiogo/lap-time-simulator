@@ -69,7 +69,7 @@ class SimulationControllerTest {
         BrakeModel brakeModel = new BrakeModel(30.3);
         ChassisModel chassisModel = new ChassisModel(40.4);
         Name vehicleName = new Name("vehicleName");
-        PowertrainModel powertrainModel = new PowertrainModel(50.5, 60.6);
+        PowertrainModel powertrainModel = new PowertrainModel(50.5, 60.6, 1000.0, 2000.0, PowertrainType.COMBUSTION);
         TransmissionModel transmissionModel = new TransmissionModel(2, List.of(3.0, 5.0), 4);
         TyreModel tyreModel = new TyreModel(70.7, 80.8, 0.3);
         VehicleParameters vehicleParameters = new VehicleParameters(aeroModel, brakeModel, chassisModel, vehicleName, powertrainModel, transmissionModel, tyreModel);
@@ -292,7 +292,11 @@ class SimulationControllerTest {
 
         /* Create vehicle */
         IVehicleFactory vehicleFactory = new VehicleFactory();
-        Vehicle vehicle = vehicleFactory.createVehicle(vehicleID1, new VehicleParameters(new AeroModel(10.1, -20.2), new BrakeModel(30.3), new ChassisModel(40.4), vehicleName1, new PowertrainModel(50.5, 60.6), new TransmissionModel(2, List.of(3.0, 5.0), 4), new TyreModel(70.7, 80.8, 0.3)));
+        Vehicle vehicle = vehicleFactory.createVehicle(vehicleID1, new VehicleParameters(
+                new AeroModel(10.1, -20.2), new BrakeModel(30.3),
+                new ChassisModel(40.4), vehicleName1, new PowertrainModel(50.5, 60.6, 1000.0, 4000.0, PowertrainType.COMBUSTION),
+                new TransmissionModel(2, List.of(3.0, 5.0), 4),
+                new TyreModel(70.7, 80.8, 0.3)));
         when(vehicleRepository.ofIdentity(vehicleID1)).thenReturn(java.util.Optional.of(vehicle));
 
 

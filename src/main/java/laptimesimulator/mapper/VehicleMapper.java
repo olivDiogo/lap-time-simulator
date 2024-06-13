@@ -48,8 +48,9 @@ public class VehicleMapper implements IMapper<Vehicle, VehicleDataOutDTO> {
         double torqueMax = powertrainModel.getTorqueMax();
         Double rpmPowerMax = powertrainModel.getRpmPowerMax();
         Double rpmTorqueMax = powertrainModel.getRpmTorqueMax();
+        String powertrainType = powertrainModel.getPowertrainType().getValue().toUpperCase();
 
-        return new VehicleDataOutDTO(vehicleID, strVehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+        return new VehicleDataOutDTO(vehicleID, strVehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio, mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powertrainType, numberOfGears, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
     }
 
     /**

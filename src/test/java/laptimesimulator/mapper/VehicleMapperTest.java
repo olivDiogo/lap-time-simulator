@@ -36,6 +36,9 @@ class VehicleMapperTest {
         PowertrainModel powertrainModel = mock(PowertrainModel.class);
         when(powertrainModel.getPowerMax()).thenReturn(1000.0);
         when(powertrainModel.getTorqueMax()).thenReturn(500.0);
+        when(powertrainModel.getRpmPowerMax()).thenReturn(1000.0);
+        when(powertrainModel.getRpmTorqueMax()).thenReturn(500.0);
+        when(powertrainModel.getPowertrainType()).thenReturn(PowertrainType.COMBUSTION);
 
         TransmissionModel transmissionModel = mock(TransmissionModel.class);
         when(transmissionModel.getNumberOfGears()).thenReturn(6);
@@ -101,6 +104,9 @@ class VehicleMapperTest {
         PowertrainModel powertrainModel = mock(PowertrainModel.class);
         when(powertrainModel.getPowerMax()).thenReturn(1000.0);
         when(powertrainModel.getTorqueMax()).thenReturn(500.0);
+        when(powertrainModel.getRpmPowerMax()).thenReturn(1000.0);
+        when(powertrainModel.getRpmTorqueMax()).thenReturn(500.0);
+        when(powertrainModel.getPowertrainType()).thenReturn(PowertrainType.ELECTRIC);
 
         TransmissionModel transmissionModel = mock(TransmissionModel.class);
         when(transmissionModel.getNumberOfGears()).thenReturn(6);

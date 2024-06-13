@@ -14,7 +14,7 @@ class VehicleParametersTest {
         BrakeModel brakeModel = new BrakeModel(1.0);
         ChassisModel chassisModel = new ChassisModel(1.0);
         Name vehicleName = new Name("vehicleName");
-        PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 20.3, 400.0);
+        PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 20.3, 400.0, PowertrainType.COMBUSTION);
         TransmissionModel transmissionModel = new TransmissionModel(3, List.of(1.0, 2.0, 3.0), 4);
         TyreModel tyreModel = new TyreModel(1.0, 1.0, 4);
 
@@ -32,7 +32,7 @@ class VehicleParametersTest {
         BrakeModel brakeModel = new BrakeModel(1.0);
         ChassisModel chassisModel = new ChassisModel(1.0);
         Name vehicleName = new Name("vehicleName");
-        PowertrainModel powertrainModel = new PowertrainModel(1.0, 2.0);
+        PowertrainModel powertrainModel = new PowertrainModel(1.0, 2.0, 20.3, 400.0, PowertrainType.ELECTRIC);
         TransmissionModel transmissionModel = new TransmissionModel(3, List.of(1.0, 2.0, 3.0), 4);
         TyreModel tyreModel = new TyreModel(1.0, 1.0, 4);
 
@@ -49,7 +49,7 @@ class VehicleParametersTest {
         BrakeModel brakeModel = new BrakeModel(1.0);
         ChassisModel chassisModel = new ChassisModel(1.0);
         Name vehicleName = new Name("vehicleName");
-        PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 2.0, 4.0);
+        PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 2.0, 4.0, PowertrainType.COMBUSTION);
         TransmissionModel transmissionModel = new TransmissionModel(3, List.of(1.0, 2.0, 3.0), 4);
         TyreModel tyreModel = new TyreModel(1.0, 1.0, 4);
 
@@ -64,7 +64,7 @@ class VehicleParametersTest {
         AeroModel aeroModel = new AeroModel(1.0, -1.0);
         ChassisModel chassisModel = new ChassisModel(1.0);
         Name vehicleName = new Name("vehicleName");
-        PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 2.0, 4.0);
+        PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 2.0, 4.0, PowertrainType.COMBUSTION);
         TransmissionModel transmissionModel = new TransmissionModel(3, List.of(1.0, 2.0, 3.0), 4);
         TyreModel tyreModel = new TyreModel(1.0, 1.0, 4);
 
@@ -79,7 +79,7 @@ class VehicleParametersTest {
         AeroModel aeroModel = new AeroModel(1.0, -1.0);
         BrakeModel brakeModel = new BrakeModel(1.0);
         Name vehicleName = new Name("vehicleName");
-        PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 2.0, 4.0);
+        PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 2.0, 4.0, PowertrainType.COMBUSTION);
         TransmissionModel transmissionModel = new TransmissionModel(3, List.of(1.0, 2.0, 3.0), 4);
         TyreModel tyreModel = new TyreModel(1.0, 1.0, 4);
 
@@ -94,7 +94,7 @@ class VehicleParametersTest {
         AeroModel aeroModel = new AeroModel(1.0, -1.0);
         BrakeModel brakeModel = new BrakeModel(1.0);
         ChassisModel chassisModel = new ChassisModel(1.0);
-        PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 2.0, 4.0);
+        PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 2.0, 4.0, PowertrainType.COMBUSTION);
         TransmissionModel transmissionModel = new TransmissionModel(3, List.of(1.0, 2.0, 3.0), 4);
         TyreModel tyreModel = new TyreModel(1.0, 1.0, 4);
 
@@ -125,7 +125,7 @@ class VehicleParametersTest {
         BrakeModel brakeModel = new BrakeModel(1.0);
         ChassisModel chassisModel = new ChassisModel(1.0);
         Name vehicleName = new Name("vehicleName");
-        PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 2.0, 4.0);
+        PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 2.0, 4.0, PowertrainType.COMBUSTION);
         TyreModel tyreModel = new TyreModel(1.0, 1.0, 4);
 
         // Act + Assert
@@ -140,7 +140,7 @@ class VehicleParametersTest {
         BrakeModel brakeModel = new BrakeModel(1.0);
         ChassisModel chassisModel = new ChassisModel(1.0);
         Name vehicleName = new Name("vehicleName");
-        PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 2.0, 4.0);
+        PowertrainModel powertrainModel = new PowertrainModel(1.0, 1.0, 2.0, 4.0, PowertrainType.COMBUSTION);
         TransmissionModel transmissionModel = new TransmissionModel(3, List.of(1.0, 2.0, 3.0), 4);
 
         // Act + Assert

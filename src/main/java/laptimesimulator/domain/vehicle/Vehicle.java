@@ -1,5 +1,6 @@
 package laptimesimulator.domain.vehicle;
 
+import jakarta.persistence.Version;
 import laptimesimulator.ddd.IAggregateRoot;
 import laptimesimulator.domain.valueObject.*;
 import lombok.EqualsAndHashCode;
@@ -20,6 +21,7 @@ public class Vehicle implements IAggregateRoot<VehicleID> {
     private PowertrainModel powertrainModel;
     private TransmissionModel transmissionModel;
     private TyreModel tyreModel;
+    private long version;
 
     /**
      * Constructor of the class Vehicle
@@ -44,7 +46,7 @@ public class Vehicle implements IAggregateRoot<VehicleID> {
      * @param vehicleID         is the ID of the vehicle.
      * @param vehicleParameters is the parameters of the vehicle.
      */
-    Vehicle(VehicleID vehicleID, VehicleParameters vehicleParameters) {
+    Vehicle(VehicleID vehicleID, VehicleParameters vehicleParameters, long version) {
         // Validation of the parameters is done in the factory
         this.vehicleID = vehicleID;
         this.vehicleName = vehicleParameters.getVehicleName();
@@ -54,5 +56,6 @@ public class Vehicle implements IAggregateRoot<VehicleID> {
         this.powertrainModel = vehicleParameters.getPowertrainModel();
         this.transmissionModel = vehicleParameters.getTransmissionModel();
         this.tyreModel = vehicleParameters.getTyreModel();
+        this.version = version;
     }
 }

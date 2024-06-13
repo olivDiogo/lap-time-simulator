@@ -17,6 +17,7 @@ public class VehicleDataOutDTO extends RepresentationModel<VehicleDataOutDTO> {
     public final double torqueMax;
     public final Double rpmPowerMax;
     public final Double rpmTorqueMax;
+    public final String powertrainType;
     public final double numberOfGears;
     public final List<Double> gears;
     public final double finalDriveRatio;

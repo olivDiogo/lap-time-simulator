@@ -2,6 +2,7 @@ package laptimesimulator.service;
 
 import laptimesimulator.ddd.IMapper;
 import laptimesimulator.domain.valueObject.Name;
+import laptimesimulator.domain.valueObject.PowertrainType;
 import laptimesimulator.domain.valueObject.VehicleID;
 import laptimesimulator.domain.valueObject.VehicleParameters;
 import laptimesimulator.domain.vehicle.IVehicleFactory;
@@ -52,7 +53,7 @@ class VehicleServiceTest {
         when(vehicleFactory.createVehicle(vehicleParameters)).thenReturn(vehicle);
 
         VehicleDataOutDTO expected = new VehicleDataOutDTO("1", "vehicle", 1, -1, 1, 1, 1, 1,
-                1.0, 1.0, 1, List.of(1.0), 1, 1, 1, 1);
+                1.0, 1.0, PowertrainType.COMBUSTION.getValue(),1, List.of(1.0), 1, 1, 1, 1);
         when(vehicleMapper.toDTO(vehicle)).thenReturn(expected);
 
         // Act
@@ -96,7 +97,7 @@ class VehicleServiceTest {
         when(vehicleRepository.findAll()).thenReturn(vehicles);
 
         List<VehicleDataOutDTO> expected = List.of(new VehicleDataOutDTO("1", "vehicle", 1, -1, 1, 1, 1, 1,
-                1.0, 1.0, 1, List.of(1.0), 1, 1, 1, 1));
+                1.0, 1.0, PowertrainType.COMBUSTION.getValue(), 1, List.of(1.0), 1, 1, 1, 1));
         when(vehicleMapper.toDTO(vehicles)).thenReturn(expected);
 
         // Act
@@ -141,7 +142,7 @@ class VehicleServiceTest {
         when(vehicleRepository.ofIdentity(vehicleID)).thenReturn(optionalVehicle);
 
         VehicleDataOutDTO expected = new VehicleDataOutDTO("1", "vehicle", 1, -1, 1, 1, 1, 1,
-                1.0, 1.0, 1, List.of(1.0), 1, 1, 1, 1);
+                1.0, 1.0, PowertrainType.COMBUSTION.getValue(), 1, List.of(1.0), 1, 1, 1, 1);
         when(vehicleMapper.toDTO(vehicle)).thenReturn(expected);
 
         // Act

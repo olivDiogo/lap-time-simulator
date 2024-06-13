@@ -1,5 +1,7 @@
 package laptimesimulator.service;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import laptimesimulator.ddd.IMapper;
 import laptimesimulator.ddd.IRepository;
 import laptimesimulator.domain.valueObject.VehicleID;
@@ -8,7 +10,12 @@ import laptimesimulator.domain.vehicle.IVehicleFactory;
 import laptimesimulator.domain.vehicle.Vehicle;
 import laptimesimulator.utils.dto.outputDataDTO.VehicleDataOutDTO;
 import lombok.AllArgsConstructor;
+import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.dao.OptimisticLockingFailureException;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 
 import java.util.List;
 import java.util.Optional;
@@ -66,6 +73,12 @@ public class VehicleService {
      * @param vehicleParameters is the parameters of the vehicle.
      * @return the updated vehicle.
      */
+//    @Retryable(
+//            value = { OptimisticLockingFailureException.class },
+//            maxAttempts = 5,
+//            backoff = @Backoff(delay = 200)
+//    )
+    @Transactional
     public VehicleDataOutDTO updateVehicle(VehicleID vehicleID, VehicleParameters vehicleParameters) {
         Optional<Vehicle> vehicle = vehicleRepository.ofIdentity(vehicleID);
 
@@ -73,9 +86,26 @@ public class VehicleService {
             throw new IllegalArgumentException("Vehicle not found.");
         }
 
-        Vehicle updatedVehicle = vehicleFactory.createVehicle(vehicleID, vehicleParameters);
-        vehicleRepository.save(updatedVehicle);
+        Vehicle existingVehicle = vehicle.get();
+        updateVehicleFields(existingVehicle, vehicleParameters);
+
+        Vehicle updatedVehicle = vehicleRepository.save(existingVehicle);
 
         return vehicleMapper.toDTO(updatedVehicle);
+    }
+
+    /**
+     * Updates the fields of a vehicle.
+     * @param vehicle The vehicle to update.
+     * @param vehicleParameters The parameters to update the vehicle with.
+     */
+    private void updateVehicleFields(Vehicle vehicle, VehicleParameters vehicleParameters) {
+        vehicle.setVehicleName(vehicleParameters.getVehicleName());
+        vehicle.setAeroModel(vehicleParameters.getAeroModel());
+        vehicle.setBrakeModel(vehicleParameters.getBrakeModel());
+        vehicle.setChassisModel(vehicleParameters.getChassisModel());
+        vehicle.setPowertrainModel(vehicleParameters.getPowertrainModel());
+        vehicle.setTransmissionModel(vehicleParameters.getTransmissionModel());
+        vehicle.setTyreModel(vehicleParameters.getTyreModel());
     }
 }

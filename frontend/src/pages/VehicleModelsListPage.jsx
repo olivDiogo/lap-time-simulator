@@ -19,6 +19,7 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from '../components/ListItems.jsx';
 import VehicleModelsList from "../components/VehicleModelList.jsx";
+import backgroundImage from "../assets/chequered_flag.jpg";
 
 
 function Copyright(props) {
@@ -76,6 +77,19 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
                     width: theme.spacing(9),
                 },
             }),
+            '&::after': {
+                content: '""',
+                position: 'absolute',
+                bottom: 0,
+                left: 0,
+                width: '100%',
+                height: '100%', // adjust this value to change the height of the image
+                backgroundImage: `url(${backgroundImage})`, // source: https://stock.adobe.com/search?k=checkered+flag+background&asset_id=122185112
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                zIndex: -1,
+                opacity: 0.3,
+            },
         },
     }),
 );
@@ -84,7 +98,7 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 const defaultTheme = createTheme();
 
 export default function VehicleModelsListPage() {
-    const [open, setOpen] = React.useState(true);
+    const [open, setOpen] = React.useState(false);
     const toggleDrawer = () => {
         setOpen(!open);
     };
@@ -163,7 +177,6 @@ export default function VehicleModelsListPage() {
                     <Toolbar />
                     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
                         <Grid container spacing={3}>
-                            {/* TrackListDashboard */}
                             <Grid item xs={12} md={12} lg={12}>
                                 <Paper
                                     sx={{

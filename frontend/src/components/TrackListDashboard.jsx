@@ -81,7 +81,9 @@ export default function TrackListDashboard() {
                                         style={{
                                             color: 'inherit', // Inherit table cell text color initially
                                             textDecoration: 'none', // Remove underline
-                                            cursor: 'pointer'
+                                            cursor: 'pointer',
+                                            borderBottom: open[index] ? '2px solid grey' : 'white', // Change background color when row is clicked
+
                                         }}
                                         onMouseEnter={(event) => {
                                             event.preventDefault(); // Prevent default behavior on hover
@@ -95,7 +97,7 @@ export default function TrackListDashboard() {
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
+                                    <TableCell style={{paddingBottom: 0, paddingTop: 0, backgroundColor: 'rgba(0, 0, 0, 0.03)', borderRadius: '0 0 20px 20px'}} colSpan={6}>
                                         <Collapse in={open[index]} timeout="auto" unmountOnExit>
                                             <Box margin={1} sx={{display: 'flex', alignItems: 'center', gap: '30px', fontSize: '14px'}}>
                                                 <img src={chooseCorrectTrackImage(track.trackIconPath)} alt={"track"} width={150} height={150}/>

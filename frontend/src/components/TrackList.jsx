@@ -8,7 +8,7 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import {useContext, useEffect} from "react";
 import AppContext from "../context/AppContext.jsx";
-import {fetchTracks} from "../context/Actions.jsx";
+import {fetchTracks, updateSelectedTrack} from "../context/Actions.jsx";
 import {CircularProgress, Collapse} from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -30,6 +30,10 @@ export default function TrackList() {
     useEffect(() => {
         fetchTracks(dispatch);
     }, []);
+
+    const handleCreateSimulation = (trackID, trackName) => {
+       updateSelectedTrack(dispatch, trackID, trackName)
+    }
 
 
     if (loading) {
@@ -80,7 +84,8 @@ export default function TrackList() {
                                         style={{
                                             color: 'inherit', // Inherit table cell text color initially
                                             textDecoration: 'none', // Remove underline
-                                            cursor: 'pointer'
+                                            cursor: 'pointer',
+                                            borderBottom: open[index] ? '2px solid grey' : 'white'
                                         }}
                                         onMouseEnter={(event) => {
                                             event.preventDefault(); // Prevent default behavior on hover
@@ -94,7 +99,7 @@ export default function TrackList() {
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell style={{paddingBottom: 0, paddingTop: 0}} colSpan={6}>
+                                    <TableCell style={{paddingBottom: 0, paddingTop: 0, backgroundColor: 'rgba(0, 0, 0, 0.03)', borderRadius: '0 0 20px 20px'}} colSpan={6}>
                                         <Collapse in={open[index]} timeout="auto" unmountOnExit>
                                             <Box margin={1} sx={{display: 'flex', alignItems: 'center', gap: '100px'}}>
                                                 <img src={chooseCorrectTrackImage(track.trackIconPath)} alt={"track"} width={300} height={300}/>
@@ -117,7 +122,8 @@ export default function TrackList() {
                                                 </Box>
                                             </Box>
                                             <Box sx={{ mb: 2, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                                                <Button variant="contained" sx={{backgroundColor:'lightgrey', '&:hover': {
+                                                <Button onClick={() => {handleCreateSimulation(track.trackID, track.trackName)}}
+                                                    variant="contained" sx={{backgroundColor:'lightgrey', '&:hover': {
                                                         backgroundColor: 'darkgrey', // Change this to the color you want on hover
                                                     }}}>
                                                     <Link to={"/createSimulation"}

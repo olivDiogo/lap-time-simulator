@@ -7,6 +7,7 @@ import AppProvider from "./context/AppProvider.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
 import TracksListPage from "./pages/TracksListPage.jsx";
 import VehicleModelListPage from "./pages/VehicleModelsListPage.jsx";
+import EditVehicleModelPage from "./pages/EditVehicleModelPage.jsx";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <AppProvider>
@@ -17,6 +18,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     <Route path="/dashboard" element={<DashboardPage/>}/>
                     <Route path="/tracks" element={<TracksListPage/>}/>
                     <Route path="/vehicleModels" element={<VehicleModelListPage/>}/>
+                    <Route path="/vehicleModels/:id" element={<EditVehicleModelPage/>}/>
                 </Routes>
             </Router>
         </React.StrictMode>,

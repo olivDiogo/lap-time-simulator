@@ -20,8 +20,9 @@ public class VehicleDataModel {
     private double mass;
     private double powerMax;
     private double torqueMax;
-    private double rpmPowerMax;
-    private double rpmTorqueMax;
+    private Double rpmPowerMax;
+    private Double rpmTorqueMax;
+    private String powertrainType;
     private int numberOfGears;
     private Double firstGear;
     private Double secondGear;
@@ -62,6 +63,7 @@ public class VehicleDataModel {
         this.torqueMax = vehicle.getPowertrainModel().getTorqueMax();
         this.rpmPowerMax = vehicle.getPowertrainModel().getRpmPowerMax();
         this.rpmTorqueMax = vehicle.getPowertrainModel().getRpmTorqueMax();
+        this.powertrainType = vehicle.getPowertrainModel().getPowertrainType().getValue();
         this.numberOfGears = vehicle.getTransmissionModel().getNumberOfGears();
         this.finalDriveRatio = vehicle.getTransmissionModel().getFinalDriveRatio();
         this.longitudinalGrip = vehicle.getTyreModel().getLongitudinalGrip();
@@ -76,6 +78,8 @@ public class VehicleDataModel {
         this.sixthGear = numberOfGears > 5 ? vehicle.getTransmissionModel().getGears().get(5) : null;
         this.seventhGear = numberOfGears > 6 ? vehicle.getTransmissionModel().getGears().get(6) : null;
         this.eighthGear = numberOfGears > 7 ? vehicle.getTransmissionModel().getGears().get(7) : null;
+
+        this.version = vehicle.getVersion();
     }
 
 

@@ -50,12 +50,8 @@ class SimulationStarterTest {
         SimulationResultDTO result = SimulationStarter.startSimulation(simulationVehicleDataOutDTO, simulationTrackDataOutDTO, simulationOptionsDataOutDTO);
 
         // Assert
-        Path vehicleOutputPath = Paths.get("simulationVehicleData.json");
+        Path vehicleOutputPath = Paths.get("simulationData.json");
         assertTrue(Files.exists(vehicleOutputPath), "Output file was not generated");
-        Path trackOutputPath = Paths.get("simulationTrackData.json");
-        assertTrue(Files.exists(trackOutputPath), "Output file was not generated");
-        Path simulationOutputPath = Paths.get("simulationOptionsData.json");
-        assertTrue(Files.exists(simulationOutputPath), "Output file was not generated");
         assertEquals(simulationID, result.simulationID);
     }
 

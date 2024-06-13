@@ -26,15 +26,7 @@ public class VehicleParametersUtils {
         TransmissionModel transmissionModel = new TransmissionModel(vehicleDataInDTO.numberOfGears, vehicleDataInDTO.gears, vehicleDataInDTO.finalDriveRatio);
         TyreModel tyreModel = new TyreModel(vehicleDataInDTO.longitudinalGrip, vehicleDataInDTO.lateralGrip, vehicleDataInDTO.tyreRadius);
 
-        PowertrainModel powertrainModel;
-
-        if (vehicleDataInDTO.rpmPowerMax == null || vehicleDataInDTO.rpmTorqueMax == null || vehicleDataInDTO.rpmPowerMax == 0 || vehicleDataInDTO.rpmTorqueMax == 0) {
-            // Electric powertrain
-            powertrainModel = new PowertrainModel(vehicleDataInDTO.powerMax, vehicleDataInDTO.torqueMax);
-        } else {
-            // Combustion powertrain
-            powertrainModel = new PowertrainModel(vehicleDataInDTO.powerMax, vehicleDataInDTO.torqueMax, vehicleDataInDTO.rpmPowerMax, vehicleDataInDTO.rpmTorqueMax);
-        }
+        PowertrainModel powertrainModel = new PowertrainModel(vehicleDataInDTO.powerMax, vehicleDataInDTO.torqueMax, vehicleDataInDTO.rpmPowerMax, vehicleDataInDTO.rpmTorqueMax, PowertrainType.valueOf(vehicleDataInDTO.powertrainType.toUpperCase()));
 
         return new VehicleParameters(aeroModel, brakeModel, chassisModel, vehicleName, powertrainModel, transmissionModel, tyreModel);
     }

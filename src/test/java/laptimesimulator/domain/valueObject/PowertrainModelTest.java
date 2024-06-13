@@ -13,9 +13,10 @@ class PowertrainModelTest {
         double torqueMax = 200;
         double rpmPowerMax = 300;
         double rpmTorqueMax = 400;
+        PowertrainType powerTrainType = PowertrainType.COMBUSTION;
 
         // Act
-        PowertrainModel powertrainModel = new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
+        PowertrainModel powertrainModel = new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powerTrainType);
 
         // Assert
         assertNotNull(powertrainModel);
@@ -26,9 +27,12 @@ class PowertrainModelTest {
         // Arrange
         double powerMax = 100;
         double torqueMax = 200;
+        double rpmPowerMax = 0;
+        double rpmTorqueMax = 400;
+        PowertrainType powerTrainType = PowertrainType.ELECTRIC;
 
         // Act
-        PowertrainModel powertrainModel = new PowertrainModel(powerMax, torqueMax);
+        PowertrainModel powertrainModel = new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powerTrainType);
 
         // Assert
         assertNotNull(powertrainModel);
@@ -41,10 +45,11 @@ class PowertrainModelTest {
         double torqueMax = 200;
         double rpmPowerMax = 300;
         double rpmTorqueMax = 400;
+        PowertrainType powerTrainType = PowertrainType.COMBUSTION;
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
+            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powerTrainType);
         });
 
         // Assert
@@ -58,10 +63,11 @@ class PowertrainModelTest {
         double torqueMax = 200;
         double rpmPowerMax = 300;
         double rpmTorqueMax = 400;
+        PowertrainType powerTrainType = PowertrainType.COMBUSTION;
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
+            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powerTrainType);
         });
 
         // Assert
@@ -75,10 +81,11 @@ class PowertrainModelTest {
         double torqueMax = 0;
         double rpmPowerMax = 300;
         double rpmTorqueMax = 400;
+        PowertrainType powerTrainType = PowertrainType.COMBUSTION;
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
+            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powerTrainType);
         });
 
         // Assert
@@ -92,10 +99,11 @@ class PowertrainModelTest {
         double torqueMax = -200;
         double rpmPowerMax = 300;
         double rpmTorqueMax = 400;
+        PowertrainType powerTrainType = PowertrainType.COMBUSTION;
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
+            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powerTrainType);
         });
 
         // Assert
@@ -109,10 +117,11 @@ class PowertrainModelTest {
         double torqueMax = 200;
         double rpmPowerMax = 0;
         double rpmTorqueMax = 400;
+        PowertrainType powerTrainType = PowertrainType.COMBUSTION;
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
+            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powerTrainType);
         });
 
         // Assert
@@ -126,10 +135,11 @@ class PowertrainModelTest {
         double torqueMax = 200;
         double rpmPowerMax = -300;
         double rpmTorqueMax = 400;
+        PowertrainType powerTrainType = PowertrainType.COMBUSTION;
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
+            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powerTrainType);
         });
 
         // Assert
@@ -143,10 +153,11 @@ class PowertrainModelTest {
         double torqueMax = 200;
         double rpmPowerMax = 300;
         double rpmTorqueMax = 0;
+        PowertrainType powerTrainType = PowertrainType.COMBUSTION;
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
+            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powerTrainType);
         });
 
         // Assert
@@ -160,10 +171,11 @@ class PowertrainModelTest {
         double torqueMax = 200;
         double rpmPowerMax = 300;
         double rpmTorqueMax = -400;
+        PowertrainType powerTrainType = PowertrainType.COMBUSTION;
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax);
+            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powerTrainType);
         });
 
         // Assert
@@ -175,10 +187,13 @@ class PowertrainModelTest {
         // Arrange
         double powerMax = 0;
         double torqueMax = 200;
+        Double rpmPowerMax = 0.0;
+        Double rpmTorqueMax = 0.0;
+        PowertrainType powerTrainType = PowertrainType.ELECTRIC;
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new PowertrainModel(powerMax, torqueMax);
+            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powerTrainType);
         });
 
         // Assert
@@ -190,10 +205,13 @@ class PowertrainModelTest {
         // Arrange
         double powerMax = -100;
         double torqueMax = 200;
+        Double rpmPowerMax = 0.0;
+        Double rpmTorqueMax = 0.0;
+        PowertrainType powerTrainType = PowertrainType.ELECTRIC;
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new PowertrainModel(powerMax, torqueMax);
+            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powerTrainType);
         });
 
         // Assert
@@ -205,10 +223,13 @@ class PowertrainModelTest {
         // Arrange
         double powerMax = 100;
         double torqueMax = 0;
+        Double rpmPowerMax = 0.0;
+        Double rpmTorqueMax = 0.0;
+        PowertrainType powerTrainType = PowertrainType.ELECTRIC;
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new PowertrainModel(powerMax, torqueMax);
+            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powerTrainType);
         });
 
         // Assert
@@ -220,13 +241,34 @@ class PowertrainModelTest {
         // Arrange
         double powerMax = 100;
         double torqueMax = -200;
+        Double rpmPowerMax = 0.0;
+        Double rpmTorqueMax = 0.0;
+        PowertrainType powerTrainType = PowertrainType.ELECTRIC;
 
         // Act & Assert
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
-            new PowertrainModel(powerMax, torqueMax);
+            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powerTrainType);
         });
 
         // Assert
         assertEquals("PowertrainModel parameters must be greater than 0", exception.getMessage());
+    }
+
+    @Test
+    void shouldThrowNullPointerExceptionException_whenPowertrainTypeIsNull() {
+        // Arrange
+        double powerMax = 100;
+        double torqueMax = 200;
+        double rpmPowerMax = 300;
+        double rpmTorqueMax = 400;
+        PowertrainType powerTrainType = null;
+
+        // Act & Assert
+        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
+            new PowertrainModel(powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, powerTrainType);
+        });
+
+        // Assert
+        assertEquals("PowertrainType must be defined", exception.getMessage());
     }
 }

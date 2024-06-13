@@ -20,6 +20,6 @@ public interface IVehicleFactory {
      * @param vehicleParameters The parameters of the vehicle. Must not be null.
      * @return The new vehicle instance.
      */
-    Vehicle createVehicle(VehicleID vehicleID, VehicleParameters vehicleParameters);
+    Vehicle createVehicle(VehicleID vehicleID, VehicleParameters vehicleParameters, long version);
 
 }

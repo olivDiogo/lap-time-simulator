@@ -18,7 +18,7 @@ public class SimulationVehicleDataOutDTO {
     public final double nEngMMax; // rpm at maximum torque
     public final List<Double> gears;
     public final double finalDriveRatio;
-    public final double mux; // longitudinal grip coefficient
-    public final double muy; // lateral grip coefficient
+    public final double mux0; // longitudinal grip coefficient
+    public final double muy0; // lateral grip coefficient
     public final double rrTyre; // tyre radius
 }

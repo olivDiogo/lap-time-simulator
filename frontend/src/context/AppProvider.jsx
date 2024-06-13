@@ -22,8 +22,9 @@ const initialState = {
     },
 
     selectedVehicle: {
-        vehicleId: null,
-        vehicleName: null,
+        loading: false,
+        error: null,
+        vehicle: null,
     },
 
     simulations: {
