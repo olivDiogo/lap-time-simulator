@@ -7,7 +7,7 @@
 Track::Track(const nlohmann::json &jTrack)
     :trackId(jTrack["trackId"]),
     trackName(jTrack["trackName"]),
-    trackPath("C:/Users/gonca/CLionProjects/TrackData/")
+    trackPath("resources/tracks/")
 {
     getTrackData(trackPath + trackName);
     calcCurvature();
