@@ -1,0 +1,27 @@
+{
+  "sim": {
+    "simulationId":"1e8709b9-46fc-4fe0-8a7a-4cc3bd6a3198",
+    "simulationName":"simulationName"
+  },
+  "vehicle": {
+    "vehicleId":"vehicleId",
+    "vehicleName":"vehicleName",
+    "sCz":0.5,
+    "sCx":-0.9,
+    "rBrkF2P":0.0,
+    "mCar":1000.0,
+    "PEngMax":80000.0,
+    "MEngMax":0.0,
+    "nEngPMax":0.0,
+    "nEngMMax":0.0,
+    "gears":[1, 2, 3, 4, 5],
+    "finalDriveRatio":0.0,
+    "mux0":1.0,
+    "muy0":1.0,
+    "rrTyre":0.0
+  },
+  "track": {
+    "trackId":"trackId",
+    "trackName":"Australia_racingline.track"
+  }
+}
