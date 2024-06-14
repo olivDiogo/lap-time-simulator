@@ -8,7 +8,14 @@
 
 using json = nlohmann::json;
 
+struct engPoint {
+    int gear;
+    double MEngineMax;
+    double MEngineMin;
+};
+
 class Vehicle {
+
 public:
     std::string vehicleId;
     std::string vehicleName;
@@ -19,11 +26,17 @@ public:
     std::vector<double> gears;
     double mux0, muy0;                           // Tyre Grip Parameters
     double rrTyre;                               // Tyre Rolling Radius;
+    std::vector<double> engCoeffs;
+
 
 public:
     explicit Vehicle(const json &jsonVeh);
 
     void getAvailableGrip(const double&, const double&, double&, double&) const;
+
+private:
+    void getEngineCoeffs();
+
 };
 
 #endif //VEHICLE_H
