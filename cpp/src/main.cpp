@@ -25,6 +25,8 @@ double calcVMax(const Vehicle*);
 
 Eigen::ArrayXd solveForward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim);
 
+Eigen::ArrayXd solveBackward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim);
+
 
 
 
@@ -75,10 +77,11 @@ int main(int argc, char* argv[]) {
 
     Eigen::ArrayXd vLim = calcVLim(veh, trk);
     Eigen::ArrayXd vForw = solveForward(veh, trk, vLim);
+    Eigen::ArrayXd vBack = solveBackward(veh, trk, vLim);
 
     std::cout << "\nWriting Results ..." << std::endl;
     try {
-        writeCSV(vForw, trk->data.curvature);
+        writeCSV(vForw, vBack);
         std::cout << ".csv file created." << std::endl;
     } catch (...) {
         std::cout << "Couldn't create .csv file" << std::endl;
@@ -206,23 +209,31 @@ Eigen::ArrayXd calcVLim(const Vehicle* veh,Track* trk){
 
 Eigen::ArrayXd solveForward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim) {
 
+    // Initialize constants
+    const double g {-9.81};
+    const double rhoAir{1.3};
+    const double kCz = 0.5 * veh->sCz * rhoAir;
+    const double kCx = 0.5 * veh->sCx * rhoAir;
+    const double Fz0 = - veh->mCar * g;
+
+    // Initialize variables
+    double muy_av {0}, mux_av {0}; //available grip
+    double ds {0}; //distance segment
+
+    // Initialize data arrays
+    Eigen::ArrayXd vForw(vLim.size());
+
     int minIdx;
     double vCurr = vLim.minCoeff(&minIdx);
-    const double g {9.81}, rhoAir{1.3};
-
-    Eigen::ArrayXd vForw(vLim.size());
     vForw(minIdx) = vCurr;
 
-    Eigen::ArrayXd ngear (vLim.size());
-
-    double muy_av {0}, mux_av {0};
-    double Fz0 = veh->mCar * g;
-    double ds {0};
-
     for(size_t i=0; i<vLim.size(); ++i) {
+
+        if (minIdx + i == vLim.size()-2)
+            int a = 1;
         // Calculate current and next index
-        unsigned short k = (minIdx + i) % (vLim.size() - 1);
-        unsigned short kp1 = (minIdx + i + 1) % (vLim.size() - 1);
+        unsigned short k = (minIdx + i) % (vLim.size());
+        unsigned short kp1 = (minIdx + i + 1) % (vLim.size());
         // Aerodynamic load
         double FzAero = -0.5 * veh->sCz * rhoAir * vForw[k] * vForw[k];
 
@@ -261,29 +272,78 @@ Eigen::ArrayXd solveForward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim)
         double vNext = std::pow(2 * Ax * ds + vForw[k]*vForw[k], 0.5);
 
         vForw[kp1] = vNext < vLim[kp1] ? vNext : vLim[kp1];
-        ngear[k] = NGear + 1;
     }
 
     return vForw;
+}
 
+Eigen::ArrayXd solveBackward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim) {
 
+    // Initialize constants
+    const double g {-9.81};
+    const double rhoAir{1.3};
+    const double kCz = 0.5 * veh->sCz * rhoAir;
+    const double kCx = 0.5 * veh->sCx * rhoAir;
+    const double Fz0 = - veh->mCar * g;
 
+    // Initialize variables
+    double muy_av {0}, mux_av {0}; //available grip
+    double ds {0}; //distance segment
 
+    // Initialize data arrays
+    Eigen::ArrayXd vBack(vLim.size());
 
+    // Find point of minimum vLim and place it accordingly in vBack
+    int minIdx;
+    double vCurr = vLim.minCoeff(&minIdx);
+    vBack(minIdx) = vCurr;
 
+    for(size_t i=0; i<vBack.size(); ++i) {
 
+        // Find current and next index
+        unsigned short k = (minIdx - i + vLim.size()) % (vLim.size());
+        unsigned short kp1 = (minIdx - i + vLim.size() - 1) % (vLim.size());
 
+        // Aerodynamic load
+        double FzAero = -kCz * vBack[k] * vBack[k];
 
+        // Total Vertical Load
+        double Fz = FzAero + Fz0;
 
+        // Lateral Acceleration at Current Point
+        double Ay = vBack[k] * vBack[k] * trk->data.curvature[k];
 
+        //Lateral Force
+        double Fy = Ay * veh->mCar;
 
+        //Used muy
+        float muy_req = Fy / Fz;
 
+        veh->getAvailableGrip(0,muy_req,mux_av,muy_av);
 
+        double FxEngine;
+        int NGear;
 
+        // Use available longitudinal grip to accelerate
+        double FxTyre = mux_av * Fz;
 
+        // Get optimal engine point
+        //veh->getEnginePoint(vBack[k], NGear, FxEngine);
+        //double Fx = std::min(FxTyre, FxEngine );
+        double FxAero = kCx * vBack[k] * vBack[k];
+        double Ax = (FxTyre - FxAero) / veh->mCar;
 
+        // Calculate speed at the next point
+        if (k - kp1 > 0)
+            ds = trk->data.distance(k) - trk->data.distance(kp1);
+        else
+            ds = trk->data.distance(k);
 
+        double vNext = std::sqrt(2 * Ax * ds + vBack[k]*vBack[k]);
 
+        vBack[kp1] = vNext < vLim[kp1] ? vNext : vLim[kp1];
+        //ngear[k] = NGear + 1;
     }
 
-
+    return vBack;
+}
