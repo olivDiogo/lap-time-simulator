@@ -5,23 +5,23 @@
   },
   "vehicle": {
     "vehicleId":"vehicleId",
-    "vehicleName":"vehicleName",
-    "sCz":0.5,
-    "sCx":-0.9,
-    "rBrkF2P":0.0,
-    "mCar":1000.0,
-    "PEngMax":80000.0,
-    "MEngMax":0.0,
-    "nEngPMax":0.0,
-    "nEngMMax":0.0,
-    "gears":[1, 2, 3, 4, 5],
-    "finalDriveRatio":0.0,
+    "vehicleName":"F3",
+    "sCz":-2.692,
+    "sCx":-0.908,
+    "rBrkF2P":1.0,
+    "mCar":655.0,
+    "PEngMax":281451.00,
+    "MEngMax":380.0,
+    "nEngPMax":8000.0,
+    "nEngMMax":6000.0,
+    "gears":[0.4, 0.552, 0.692, 0.846, 1.000, 1.167],
+    "finalDriveRatio": 0.286,
     "mux0":1.0,
-    "muy0":1.0,
-    "rrTyre":0.0
+    "muy0":1.5,
+    "rrTyre":0.290
   },
   "track": {
     "trackId":"trackId",
-    "trackName":"Australia_racingline.track"
+    "trackName":"Bahrain_racingline.track"
   }
 }

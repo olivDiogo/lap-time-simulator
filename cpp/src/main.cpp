@@ -19,11 +19,14 @@ Eigen::MatrixXd read_csv(const std::string& filename);
 
 Eigen::ArrayXd calcVLim(const Vehicle*,Track*);
 
-void writeCSV(const Eigen::ArrayXd &vec);
+void writeCSV(const Eigen::ArrayXd &vec1, const Eigen::ArrayXd &vec2);
 
 double calcVMax(const Vehicle*);
 
 Eigen::ArrayXd solveForward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim);
+
+
+
 
 int main(int argc, char* argv[]) {
 
@@ -75,14 +78,12 @@ int main(int argc, char* argv[]) {
 
     std::cout << "\nWriting Results ..." << std::endl;
     try {
-        writeCSV(vForw);
+        writeCSV(vForw, trk->data.curvature);
         std::cout << ".csv file created." << std::endl;
     } catch (...) {
         std::cout << "Couldn't create .csv file" << std::endl;
 
     }
-
-
 
     delete veh;
     delete trk;
@@ -100,6 +101,9 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
+
+
+
 
 Eigen::MatrixXd read_csv(const std::string& filename) {
     std::ifstream file(filename);
@@ -149,7 +153,7 @@ Eigen::MatrixXd read_csv(const std::string& filename) {
     return matrix;
 }
 
-void writeCSV(const Eigen::ArrayXd &vec) {
+void writeCSV(const Eigen::ArrayXd &vec1, const Eigen::ArrayXd &vec2) {
     const std::string filename = "output.csv";
     std::ofstream file(filename);
     if (!file.is_open()) {
@@ -158,8 +162,8 @@ void writeCSV(const Eigen::ArrayXd &vec) {
     }
 
     // Write data to the CSV file
-    for (const double val : vec) {
-        file << val << "\n";
+    for (size_t i=0; i<vec1.size(); i++) {
+        file << vec1[i] << "," << vec2[i] <<"\n";
     }
 
     file.close();
@@ -183,7 +187,8 @@ Eigen::ArrayXd calcVLim(const Vehicle* veh,Track* trk){
     for(const double c : trk->data.curvature) {
 
         const double num = -veh->muy0 * veh->mCar * g;
-        const double den = 0.5 * veh->muy0 * veh->sCz * rhoAir - veh->mCar * c;
+
+        const double den = 0.5 * veh->muy0 * (-veh->sCz) * rhoAir - veh->mCar * c;
 
         auto base = std::complex<double>(num/den, 0.0);
 
@@ -208,6 +213,8 @@ Eigen::ArrayXd solveForward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim)
     Eigen::ArrayXd vForw(vLim.size());
     vForw(minIdx) = vCurr;
 
+    Eigen::ArrayXd ngear (vLim.size());
+
     double muy_av {0}, mux_av {0};
     double Fz0 = veh->mCar * g;
     double ds {0};
@@ -217,7 +224,7 @@ Eigen::ArrayXd solveForward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim)
         unsigned short k = (minIdx + i) % (vLim.size() - 1);
         unsigned short kp1 = (minIdx + i + 1) % (vLim.size() - 1);
         // Aerodynamic load
-        double FzAero = 0.5 * veh->sCz * rhoAir * vForw[k] * vForw[k];
+        double FzAero = -0.5 * veh->sCz * rhoAir * vForw[k] * vForw[k];
 
         // Total Vertical Load
         double Fz = FzAero + Fz0;
@@ -229,13 +236,21 @@ Eigen::ArrayXd solveForward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim)
         double Fy = Ay * veh->mCar;
 
         //Used muy
-        double muy_req = Fy / Fz;
+        float muy_req = Fy / Fz;
 
         veh->getAvailableGrip(0,muy_req,mux_av,muy_av);
 
+        double FxEngine;
+        int NGear;
+
         // Use available longitudinal grip to accelerate
-        double Fx = mux_av * Fz;
-        double Ax = Fx / veh->mCar;
+        double FxTyre = mux_av * Fz;
+
+        // Get optimal engine point
+        veh->getEnginePoint(vForw[k], NGear, FxEngine);
+        double Fx = std::min(FxTyre, FxEngine );
+        double FxAero = 0.5 * veh->sCx * rhoAir * vForw[k] * vForw[k];
+        double Ax = (Fx + FxAero) / veh->mCar;
 
         // Calculate speed at the next point
         if (trk->data.distance(kp1) - trk->data.distance(k) > 0)
@@ -243,9 +258,10 @@ Eigen::ArrayXd solveForward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim)
         else
             ds = trk->data.distance(kp1);
 
-        double vNext = std::pow(2 * Ax * ds + vCurr*vCurr, 0.5);
+        double vNext = std::pow(2 * Ax * ds + vForw[k]*vForw[k], 0.5);
 
         vForw[kp1] = vNext < vLim[kp1] ? vNext : vLim[kp1];
+        ngear[k] = NGear + 1;
     }
 
     return vForw;

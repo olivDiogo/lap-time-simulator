@@ -12,7 +12,7 @@ Track::Track(const nlohmann::json &jTrack)
     getTrackData(trackPath + trackName);
     calcCurvature();
     //data.curvature = Eigen::ArrayXd::Ones(200);
-    data.curvature = movingAvg(data.curvature, 50);
+    data.curvature = movingAvg(data.curvature, 25);
 }
 
 void Track::getTrackData(const std::string &trackPath) {
