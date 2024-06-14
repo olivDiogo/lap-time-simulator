@@ -78,14 +78,14 @@ int main(int argc, char* argv[]) {
     Eigen::ArrayXd vLim = calcVLim(veh, trk);
     Eigen::ArrayXd vForw = solveForward(veh, trk, vLim);
     Eigen::ArrayXd vBack = solveBackward(veh, trk, vLim);
+    Eigen::ArrayXd vSim = vForw.min(vBack);
 
     std::cout << "\nWriting Results ..." << std::endl;
     try {
-        writeCSV(vForw, vBack);
+        writeCSV(trk->data.distance, vSim);
         std::cout << ".csv file created." << std::endl;
     } catch (...) {
         std::cout << "Couldn't create .csv file" << std::endl;
-
     }
 
     delete veh;
