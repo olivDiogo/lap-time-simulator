@@ -8,9 +8,9 @@
 
 class Track {
 public:
-    std::string trackId;
-    std::string trackName;
-    std::string trackPath;
+    std::string m_trackId;
+    std::string m_trackName;
+    std::string m_trackPath;
 
     // Declaration of dataStruct
     struct dataStruct {
@@ -20,7 +20,7 @@ public:
         Eigen::ArrayXd curvature;
     };
 
-    dataStruct data;
+    dataStruct m_data;
 
 public:
     explicit Track(const nlohmann::json &jTrack);
@@ -29,7 +29,6 @@ public:
 
 private:
     void getTrackData(const std::string &trackPath);
-
 
 };
 

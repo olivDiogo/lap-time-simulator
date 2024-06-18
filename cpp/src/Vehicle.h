@@ -7,7 +7,6 @@
 #include <iostream>
 #include <Eigen/Dense>
 
-using json = nlohmann::json;
 
 struct engPoint {
     int gear;
@@ -18,25 +17,42 @@ struct engPoint {
 class Vehicle {
 
 public:
-    std::string vehicleId;
-    std::string vehicleName;
-    double sCz, sCx;                             // Aerodynamic Parameters
-    double rBrkF2P;                              // Brake Force to Pressure Ratio
-    double mCar;                                 // Car Mass
-    double PEngMax, MEngMax, nEngPMax, nEngMMax; // Engine Parameters
-    Eigen::ArrayXd gears;
-    double rrTyre;                               // Tyre Rolling Radius;
-    std::vector<double> engCoeffs;
-    double finalDriveRatio;
-    double mux0, muy0;                           // Tyre Grip Parameters
+    std::string m_vehicleId;
+    std::string m_vehicleName;
 
+    //General
+    double m_rBrkF2P;
+    double m_mCar;
+
+    //Aerodynamic
+    double m_sCz;
+    double m_sCx;
+
+    //Powertrain
+    std::string m_type;
+    double m_PEngMax;
+    double m_MEngMax;
+    double m_nEngPMax;
+    double m_nEngMMax; // Engine Parameters
+    Eigen::ArrayXd m_gears;
+    std::vector<double> m_engCoeffs;
+    double m_finalDriveRatio;
+
+    //Tyre Parameters
+    double m_mux0;
+    double m_muy0;
+    double m_dmux = 0;
+    double m_dmuy = 0;
+    double m_rrTyre;
 
 public:
-    explicit Vehicle(const json &jsonVeh);
+    explicit Vehicle(const nlohmann::json &jsonVeh);
 
     void getAvailableGrip(const double&, const double&, double&, double&) const;
 
     void getEnginePoint(const double& vCar, int &gear, double &FxEngineMax) const;
+
+    double calcVMax(const double &rhoAir) const;
 
 };
 

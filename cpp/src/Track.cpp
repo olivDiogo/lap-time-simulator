@@ -1,18 +1,17 @@
 #include "Track.h"
 #include <fstream>
 #include <iostream>
-#include <cmath>
 #include <numeric>
 
 Track::Track(const nlohmann::json &jTrack)
-    :trackId(jTrack["trackId"]),
-    trackName(jTrack["trackName"]),
-    trackPath("resources/tracks/")
+    :m_trackId(jTrack["trackId"]),
+     m_trackName(jTrack["trackName"]),
+     m_trackPath("resources/tracks/")
 {
-    getTrackData(trackPath + trackName);
+    getTrackData(m_trackPath + m_trackName);
     calcCurvature();
     //data.curvature = Eigen::ArrayXd::Ones(200);
-    data.curvature = movingAvg(data.curvature, 25);
+    m_data.curvature = movingAvg(m_data.curvature, 35);
 }
 
 void Track::getTrackData(const std::string &trackPath) {
@@ -48,49 +47,26 @@ void Track::getTrackData(const std::string &trackPath) {
         }
 
     }
-    //Resize Eigen Vectors
-    //data.distance.resize(distance.size());
-    //data.xCoord.resize(distance.size());
-    //data.yCoord.resize(distance.size());
-    //data.curvature.resize(distance.size());
 
     //Assign
-    data.distance = Eigen::Map<Eigen::ArrayXd>(distance.data(), distance.size());
-    data.xCoord = Eigen::Map<Eigen::ArrayXd>(xCoord.data(), xCoord.size());
-    data.yCoord = Eigen::Map<Eigen::ArrayXd>(yCoord.data(), yCoord.size());
+    m_data.distance = Eigen::Map<Eigen::ArrayXd>(distance.data(), distance.size());
+    m_data.xCoord = Eigen::Map<Eigen::ArrayXd>(xCoord.data(), xCoord.size());
+    m_data.yCoord = Eigen::Map<Eigen::ArrayXd>(yCoord.data(), yCoord.size());
 
     file.close();
 }
 
 void Track::calcCurvature() {
 
-    const Eigen::ArrayXd dx = diff(data.xCoord);
+    const Eigen::ArrayXd dx = diff(m_data.xCoord);
     const Eigen::ArrayXd ddx = diff(dx);
-    const Eigen::ArrayXd dy = diff(data.yCoord);
+    const Eigen::ArrayXd dy = diff(m_data.yCoord);
     const Eigen::ArrayXd ddy = diff(dy);
 
     const Eigen::ArrayXd num = (dx * ddy - dy * ddx).abs();
     const Eigen::ArrayXd den = (dx * dx + dy * dy).pow(1.5);
 
-    data.curvature = (den.array() == 0).select(0, num/den);
-
-    //std::vector<double> curvature(data.distance.size());
-
-    /*const Eigen::ArrayXd dx = diff(data.xCoord);
-    const Eigen::ArrayXd ddx = diff(dx);
-    const Eigen::ArrayXd dy = diff(data.yCoord);
-    const Eigen::ArrayXd ddy = diff(dy);
-
-    const Eigen::ArrayXd num2 = (dx * ddy - dy * ddx).abs();
-
-    for(size_t i=0; i<dx.size(); ++i){
-        double num = std::abs(dx[i] * ddy[i] - dy[i] * ddx[i]);
-        double den = std::pow(dx[i] * dx[i] + dy[i] * dy[i], 1.5);
-        curvature[i] = den == 0 ? 0 : num/den;
-    }
-
-    data.curvature = Eigen::Map<Eigen::ArrayXd>(curvature.data(), curvature.size());*/
-
+    m_data.curvature = (den.array() == 0).select(0, num/den);
 }
 
 Eigen::ArrayXd diff(const Eigen::ArrayXd &vec) {

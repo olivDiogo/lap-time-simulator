@@ -4,70 +4,83 @@
 
 constexpr double RPM2RADPS {0.10472};
 
-Vehicle::Vehicle(const json &jsonVeh)
-    :vehicleId(jsonVeh["vehicleId"]),
-     vehicleName(jsonVeh["vehicleName"]),
-     sCz(jsonVeh["sCz"]),
-     sCx(jsonVeh["sCx"]),
-     rBrkF2P(jsonVeh["rBrkF2P"]),
-     mCar(jsonVeh["mCar"]),
-     PEngMax(jsonVeh["PEngMax"]),
-     MEngMax(jsonVeh["MEngMax"]),
-     nEngPMax(jsonVeh["nEngPMax"]),
-     nEngMMax(jsonVeh["nEngMMax"]),
-     gears(Eigen::Map<Eigen::ArrayXd>(jsonVeh["gears"].get<std::vector<double>>().data(), jsonVeh["gears"].get<std::vector<double>>().size())),
+Vehicle::Vehicle(const nlohmann::json &jsonVeh)
+    :m_vehicleId(jsonVeh["vehicleId"]),
+     m_vehicleName(jsonVeh["vehicleName"]),
+     m_rBrkF2P(jsonVeh["rBrkF2P"]),
+     m_mCar(jsonVeh["mCar"]),
+     m_sCz(jsonVeh["sCz"]),
+     m_sCx(jsonVeh["sCx"]),
+     m_type(jsonVeh["type"]),
+     m_PEngMax(jsonVeh["PEngMax"]),
+     m_MEngMax(jsonVeh["MEngMax"]),
+
      //gears(jsonVeh["gears"].get<Eigen::ArrayXd>),
-     engCoeffs(3),
-     finalDriveRatio(jsonVeh["finalDriveRatio"]),
-     mux0(jsonVeh["mux0"]),
-     muy0(jsonVeh["muy0"]),
-     rrTyre(jsonVeh["rrTyre"])
+     m_engCoeffs(3),
+     m_finalDriveRatio(jsonVeh["finalDriveRatio"]),
+     m_mux0(jsonVeh["mux0"]),
+     m_muy0(jsonVeh["muy0"]),
+     m_rrTyre(jsonVeh["rrTyre"])
 {
-    //2nd order polynomial
-    const double MEngPMax = PEngMax / (nEngPMax * RPM2RADPS);
+    if(m_type == "combustion") {
+        m_nEngPMax = jsonVeh["nEngPMax"];
+        m_nEngMMax = jsonVeh["nEngMMax"];
 
-    // Old Formulation
-    /*engCoeffs[0] = 0;
-    engCoeffs[1] = (MEngPMax * nEngMMax*nEngMMax - MEngMax * nEngPMax*nEngPMax) / (nEngMMax * nEngPMax * (nEngMMax - nEngPMax));
-    engCoeffs[2] = - (nEngMMax * MEngPMax - nEngPMax*MEngMax) / (nEngMMax * nEngPMax * (nEngMMax - nEngPMax));*/
+        m_gears = Eigen::Map<Eigen::ArrayXd>(jsonVeh["gears"].get<std::vector<double>>().data(), jsonVeh["gears"].get<std::vector<double>>().size());
 
-    // New Formulation
-    engCoeffs[0] = 0;
-    engCoeffs[1] = 2 * MEngMax/(nEngMMax * RPM2RADPS);
-    engCoeffs[2] = -MEngMax/(nEngMMax*RPM2RADPS * nEngMMax*RPM2RADPS);
+        //const double MEngPMax = m_PEngMax / (m_nEngPMax * RPM2RADPS);
+
+        // New Formulation
+        m_engCoeffs[0] = 0;
+        m_engCoeffs[1] = 2 * m_MEngMax/(m_nEngMMax * RPM2RADPS);
+        m_engCoeffs[2] = -m_MEngMax/(m_nEngMMax*RPM2RADPS * m_nEngMMax*RPM2RADPS);
+    }
+    else if (m_type == "electric") {
+        //m_gears = {1,1,1,1};
+    }
 }
 
 void Vehicle::getAvailableGrip(const double & mux_used, const double & muy_used, double & mux_av, double & muy_av) const {
 
     std::cout << std::fixed;
     std::cout << std::setprecision(3);
-    if(mux_used > (mux0 + 0.0001)) {
-        std::cout << "mux_used (" << mux_used << ") cannot be greater than mux0 (" << mux0 << ")" << std::endl;
+    if(mux_used > (m_mux0 + 0.0001)) {
+        std::cout << "mux_used (" << mux_used << ") cannot be greater than mux0 (" << m_mux0 << ")" << std::endl;
         return;
     }
-    if (muy_used > (muy0 + 0.0001)) {
-        std::cout << "muy_used (" << muy_used << ") cannot be greater than muy0 (" << muy0 << ")" << std::endl;
+    if (muy_used > (m_muy0 + 0.0001)) {
+        std::cout << "muy_used (" << muy_used << ") cannot be greater than muy0 (" << m_muy0 << ")" << std::endl;
         return;
     }
 
-    std::complex<double> res;
-
-    res = std::pow(1 - (muy_used * muy_used) / (muy0 * muy0), 0.5) * mux0;
+    std::complex<double> res = std::pow(1 - (muy_used * muy_used) / (m_muy0 * m_muy0), 0.5) * m_mux0;
     mux_av = res.real();
 
-    res = std::pow(1 - (mux_used * mux_used) / (mux0 * mux0), 0.5) * muy0;
+    res = std::pow(1 - (mux_used * mux_used) / (m_mux0 * m_mux0), 0.5) * m_muy0;
     muy_av = res.real();
 }
 
 void Vehicle::getEnginePoint(const double &vCar, int &gear, double &FxEngineMax) const {
+    if (m_type == "combustion"){
 
-    Eigen::ArrayXd engSpeeds = vCar / rrTyre / finalDriveRatio / gears; //calculate back engine speed for all gears
+        Eigen::ArrayXd nEngineVec = vCar / m_rrTyre / m_finalDriveRatio / m_gears; //calculate back engine speed for all gears
+        Eigen::ArrayXd MEngineVec = m_engCoeffs[0] + nEngineVec * m_engCoeffs[1] + nEngineVec * nEngineVec * m_engCoeffs[2];
+        Eigen::ArrayXd FEngineVec = MEngineVec / m_gears / m_finalDriveRatio / m_rrTyre;
+        FxEngineMax = FEngineVec.maxCoeff(&gear);
 
-    Eigen::ArrayXd engTorques = engCoeffs[0] + engSpeeds * engCoeffs[1] + engSpeeds * engSpeeds * engCoeffs[2];
+    } else if (m_type == "electric") {
 
-    Eigen::ArrayXd engForces = engTorques / gears / finalDriveRatio / rrTyre;
+        gear = 1;
+        double nEngine = vCar / m_rrTyre / m_finalDriveRatio;
+        double MEngine = std::min(m_MEngMax, m_PEngMax/nEngine);
+        FxEngineMax = MEngine / m_finalDriveRatio / m_rrTyre;
+    }
 
-    FxEngineMax = engForces.maxCoeff(&gear);
+}
+
+double Vehicle::calcVMax(const double &rhoAir) const {
+
+    return std::pow(2 * m_PEngMax / (rhoAir * - m_sCx), static_cast<double>(1)/3);
 }
 
 

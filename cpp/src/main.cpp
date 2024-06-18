@@ -21,8 +21,6 @@ Eigen::ArrayXd calcVLim(const Vehicle*,Track*);
 
 void writeCSV(const Eigen::ArrayXd &vec1, const Eigen::ArrayXd &vec2);
 
-double calcVMax(const Vehicle*);
-
 Eigen::ArrayXd solveForward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim);
 
 Eigen::ArrayXd solveBackward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim);
@@ -59,37 +57,44 @@ int main(int argc, char* argv[]) {
         std::cout << it.key() << " : " << it.value() << std::endl;
     }*/
 
-    auto veh = new Vehicle(jVeh);
+    //auto veh = new Vehicle(jVeh);
     //std::cout << veh->gears.at(0) << std::endl;
+    Vehicle veh(jVeh);
 
-    auto trk = new Track(jTrk);
+    //auto trk = new Track(jTrk);
     //std::cout << trk->data.xCoord[0] << std::endl;
+    Track trk(jTrk);
 
     std::cout << "\n--- Starting Simulation ---" << std::endl;
     std::cout << "Simulation ID: " << j["sim"]["simulationId"] << std::endl;
-    std::cout << "Vehicle ID: " << veh->vehicleId << std::endl;
-    std::cout << "Track ID: " << trk->trackId << std::endl;
+    //std::cout << "Vehicle ID: " << veh->m_vehicleId << std::endl;
+    //std::cout << "Track ID: " << trk->m_trackId << std::endl;
+    std::cout << "Vehicle ID: " << veh.m_vehicleId << std::endl;
+    std::cout << "Track ID: " << trk.m_trackId << std::endl;
+
 
     // VLim calculation
-    double vMax = calcVMax(veh);
+    double vMax = veh.calcVMax(1.20);
     std::cout << "\nVehicle Top Speed: " << std::endl;
     std::cout << vMax << " m/s" << std::endl;
 
-    Eigen::ArrayXd vLim = calcVLim(veh, trk);
-    Eigen::ArrayXd vForw = solveForward(veh, trk, vLim);
-    Eigen::ArrayXd vBack = solveBackward(veh, trk, vLim);
+    Eigen::ArrayXd vLim = calcVLim(&veh, &trk);
+    Eigen::ArrayXd vForw = solveForward(&veh, &trk, vLim);
+    Eigen::ArrayXd vBack = solveBackward(&veh, &trk, vLim);
     Eigen::ArrayXd vSim = vForw.min(vBack);
+    Eigen::ArrayXd vSim2 = (vForw < vBack).select(vForw,vBack);
+
 
     std::cout << "\nWriting Results ..." << std::endl;
     try {
-        writeCSV(trk->data.distance, vSim);
+        writeCSV(trk.m_data.distance, vSim);
         std::cout << ".csv file created." << std::endl;
     } catch (...) {
         std::cout << "Couldn't create .csv file" << std::endl;
     }
 
-    delete veh;
-    delete trk;
+    //delete veh;
+    //delete trk;
 
     // Get the ending timepoint
     auto tEnd = std::chrono::high_resolution_clock::now();
@@ -172,26 +177,20 @@ void writeCSV(const Eigen::ArrayXd &vec1, const Eigen::ArrayXd &vec2) {
     file.close();
 }
 
-double calcVMax(const Vehicle* veh) {
-    const double rhoAir = 1.3;
-
-    return std::pow(2 * veh->PEngMax / (rhoAir * - veh->sCx), static_cast<double>(1)/3);
-}
-
 Eigen::ArrayXd calcVLim(const Vehicle* veh,Track* trk){
 
     const double rhoAir = 1.3;
-    Eigen::ArrayXd vLim(trk->data.curvature.size());
+    Eigen::ArrayXd vLim(trk->m_data.curvature.size());
     const double g = 9.81;
 
     //Calculate Top Speed from power balance
-    const double vMax = calcVMax(veh);
+    const double vMax = veh->calcVMax(rhoAir);
     int k = 0;
-    for(const double c : trk->data.curvature) {
+    for(const double c : trk->m_data.curvature) {
 
-        const double num = -veh->muy0 * veh->mCar * g;
+        const double num = -veh->m_muy0 * veh->m_mCar * g;
 
-        const double den = 0.5 * veh->muy0 * (-veh->sCz) * rhoAir - veh->mCar * c;
+        const double den = 0.5 * veh->m_muy0 * (-veh->m_sCz) * rhoAir - veh->m_mCar * c;
 
         auto base = std::complex<double>(num/den, 0.0);
 
@@ -212,9 +211,9 @@ Eigen::ArrayXd solveForward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim)
     // Initialize constants
     const double g {-9.81};
     const double rhoAir{1.3};
-    const double kCz = 0.5 * veh->sCz * rhoAir;
-    const double kCx = 0.5 * veh->sCx * rhoAir;
-    const double Fz0 = - veh->mCar * g;
+    const double kCz = 0.5 * veh->m_sCz * rhoAir;
+    const double kCx = 0.5 * veh->m_sCx * rhoAir;
+    const double Fz0 = - veh->m_mCar * g;
 
     // Initialize variables
     double muy_av {0}, mux_av {0}; //available grip
@@ -235,16 +234,16 @@ Eigen::ArrayXd solveForward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim)
         unsigned short k = (minIdx + i) % (vLim.size());
         unsigned short kp1 = (minIdx + i + 1) % (vLim.size());
         // Aerodynamic load
-        double FzAero = -0.5 * veh->sCz * rhoAir * vForw[k] * vForw[k];
+        double FzAero = -0.5 * veh->m_sCz * rhoAir * vForw[k] * vForw[k];
 
         // Total Vertical Load
         double Fz = FzAero + Fz0;
 
         // Lateral Acceleration at Current Point
-        double Ay = vForw[k] * vForw[k] * trk->data.curvature[k];
+        double Ay = vForw[k] * vForw[k] * trk->m_data.curvature[k];
 
         //Lateral Force
-        double Fy = Ay * veh->mCar;
+        double Fy = Ay * veh->m_mCar;
 
         //Used muy
         float muy_req = Fy / Fz;
@@ -260,14 +259,14 @@ Eigen::ArrayXd solveForward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim)
         // Get optimal engine point
         veh->getEnginePoint(vForw[k], NGear, FxEngine);
         double Fx = std::min(FxTyre, FxEngine );
-        double FxAero = 0.5 * veh->sCx * rhoAir * vForw[k] * vForw[k];
-        double Ax = (Fx + FxAero) / veh->mCar;
+        double FxAero = 0.5 * veh->m_sCx * rhoAir * vForw[k] * vForw[k];
+        double Ax = (Fx + FxAero) / veh->m_mCar;
 
         // Calculate speed at the next point
-        if (trk->data.distance(kp1) - trk->data.distance(k) > 0)
-            ds = trk->data.distance(kp1) - trk->data.distance(k);
+        if (trk->m_data.distance(kp1) - trk->m_data.distance(k) > 0)
+            ds = trk->m_data.distance(kp1) - trk->m_data.distance(k);
         else
-            ds = trk->data.distance(kp1);
+            ds = trk->m_data.distance(kp1);
 
         double vNext = std::pow(2 * Ax * ds + vForw[k]*vForw[k], 0.5);
 
@@ -282,9 +281,9 @@ Eigen::ArrayXd solveBackward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim
     // Initialize constants
     const double g {-9.81};
     const double rhoAir{1.3};
-    const double kCz = 0.5 * veh->sCz * rhoAir;
-    const double kCx = 0.5 * veh->sCx * rhoAir;
-    const double Fz0 = - veh->mCar * g;
+    const double kCz = 0.5 * veh->m_sCz * rhoAir;
+    const double kCx = 0.5 * veh->m_sCx * rhoAir;
+    const double Fz0 = - veh->m_mCar * g;
 
     // Initialize variables
     double muy_av {0}, mux_av {0}; //available grip
@@ -311,10 +310,10 @@ Eigen::ArrayXd solveBackward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim
         double Fz = FzAero + Fz0;
 
         // Lateral Acceleration at Current Point
-        double Ay = vBack[k] * vBack[k] * trk->data.curvature[k];
+        double Ay = vBack[k] * vBack[k] * trk->m_data.curvature[k];
 
         //Lateral Force
-        double Fy = Ay * veh->mCar;
+        double Fy = Ay * veh->m_mCar;
 
         //Used muy
         float muy_req = Fy / Fz;
@@ -331,13 +330,13 @@ Eigen::ArrayXd solveBackward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim
         //veh->getEnginePoint(vBack[k], NGear, FxEngine);
         //double Fx = std::min(FxTyre, FxEngine );
         double FxAero = kCx * vBack[k] * vBack[k];
-        double Ax = (FxTyre - FxAero) / veh->mCar;
+        double Ax = (FxTyre - FxAero) / veh->m_mCar;
 
         // Calculate speed at the next point
         if (k - kp1 > 0)
-            ds = trk->data.distance(k) - trk->data.distance(kp1);
+            ds = trk->m_data.distance(k) - trk->m_data.distance(kp1);
         else
-            ds = trk->data.distance(k);
+            ds = trk->m_data.distance(k);
 
         double vNext = std::sqrt(2 * Ax * ds + vBack[k]*vBack[k]);
 
