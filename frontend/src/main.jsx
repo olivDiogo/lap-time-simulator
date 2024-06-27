@@ -7,7 +7,9 @@ import AppProvider from "./context/AppProvider.jsx";
 import DashboardPage from "./pages/DashboardPage.jsx";
 import TracksListPage from "./pages/TracksListPage.jsx";
 import VehicleModelListPage from "./pages/VehicleModelsListPage.jsx";
-import EditVehicleModelPage from "./pages/EditVehicleModelPage.jsx";
+import UpdateVehicleModelPage from "./pages/UpdateVehicleModelPage.jsx";
+import CreateVehicleModelPage from "./pages/CreateVehicleModelPage.jsx";
+import CreateSimulationPage from "./pages/CreateSimulationPage.jsx";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <AppProvider>
@@ -18,7 +20,9 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     <Route path="/dashboard" element={<DashboardPage/>}/>
                     <Route path="/tracks" element={<TracksListPage/>}/>
                     <Route path="/vehicleModels" element={<VehicleModelListPage/>}/>
-                    <Route path="/vehicleModels/:id" element={<EditVehicleModelPage/>}/>
+                    <Route path="/vehicleModels/create" element={<CreateVehicleModelPage/>}/>
+                    <Route path="/vehicleModels/:id" element={<UpdateVehicleModelPage/>}/>
+                    <Route path="/createSimulation" element={<CreateSimulationPage/>}/>
                 </Routes>
             </Router>
         </React.StrictMode>,
