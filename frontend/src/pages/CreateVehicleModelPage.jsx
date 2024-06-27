@@ -236,7 +236,7 @@ export default function CreateVehicleModelPage() {
                                 <BrakeModelCreate/>
                                 <ChassisModelCreate/>
                                 <PowertrainModelCreate/>
-                                <TransmissionMendodelCreate/>
+                                <TransmissionModelCreate/>
                                 <TyreModelCreate/>
 
                                 {alert.showAlert && (

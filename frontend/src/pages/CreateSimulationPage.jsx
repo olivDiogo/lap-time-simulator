@@ -133,7 +133,7 @@ export default function CreateSimulationPage() {
                             noWrap
                             sx={{ flexGrow: 1 }}
                         >
-                            Dashboard
+                            Create Simulation
                         </Typography>
                         <IconButton color="inherit">
                             <Badge badgeContent={4} color="secondary">
