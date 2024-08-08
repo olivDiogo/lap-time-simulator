@@ -25,7 +25,7 @@ export default function TrackSelector() {
     }, [dispatch]);
 
     return (
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ m: 1, width: "100%" }}>
             <FormControl fullWidth>
                 <InputLabel id="track-selector-label">Track</InputLabel>
                 <Select

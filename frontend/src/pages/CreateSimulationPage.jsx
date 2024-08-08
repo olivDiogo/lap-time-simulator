@@ -188,7 +188,7 @@ export default function CreateSimulationPage() {
                                 display: 'flex',
                                 flexDirection: 'column',
                                 alignItems: 'center',
-                                height: 400,
+                                height: 420,
                                 gap: 3
                             }}
                         >

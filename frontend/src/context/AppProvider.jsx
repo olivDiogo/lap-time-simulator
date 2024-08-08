@@ -37,6 +37,12 @@ const initialState = {
         simulationName: null,
     },
 
+    startSimulation: {
+        loading: false,
+        simulationId: null,
+        error: null,
+    },
+
     createSimulation: {
         loading: false,
         vehicleId: null,

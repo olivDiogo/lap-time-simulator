@@ -10,6 +10,7 @@ import VehicleModelListPage from "./pages/VehicleModelsListPage.jsx";
 import UpdateVehicleModelPage from "./pages/UpdateVehicleModelPage.jsx";
 import CreateVehicleModelPage from "./pages/CreateVehicleModelPage.jsx";
 import CreateSimulationPage from "./pages/CreateSimulationPage.jsx";
+import SimulationResultsPage from "./pages/SimulationResultsPage.jsx";
 
 ReactDOM.createRoot(document.getElementById('root')).render(
     <AppProvider>
@@ -23,6 +24,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
                     <Route path="/vehicleModels/create" element={<CreateVehicleModelPage/>}/>
                     <Route path="/vehicleModels/:id" element={<UpdateVehicleModelPage/>}/>
                     <Route path="/createSimulation" element={<CreateSimulationPage/>}/>
+                    <Route path="/simulations" element={<SimulationResultsPage/>}/>
                 </Routes>
             </Router>
         </React.StrictMode>,

@@ -5,7 +5,7 @@ import {
     fetchVehiclesFromServer,
     postCreatedVehicleModelToServer,
     postCreateSimulationToServer,
-    postUpdatedVehicleModelToServer
+    postUpdatedVehicleModelToServer, startSimulationInServer
 } from "../services/Service.jsx";
 
 export const FETCH_TRACKS_STARTED = 'FETCH_TRACKS_STARTED';
@@ -58,6 +58,10 @@ export const POST_CREATED_VEHICLE_MODEL_FAILURE = 'POST_CREATED_VEHICLE_MODEL_FA
 export const POST_CREATE_SIMULATION_STARTED = 'POST_CREATE_SIMULATION_STARTED';
 export const POST_CREATE_SIMULATION_SUCCESS = 'POST_CREATE_SIMULATION_SUCCESS';
 export const POST_CREATE_SIMULATION_FAILURE = 'POST_CREATE_SIMULATION_FAILURE';
+
+export const POST_START_SIMULATION_STARTED = 'POST_START_SIMULATION_STARTED';
+export const POST_START_SIMULATION_SUCCESS = 'POST_START_SIMULATION_SUCCESS';
+export const POST_START_SIMULATION_FAILURE = 'POST_START_SIMULATION_FAILURE';
 
 export const RESET_SELECTED_VEHICLE = 'RESET_SELECTED_VEHICLE';
 
@@ -699,6 +703,51 @@ export function updateSimulationName(dispatch, simulationName) {
         }
     };
     dispatch(action);
+}
+
+/**
+ * Sends a request to the server to start a simulation
+ * @param dispatch - dispatch function to dispatch actions
+ * @param simulationId - simulationId
+ */
+export function postStartSimulation(dispatch, simulationId) {
+    const action = {
+        type: POST_START_SIMULATION_STARTED,
+        payload: {
+            simulationId: simulationId
+        }
+    };
+    dispatch(action);
+
+    const success = (res) => {
+        const action = postStartSimulationSuccess(res);
+        dispatch(action);
+    };
+
+    const failure = (err) => {
+        const action = postStartSimulationFailure(err);
+        dispatch(action);
+    }
+
+    startSimulationInServer(simulationId, success, failure);
+}
+
+function postStartSimulationSuccess(data) {
+    return {
+        type: POST_START_SIMULATION_SUCCESS,
+        payload: {
+            data: data,
+        },
+    }
+}
+
+function postStartSimulationFailure(error) {
+    return {
+        type: POST_START_SIMULATION_FAILURE,
+        payload: {
+            error: error,
+        }
+    }
 }
 
 export function hideAlert(dispatch) {

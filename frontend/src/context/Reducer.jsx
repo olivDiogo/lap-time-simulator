@@ -42,6 +42,9 @@ import {
     POST_CREATE_SIMULATION_SUCCESS,
     POST_CREATE_SIMULATION_FAILURE,
     UPDATE_SIMULATION_NAME,
+    POST_START_SIMULATION_STARTED,
+    POST_START_SIMULATION_SUCCESS,
+    POST_START_SIMULATION_FAILURE,
 } from "./Actions.jsx";
 
 function reducer(state, action) {
@@ -506,6 +509,43 @@ function reducer(state, action) {
                 simulation: {
                     ...state.simulation,
                     simulationName: action.payload.simulationName
+                }
+            }
+
+        case POST_START_SIMULATION_STARTED:
+            return {
+                ...state,
+                startSimulation: {
+                    ...state.startSimulation,
+                    simulationId: action.payload.simulationId
+                }
+            }
+
+        case POST_START_SIMULATION_SUCCESS:
+            return {
+                ...state,
+                startSimulation: {
+                    ...state.startSimulation,
+                    simulationId: null
+                },
+                alert: {
+                    alertMessage: 'Simulation started successfully',
+                    alertType: 'success',
+                    showAlert: true,
+                }
+            }
+
+        case POST_START_SIMULATION_FAILURE:
+            return {
+                ...state,
+                startSimulation: {
+                    ...state.startSimulation,
+                    error: action.payload.error
+                },
+                alert: {
+                    alertMessage: 'Error starting simulation',
+                    alertType: 'error',
+                    showAlert: true,
                 }
             }
 

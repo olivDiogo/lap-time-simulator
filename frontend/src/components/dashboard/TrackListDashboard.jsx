@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Title from './Title';
+import Title from '../Title.jsx';
 import TableContainer from "@mui/material/TableContainer";
 import Table from "@mui/material/Table";
 import TableHead from "@mui/material/TableHead";
@@ -8,12 +8,12 @@ import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import {Link} from "react-router-dom";
 import {useContext, useEffect} from "react";
-import AppContext from "../context/AppContext.jsx";
-import {fetchTracks} from "../context/Actions.jsx";
+import AppContext from "../../context/AppContext.jsx";
+import {fetchTracks} from "../../context/Actions.jsx";
 import {CircularProgress, Collapse, useTheme} from "@mui/material";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import {chooseCorrectTrackImage} from "../services/ChooseCorrectTrackImage.jsx";
+import {chooseCorrectTrackImage} from "../../services/ChooseCorrectTrackImage.jsx";
 
 
 function preventDefault(event) {
@@ -133,7 +133,7 @@ export default function TrackListDashboard() {
                     style={{
                         color: theme.palette.primary.main,
                         textDecoration: 'underline',
-                        textDecorationColor: `rgba(0, 0, 0, 0.4)`
+                        textDecorationColor: `rgba(0, 0, 0, 0.4)`,
                     }}
                     onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
                     onMouseLeave={(e) => { e.target.style.textDecoration = 'underline';

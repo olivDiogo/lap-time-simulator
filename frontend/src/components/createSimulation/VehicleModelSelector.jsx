@@ -26,7 +26,7 @@ export default function VehicleModelSelector() {
     }, [dispatch]);
 
     return (
-        <Box sx={{ width: "100%" }}>
+        <Box sx={{ m: 1, width: "100%" }}>
             <FormControl fullWidth>
                 <InputLabel id="vehicle-selector-label">Vehicle Model</InputLabel>
                 <Select

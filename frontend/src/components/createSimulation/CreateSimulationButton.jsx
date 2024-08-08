@@ -22,6 +22,7 @@ export default function CreateSimulationButton() {
         }}
                 variant="contained" sx={{
             color: 'black',
+            marginTop: "10px",
             backgroundColor: 'lightgrey', '&:hover': {
                 backgroundColor: 'darkgrey', // Change this to the color you want on hover
             }

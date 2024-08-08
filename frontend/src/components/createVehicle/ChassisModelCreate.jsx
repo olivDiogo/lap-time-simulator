@@ -51,7 +51,7 @@ export default function ChassisModelCreate() {
                     // helperText={helperText}
                     inputProps={{
                         pattern: "^\d*\.?\d*$",
-                        title: "Only numbers and one dot are allowed."
+                        title: "Quem ler isto é gay."
                     }}
                 />
                 <Typography variant="body1" gutterBottom component="div">

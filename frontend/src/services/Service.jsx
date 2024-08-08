@@ -97,3 +97,15 @@ export function postCreateSimulationToServer(simulationName, trackId, vehicleId,
         .then(res => success(res))
         .catch(err => failure(err.message));
 }
+
+export function startSimulationInServer(simulationId, success, failure) {
+    fetch(`${URL_API}/simulations/start?simulationID=${simulationId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    })
+        .then(res => res.json())
+        .then(res => success(res))
+        .catch(err => failure(err.message));
+}

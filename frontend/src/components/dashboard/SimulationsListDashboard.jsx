@@ -1,24 +1,24 @@
 import * as React from 'react';
-import Link from '@mui/material/Link';
+import {Link} from "react-router-dom";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Title from './Title';
+import Title from '../Title.jsx';
 import {useContext, useEffect} from "react";
-import AppContext from "../context/AppContext.jsx";
-import {fetchSimulations, postStartSimulation} from "../context/Actions.jsx";
+import AppContext from "../../context/AppContext.jsx";
+import {fetchSimulations, postStartSimulation} from "../../context/Actions.jsx";
 import Box from "@mui/material/Box";
 import {CircularProgress, useTheme} from "@mui/material";
-import startSimulationButton from "../assets/play_button.png"
+import startSimulationButton from "../../assets/play_button.png"
 import TableContainer from "@mui/material/TableContainer";
 
 function preventDefault(event) {
     event.preventDefault();
 }
 
-export default function SimulationsList() {
+export default function SimulationsListDashboard() {
     const theme = useTheme();
     const {state, dispatch} = useContext(AppContext);
     const {simulations} = state;
@@ -61,7 +61,7 @@ export default function SimulationsList() {
     return (
         <React.Fragment>
             <Title>Simulations</Title>
-            <TableContainer sx={{maxHeight: 600}}>
+            <TableContainer sx={{maxHeight: 400}}>
                 <Table size="small" stickyHeader>
                     <TableHead>
                         <TableRow>
@@ -79,20 +79,35 @@ export default function SimulationsList() {
                                 <TableCell>{sim.vehicleName}</TableCell>
                                 <TableCell>{sim.trackName}</TableCell>
                                 <TableCell sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-                                    <Link color={"primary"} href={"#"} onClick={() => startSimulation(sim.simulationID)}>
+                                    <Box color={"primary"} href={"#"} onClick={() => startSimulation(sim.simulationID)}>
                                         <img src={startSimulationButton} alt={"play-button"} width={"20"} height={"20"}/>
-                                    </Link>
+                                    </Box>
                                 </TableCell>
                                 <TableCell align="right">
-                                    <Link color={"primary"} href={"#"} onClick={preventDefault}>
+                                    <Box color={"primary"} href={"#"} onClick={preventDefault}>
                                         View Results
-                                    </Link>
+                                    </Box>
                                 </TableCell>
                             </TableRow>
                         ))}
                     </TableBody>
                 </Table>
             </TableContainer>
+
+            <Box sx={{mt: 2}}>
+                <Link
+                    to={"/simulations"}
+                    style={{
+                        color: theme.palette.primary.main,
+                        textDecoration: 'underline',
+                        textDecorationColor: `rgba(0, 0, 0, 0.4)`
+                    }}
+                    onMouseEnter={(e) => e.target.style.textDecoration = 'underline'}
+                    onMouseLeave={(e) => { e.target.style.textDecoration = 'underline';
+                        e.target.style.textDecorationColor = `rgba(0, 0, 0, 0.4)`}}>
+                    See more
+                </Link>
+            </Box>
         </React.Fragment>
     );
 }
