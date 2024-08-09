@@ -35,6 +35,6 @@ private:
 //Auxiliary functions
 Eigen::ArrayXd diff(const Eigen::ArrayXd &vec);
 
-Eigen::ArrayXd movingAvg(const Eigen::ArrayXd &vec, const int& window);
+Eigen::ArrayXd movingAvg(Eigen::ArrayXd &vec, const int& window, const double& curvStraightThresh);
 
 #endif //TRACK_H

@@ -19,13 +19,13 @@ Eigen::MatrixXd read_csv(const std::string& filename);
 
 Eigen::ArrayXd calcVLim(const Vehicle*,Track*);
 
-void writeCSV(const Eigen::ArrayXd &vec1, const Eigen::ArrayXd &vec2);
+void writeCSV(const std::string&, const std::string&,  const Eigen::ArrayXd &vec1, const Eigen::ArrayXd &vec2);
 
 Eigen::ArrayXd solveForward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim);
 
 Eigen::ArrayXd solveBackward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim);
 
-
+Eigen::ArrayXd solveForwBack(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim);
 
 
 int main(int argc, char* argv[]) {
@@ -33,7 +33,7 @@ int main(int argc, char* argv[]) {
     auto tStart = std::chrono::high_resolution_clock::now();
 
     // Check if the file name is provided
-    if (argc < 2) {
+    if (argc < 3) {
         std::cerr << "Usage: " << argv[0] << " <file.json>" << std::endl;
         return 1;
     }
@@ -45,11 +45,14 @@ int main(int argc, char* argv[]) {
         return 1;
     }
 
+    // Get output path
+    std::string outPath = argv[2];
+
     // Split json info
     json j = json::parse(file);
-    json jVeh = j["vehicle"];
-    json jTrk = j["track"];
-    json jSim = j["sim"];
+    //json jVeh = j["vehicle"];
+    //json jTrk = j["track"];
+    //json jSim = j["sim"];
 
     /*// Loop over the fields in the JSON object
     std::cout << "Vehicle Parameters: " << std::endl;
@@ -59,14 +62,16 @@ int main(int argc, char* argv[]) {
 
     //auto veh = new Vehicle(jVeh);
     //std::cout << veh->gears.at(0) << std::endl;
-    Vehicle veh(jVeh);
+    Vehicle veh(j["vehicle"]);
 
     //auto trk = new Track(jTrk);
     //std::cout << trk->data.xCoord[0] << std::endl;
-    Track trk(jTrk);
+    Track trk(j["track"]);
+
+    std::string simId = j["sim"]["simulationId"];
 
     std::cout << "\n--- Starting Simulation ---" << std::endl;
-    std::cout << "Simulation ID: " << j["sim"]["simulationId"] << std::endl;
+    std::cout << "Simulation ID: " << simId << std::endl;
     //std::cout << "Vehicle ID: " << veh->m_vehicleId << std::endl;
     //std::cout << "Track ID: " << trk->m_trackId << std::endl;
     std::cout << "Vehicle ID: " << veh.m_vehicleId << std::endl;
@@ -82,12 +87,12 @@ int main(int argc, char* argv[]) {
     Eigen::ArrayXd vForw = solveForward(&veh, &trk, vLim);
     Eigen::ArrayXd vBack = solveBackward(&veh, &trk, vLim);
     Eigen::ArrayXd vSim = vForw.min(vBack);
-    Eigen::ArrayXd vSim2 = (vForw < vBack).select(vForw,vBack);
+    //Eigen::ArrayXd vSim = (vForw < vBack).select(vForw,vBack);
 
 
     std::cout << "\nWriting Results ..." << std::endl;
     try {
-        writeCSV(trk.m_data.distance, vSim);
+        writeCSV(outPath, simId, trk.m_data.distance, vSim);
         std::cout << ".csv file created." << std::endl;
     } catch (...) {
         std::cout << "Couldn't create .csv file" << std::endl;
@@ -109,9 +114,6 @@ int main(int argc, char* argv[]) {
 
     return 0;
 }
-
-
-
 
 Eigen::MatrixXd read_csv(const std::string& filename) {
     std::ifstream file(filename);
@@ -161,11 +163,11 @@ Eigen::MatrixXd read_csv(const std::string& filename) {
     return matrix;
 }
 
-void writeCSV(const Eigen::ArrayXd &vec1, const Eigen::ArrayXd &vec2) {
-    const std::string filename = "output.csv";
-    std::ofstream file(filename);
-    if (!file.is_open()) {
-        std::cout << "Could not open the file: " << filename << std::endl;
+void writeCSV(const std::string& outPath, const std::string& simId, const Eigen::ArrayXd &vec1, const Eigen::ArrayXd &vec2) {
+    const std::string outFile = outPath + "/" + simId + ".csv";
+    std::ofstream file(outFile);
+    if (!file) {
+        std::cout << "Could not open the file: " << outFile << std::endl;
         return;
     }
 
@@ -345,4 +347,77 @@ Eigen::ArrayXd solveBackward(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim
     }
 
     return vBack;
+}
+
+Eigen::ArrayXd solveForwBack(const Vehicle* veh,Track* trk, Eigen::ArrayXd &vLim) {
+
+    // Initialize constants
+    const double g {-9.81};
+    const double rhoAir{1.3};
+    const double kCz = 0.5 * veh->m_sCz * rhoAir;
+    const double kCx = 0.5 * veh->m_sCx * rhoAir;
+    const double Fz0 = - veh->m_mCar * g;
+
+    // Initialize variables
+    double muy_av {0}, mux_av {0}; //available grip
+    double ds {0}; //distance segment
+
+    // Initialize data arrays
+    Eigen::ArrayXd vForw(vLim.size());
+
+    int minIdx;
+    double vCurr = vLim.minCoeff(&minIdx);
+    vForw(minIdx) = vCurr;
+
+    for(size_t i=0; i<vLim.size(); ++i) {
+
+        // Calculate current and next index
+        unsigned short kF = (minIdx + i) % (vLim.size());
+        unsigned short kFp1 = (minIdx + i + 1) % (vLim.size());
+        unsigned short kB = (minIdx - i + vLim.size()) % (vLim.size());
+        unsigned short kBp1 = (minIdx - i + vLim.size() - 1) % (vLim.size());
+
+        vCurr = vForw[kF];
+
+        // Aerodynamic load
+        double FzAero = -0.5 * veh->m_sCz * rhoAir * vCurr * vCurr;
+
+        // Total Vertical Load
+        double Fz = FzAero + Fz0;
+
+        // Lateral Acceleration at Current Point
+        double Ay = vCurr * vCurr * trk->m_data.curvature[kF];
+
+        //Lateral Force
+        double Fy = Ay * veh->m_mCar;
+
+        //Used muy
+        float muy_req = Fy / Fz;
+
+        veh->getAvailableGrip(0,muy_req,mux_av,muy_av);
+
+        double FxEngine;
+        int NGear;
+
+        // Use available longitudinal grip to accelerate
+        double FxTyre = mux_av * Fz;
+
+        // Get optimal engine point
+        veh->getEnginePoint(vCurr, NGear, FxEngine);
+        double Fx = std::min(FxTyre, FxEngine );
+        double FxAero = 0.5 * veh->m_sCx * rhoAir * vCurr * vCurr;
+        double Ax = (Fx + FxAero) / veh->m_mCar;
+
+        // Calculate speed at the next point
+        if (trk->m_data.distance(kFp1) - trk->m_data.distance(kF) > 0)
+            ds = trk->m_data.distance(kFp1) - trk->m_data.distance(kF);
+        else
+            ds = trk->m_data.distance(kFp1);
+
+        double vNext = std::pow(2 * Ax * ds + vForw[kF]*vForw[kF], 0.5);
+
+        vForw[kFp1] = vNext < vLim[kFp1] ? vNext : vLim[kFp1];
+    }
+
+    return vForw;
 }

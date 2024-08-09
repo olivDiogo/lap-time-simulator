@@ -11,7 +11,8 @@ Track::Track(const nlohmann::json &jTrack)
     getTrackData(m_trackPath + m_trackName);
     calcCurvature();
     //data.curvature = Eigen::ArrayXd::Ones(200);
-    m_data.curvature = movingAvg(m_data.curvature, 35);
+
+    m_data.curvature = movingAvg(m_data.curvature, 2, 0.0025);
 }
 
 void Track::getTrackData(const std::string &trackPath) {
@@ -82,9 +83,14 @@ Eigen::ArrayXd diff(const Eigen::ArrayXd &vec) {
     return diffVec;
 }
 
-Eigen::ArrayXd movingAvg(const Eigen::ArrayXd &vec, const int& window) {
+Eigen::ArrayXd movingAvg(Eigen::ArrayXd &vec, const int& window, const double& curvStraightThresh) {
     Eigen::VectorXd vecFilt(vec.size());
     const int halfWindow = window / 2;
+
+    /*for(auto &i : vec) {
+        if (i < curvStraightThresh)
+            i = 0.0f;
+    }*/
 
     int start, end;
     double sum;
