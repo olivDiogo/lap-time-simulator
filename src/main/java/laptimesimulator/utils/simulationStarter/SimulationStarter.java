@@ -6,6 +6,7 @@ import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationDataOut
 import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationOptionsDataOutDTO;
 import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationTrackDataOutDTO;
 import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationVehicleDataOutDTO;
+import laptimesimulator.utils.runCppExe.RunCppExeWithJson;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -34,6 +35,13 @@ public class SimulationStarter {
     public static SimulationResultDTO startSimulation(SimulationVehicleDataOutDTO simulationVehicleDataOutDTO,
                                                       SimulationTrackDataOutDTO simulationTrackDataOutDTO, SimulationOptionsDataOutDTO simulationOptionsDataOutDTO) {
         sendSimulationData(simulationVehicleDataOutDTO, simulationTrackDataOutDTO, simulationOptionsDataOutDTO);
+
+
+        String cppExePath = "cpp\\cmake-build-debug-visual-studio\\cpp.exe";
+        String jsonDataPath = "simulationData.json";
+        String workingDirectoryPath = System.getProperty("user.dir");
+
+        RunCppExeWithJson.runCppExecutable(cppExePath, jsonDataPath, workingDirectoryPath);
 
         Path responseFilePath = Paths.get("simulationResult.json");
         return getSimulationResult(responseFilePath);
