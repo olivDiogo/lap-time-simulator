@@ -11,18 +11,17 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from '../components/ListItems.jsx';
-import TrackListDashboard from '../components/dashboard/TrackListDashboard.jsx';
-import VehicleModelListDashboard from '../components/dashboard/VehicleModelListDashboard.jsx';
-import SimulationsList from '../components/SimulationsList.jsx';
 import backgroundImage from '../assets/chequered_flag.jpg';
-import SimulationsListDashboard from "../components/dashboard/SimulationsListDashboard.jsx";
+import TrackSelector from "../components/createSimulation/TrackSelector.jsx";
+import VehicleModelSelector from "../components/createSimulation/VehicleModelSelector.jsx";
+import SimulationName from "../components/createSimulation/SimulationName.jsx";
+import CreateSimulationButton from "../components/createSimulation/CreateSimulationButton.jsx";
 
 function Copyright(props) {
     return (
@@ -96,10 +95,9 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
     }),
 );
 
-// TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function DashboardPage() {
+export default function CreateSimulationPage() {
     const [open, setOpen] = React.useState(false);
     const toggleDrawer = () => {
         setOpen(!open);
@@ -110,7 +108,7 @@ export default function DashboardPage() {
             <Box sx={{ display: 'flex' }}>
                 <CssBaseline />
                 <AppBar position="absolute" open={open}
-                sx={{backgroundColor: 'black'}}>
+                        sx={{backgroundColor: 'black'}}>
                     <Toolbar
                         sx={{
                             pr: '24px', // keep right padding when drawer closed
@@ -135,7 +133,7 @@ export default function DashboardPage() {
                             noWrap
                             sx={{ flexGrow: 1 }}
                         >
-                            Dashboard
+                            Create Simulation
                         </Typography>
                         <IconButton color="inherit">
                             <Badge badgeContent={4} color="secondary">
@@ -182,60 +180,27 @@ export default function DashboardPage() {
                         // position: 'relative'
                     }}
                 >
-                    {/*<video autoPlay loop muted*/}
-                    {/*       style={{*/}
-                    {/*           position: "absolute",*/}
-                    {/*           width: "100%",*/}
-                    {/*           left: "50%",*/}
-                    {/*           top: "50%",*/}
-                    {/*           height: "100%",*/}
-                    {/*           objectFit: "cover",*/}
-                    {/*           transform: "translate(-50%, -50%)",*/}
-                    {/*           zIndex: "-1"*/}
-                    {/*       }}*/}
-                    {/*>*/}
-                    {/*    <source src={backgroundImage} type="video/mp4"/>*/}
-                    {/*</video>*/}
                     <Toolbar/>
                     <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
-                            <Grid container spacing={3}>
-                                {/* TrackListDashboard */}
-                                <Grid item xs={12} md={6} lg={6}>
-                                    <Paper
-                                        sx={{
-                                            p: 2,
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            height: 350,
-                                        }}
-                                    >
-                                        <TrackListDashboard/>
-                                    </Paper>
-                                </Grid>
-                                {/* Recent VehicleModelListDashboard */}
-                                <Grid item xs={12} md={6} lg={6}>
-                                    <Paper
-                                        sx={{
-                                            p: 2,
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            height: 350,
-                                        }}
-                                    >
-                                        <VehicleModelListDashboard/>
-                                    </Paper>
-                                </Grid>
-                                {/* Recent SimulationsList */}
-                                <Grid item xs={12}>
-                                    <Paper sx={{p: 2, display: 'flex', flexDirection: 'column'}}>
-                                        <SimulationsListDashboard/>
-                                    </Paper>
-                                </Grid>
-                            </Grid>
-                            <Copyright sx={{pt: 4}}/>
-                        </Container>
+                        <Paper
+                            sx={{
+                                p: 5,
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                height: 420,
+                                gap: 3
+                            }}
+                        >
+                            <SimulationName/>
+                            <TrackSelector/>
+                            <VehicleModelSelector/>
+                            <CreateSimulationButton/>
+                        </Paper>
+                        <Copyright sx={{pt: 4}}/>
+                    </Container>
                 </Box>
             </Box>
         </ThemeProvider>
-);
+    );
 }

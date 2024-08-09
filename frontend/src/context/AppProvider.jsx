@@ -24,13 +24,37 @@ const initialState = {
     selectedVehicle: {
         loading: false,
         error: null,
-        vehicle: null,
+        vehicle: '',
     },
 
     simulations: {
         loading: true,
         error: null,
         data: [],
+    },
+
+    simulation: {
+        simulationName: null,
+    },
+
+    startSimulation: {
+        loading: false,
+        simulationId: null,
+        error: null,
+    },
+
+    createSimulation: {
+        loading: false,
+        vehicleId: null,
+        trackId: null,
+        simulationName: null,
+        error: null,
+    },
+
+    alert: {
+        alertMessage: '',
+        alertType: 'success', // success, error, warning, info
+        showAlert: false,
     }
 };
 

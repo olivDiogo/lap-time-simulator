@@ -36,37 +36,48 @@ public class SimulationService {
     /**
      * Starts a simulation, by generating the simulation data and saving it to a file.
      *
-     * @param simulationName is the simulationName of the simulation.
-     * @param vehicleID is the vehicle identifier.
-     * @param trackID is the track identifier.
+     * @param simulationID is the simulation identifier.
      * @return the simulation entity.
      */
     @Transactional
-    public SimulationInfoOutDTO startSimulation(Name simulationName, VehicleID vehicleID, TrackID trackID) {
+    public SimulationInfoOutDTO startSimulation(SimulationID simulationID) {
 
-        Optional<Vehicle> optVehicle = vehicleRepository.ofIdentity(vehicleID);
-        if (optVehicle.isEmpty()) {
-            throw new IllegalArgumentException("Vehicle not found.");
+        Optional<Simulation> simulationOptional = simulationRepository.ofIdentity(simulationID);
+        if (simulationOptional.isEmpty()) {
+            throw new IllegalArgumentException("Simulation not found.");
         }
 
-        Optional<Track> optTrack = trackRepository.ofIdentity(trackID);
-        if (optTrack.isEmpty()) {
-            throw new IllegalArgumentException("Track not found.");
-        }
+        Simulation simulation = simulationOptional.get();
 
-        Vehicle vehicle = optVehicle.get();
-        Name vehicleName = vehicle.getVehicleName();
-        Track track = optTrack.get();
-        Name trackName = track.getTrackName();
+        Optional<Vehicle> vehicle = vehicleRepository.ofIdentity(simulation.getVehicleID());
+        Optional<Track> track = trackRepository.ofIdentity(simulation.getTrackID());
 
-        Simulation simulation = simulationFactory.createSimulation(simulationName, vehicleID, trackID, vehicleName, trackName);
-        simulationRepository.save(simulation);
-
-        SimulationVehicleDataOutDTO simulationVehicleDataOutDTO = simulationMapper.toDTO(vehicle);
-        SimulationTrackDataOutDTO simulationTrackDataOutDTO = simulationMapper.toDTO(track);
+        SimulationVehicleDataOutDTO simulationVehicleDataOutDTO = simulationMapper.toDTO(vehicle.get()); // Vehicle must exist since it was created when the simulation was created
+        SimulationTrackDataOutDTO simulationTrackDataOutDTO = simulationMapper.toDTO(track.get()); // Track must exist since it was created when the simulation was created
         SimulationOptionsDataOutDTO simulationOptionsDataOutDTO = new SimulationOptionsDataOutDTO(simulation.getSimulationID().getId(), simulation.getSimulationName().getStrName());
 
         SimulationStarter.startSimulation(simulationVehicleDataOutDTO, simulationTrackDataOutDTO, simulationOptionsDataOutDTO);
+
+        return simulationMapper.toInfoDTO(simulation);
+    }
+
+    /**
+     * Creates a simulation.
+     *
+     * @param simulationName is the simulation name.
+     * @param vehicleID is the vehicle identifier.
+     * @param trackID is the track identifier.
+     * @return the simulation info DTO.
+     */
+    public SimulationInfoOutDTO createSimulation(Name simulationName, VehicleID vehicleID, TrackID trackID) {
+        Optional<Vehicle> vehicle = vehicleRepository.ofIdentity(vehicleID);
+        Optional<Track> track = trackRepository.ofIdentity(trackID);
+        if (vehicle.isEmpty() || track.isEmpty()) {
+            throw new IllegalArgumentException("Vehicle or track not found.");
+        }
+
+        Simulation simulation = simulationFactory.createSimulation(simulationName, vehicleID, trackID, vehicle.get().getVehicleName(), track.get().getTrackName());
+        simulationRepository.save(simulation);
 
         return simulationMapper.toInfoDTO(simulation);
     }

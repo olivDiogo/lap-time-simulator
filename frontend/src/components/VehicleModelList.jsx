@@ -15,7 +15,8 @@ import {CircularProgress, Collapse, useTheme} from "@mui/material";
 import Typography from "@mui/material/Typography";
 import Button from "@mui/material/Button";
 import {Link} from "react-router-dom";
-import Divider from "@mui/material/Divider";
+import {useNavigate} from "react-router";
+
 
 function preventDefault(event) {
     event.preventDefault();
@@ -28,6 +29,8 @@ export default function VehicleModelsList() {
     const {loading, error, data} = vehicles;
 
     const [open, setOpen] = React.useState(data.map(() => false));
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetchVehicles(dispatch);
@@ -105,7 +108,12 @@ export default function VehicleModelsList() {
                                     </TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell style={{paddingBottom: 0, paddingTop: 0,  backgroundColor: 'rgba(0, 0, 0, 0.03)', borderRadius: '0 0 20px 20px'}} colSpan={6}>
+                                    <TableCell style={{
+                                        paddingBottom: 0,
+                                        paddingTop: 0,
+                                        backgroundColor: 'rgba(0, 0, 0, 0.03)',
+                                        borderRadius: '0 0 20px 20px'
+                                    }} colSpan={6}>
                                         <Collapse in={open[index]} timeout="auto" unmountOnExit>
                                             <Box
                                                 margin={1}
@@ -288,6 +296,51 @@ export default function VehicleModelsList() {
                     </TableBody>
                 </Table>
             </TableContainer>
+            <Box sx={{marginTop: '50px', display: 'flex', alignItems:'center', justifyContent: 'center'}}>
+                <Button
+                    variant="contained"
+                    sx={{
+                        margin: '10px',
+                        backgroundColor: 'lightgrey',
+                        '&:hover': {
+                            backgroundColor: 'darkgrey', // Change this to the color you want on hover
+                        },
+                    }}
+                >
+                    <Link
+                        to={"/vehicleModels/create"}
+                        style={{
+                            color: 'black',
+                            textDecoration: 'none',
+                        }}
+                        onMouseEnter={(e) => {
+                            e.target.style.textDecoration = 'none';
+                            e.target.style.color = 'black';
+                        }}
+                        onMouseLeave={(e) => {
+                            e.target.style.textDecoration = 'none';
+                            e.target.style.color = 'black';
+                        }}
+                    >
+                        Create Vehicle Model
+                    </Link>
+                </Button>
+                <Button
+                    sx={{
+                        margin: '10px',
+                        backgroundColor: 'lightgrey',
+                        color: 'black',
+                        '&:hover': {
+                            backgroundColor: 'darkgrey', // Change this to the color you want on hover
+                            color: 'black'
+                        },
+                    }}
+                    onClick={() => navigate(-1)}
+                    variant="contained"
+                >
+                    Back
+                </Button>
+            </Box>
         </React.Fragment>
     )
 }

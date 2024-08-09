@@ -1,0 +1,50 @@
+import * as React from 'react';
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import {updateVehicleMass} from "../../context/Actions.jsx";
+import {useContext} from "react";
+import AppContext from "../../context/AppContext.jsx";
+
+export default function ChassisModelUpdate() {
+
+    const {state, dispatch} = useContext(AppContext);
+    const {selectedVehicle} = state;
+    const {vehicle} = selectedVehicle;
+
+    let { mass } = vehicle;
+
+    const handleVehicleMassChange = (event) => {
+        const newMass = parseFloat(event.target.value);
+        if (!isNaN(newMass)) {
+            updateVehicleMass(dispatch, newMass);
+        }
+    }
+
+    return (
+        <Box id={"chassis-model"} sx={{
+            display: 'flex', flexDirection: 'column', gap: '20px',
+            borderRadius: '10px', border: '2px solid lightgrey', padding: '20px',
+            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.5)'
+        }}>
+            <Typography variant="h6" gutterBottom component="div">
+                Chassis Model
+            </Typography>
+            <Box display={"flex"} alignItems={"center"} gap={"10px"}>
+                <Typography variant="body1" gutterBottom component="div" sx={{width: '100%'}}>
+                    Vehicle Mass
+                </Typography>
+                <TextField sx={{width: '100%'}}
+                           required
+                           id="vehicleMass"
+                           label="Required"
+                           defaultValue={mass}
+                           onChange={handleVehicleMassChange}
+                />
+                <Typography variant="body1" gutterBottom component="div">
+                    kg
+                </Typography>
+            </Box>
+        </Box>
+    )
+}

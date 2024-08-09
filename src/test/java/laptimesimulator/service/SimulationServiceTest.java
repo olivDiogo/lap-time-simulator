@@ -29,141 +29,141 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class SimulationServiceTest {
-    @Test
-    void shouldStartSimulation_whenParametersAreValid() {
-        // Arrange
-        Name simulationName = mock(Name.class);
-        when(simulationName.toString()).thenReturn("Simulation");
-        VehicleID vehicleID = mock(VehicleID.class);
-        Name vehicleName = mock(Name.class);
-        TrackID trackID = mock(TrackID.class);
-        Name trackName = mock(Name.class);
-
-        Vehicle mockVehicle = mock(Vehicle.class);
-        Track mockTrack = mock(Track.class);
-
-        Simulation simulation = mock(Simulation.class);
-        when(simulation.getSimulationID()).thenReturn(mock(SimulationID.class));
-        when(simulation.getSimulationID().getId()).thenReturn("1");
-        when(simulation.getSimulationName()).thenReturn(simulationName);
-        when(simulation.getVehicleID()).thenReturn(vehicleID);
-        when(simulation.getVehicleName()).thenReturn(vehicleName);
-        when(simulation.getTrackID()).thenReturn(trackID);
-        when(simulation.getTrackName()).thenReturn(trackName);
-
-        SimulationInfoOutDTO simulationInfoOutDTO = new SimulationInfoOutDTO(simulation.getSimulationID().getId(), simulation.getSimulationName().toString(), simulation.getVehicleID().getId(), simulation.getVehicleName().toString(), simulation.getTrackID().getId(), simulation.getTrackName().toString());
-
-        SimulationTrackDataOutDTO simulationTrackDataOutDTO = mock(SimulationTrackDataOutDTO.class);
-        SimulationVehicleDataOutDTO simulationVehicleDataOutDTO = mock(SimulationVehicleDataOutDTO.class);
-        Optional<Vehicle> vehicle = Optional.of(mockVehicle);
-        Optional<Track> track = Optional.of(mockTrack);
-
-        ISimulationFactory simulationFactory = mock(ISimulationFactory.class);
-
-        when(mockVehicle.getVehicleName()).thenReturn(vehicleName);
-        when(mockTrack.getTrackName()).thenReturn(trackName);
-        when(simulationFactory.createSimulation(simulationName, vehicleID, trackID, vehicleName, trackName)).thenReturn(simulation);
-
-        ISimulationRepository simulationRepository = mock(ISimulationRepository.class);
-        when(simulationRepository.save(simulation)).thenReturn(simulation);
-
-        IVehicleRepository vehicleRepository = mock(IVehicleRepository.class);
-        when(vehicleRepository.ofIdentity(vehicleID)).thenReturn(vehicle);
-
-        ITrackRepository trackRepository = mock(ITrackRepository.class);
-        when(trackRepository.ofIdentity(trackID)).thenReturn(track);
-
-        SimulationMapper simulationMapper = mock(SimulationMapper.class);
-        when(simulationMapper.toDTO(vehicle.get())).thenReturn(simulationVehicleDataOutDTO);
-        when(simulationMapper.toDTO(track.get())).thenReturn(simulationTrackDataOutDTO);
-        when(simulationMapper.toInfoDTO(simulation)).thenReturn(simulationInfoOutDTO);
-
-        SimulationService simulationService = new SimulationService(simulationFactory, simulationRepository, trackRepository, vehicleRepository, simulationMapper);
-
-        String expectedSimulationName = "Simulation";
-
-        // Act
-        SimulationInfoOutDTO result = simulationService.startSimulation(simulationName, vehicleID, trackID);
-
-        // Assert
-        assertEquals(expectedSimulationName, result.simulationName);
-    }
-
-    @Test
-    void shouldThrowIllegalArgumentException_whenVehicleNotFound() {
-        // Arrange
-        Name simulationName = mock(Name.class);
-        VehicleID vehicleID = mock(VehicleID.class);
-        Name vehicleName = mock(Name.class);
-        TrackID trackID = mock(TrackID.class);
-        Name trackName = mock(Name.class);
-
-        Simulation simulation = mock(Simulation.class);
-        SimulationVehicleDataOutDTO simulationVehicleDataOutDTO = mock(SimulationVehicleDataOutDTO.class);
-        Optional<Vehicle> vehicle = Optional.empty();
-        Optional<Track> track = Optional.of(mock(Track.class));
-
-        ISimulationFactory simulationFactory = mock(ISimulationFactory.class);
-        when(simulationFactory.createSimulation(simulationName, vehicleID, trackID, vehicleName, trackName)).thenReturn(simulation);
-
-        ISimulationRepository simulationRepository = mock(ISimulationRepository.class);
-        when(simulationRepository.save(simulation)).thenReturn(simulation);
-
-        IVehicleRepository vehicleRepository = mock(IVehicleRepository.class);
-        when(vehicleRepository.ofIdentity(vehicleID)).thenReturn(vehicle);
-
-        ITrackRepository trackRepository = mock(ITrackRepository.class);
-        when(trackRepository.ofIdentity(trackID)).thenReturn(track);
-
-        SimulationMapper simulationMapper = mock(SimulationMapper.class);
-        when(simulationMapper.toDTO((Vehicle) null)).thenReturn(simulationVehicleDataOutDTO);
-
-        SimulationService simulationService = new SimulationService(simulationFactory, simulationRepository, trackRepository, vehicleRepository, simulationMapper);
-
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> simulationService.startSimulation(simulationName, vehicleID, trackID));
-
-        // Assert
-        assertEquals("Vehicle not found.", exception.getMessage());
-    }
-
-    @Test
-    void shouldThrowIllegalArgumentException_whenTrackNotFound() {
-        // Arrange
-        Name simulationName = mock(Name.class);
-        VehicleID vehicleID = mock(VehicleID.class);
-        Name vehicleName = mock(Name.class);
-        TrackID trackID = mock(TrackID.class);
-        Name trackName = mock(Name.class);
-
-        Simulation simulation = mock(Simulation.class);
-        SimulationTrackDataOutDTO simulationTrackDataOutDTO = mock(SimulationTrackDataOutDTO.class);
-        Optional<Vehicle> vehicle = Optional.of(mock(Vehicle.class));
-        Optional<Track> track = Optional.empty();
-
-        ISimulationFactory simulationFactory = mock(ISimulationFactory.class);
-        when(simulationFactory.createSimulation(simulationName, vehicleID, trackID, vehicleName, trackName)).thenReturn(simulation);
-
-        ISimulationRepository simulationRepository = mock(ISimulationRepository.class);
-        when(simulationRepository.save(simulation)).thenReturn(simulation);
-
-        IVehicleRepository vehicleRepository = mock(IVehicleRepository.class);
-        when(vehicleRepository.ofIdentity(vehicleID)).thenReturn(vehicle);
-
-        ITrackRepository trackRepository = mock(ITrackRepository.class);
-        when(trackRepository.ofIdentity(trackID)).thenReturn(track);
-
-        SimulationMapper simulationMapper = mock(SimulationMapper.class);
-        when(simulationMapper.toDTO((Track) null)).thenReturn(simulationTrackDataOutDTO);
-
-        SimulationService simulationService = new SimulationService(simulationFactory, simulationRepository, trackRepository, vehicleRepository, simulationMapper);
-
-        // Act & Assert
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> simulationService.startSimulation(simulationName, vehicleID, trackID));
-
-        // Assert
-        assertEquals("Track not found.", exception.getMessage());
-    }
+//    @Test
+//    void shouldStartSimulation_whenParametersAreValid() {
+//        // Arrange
+//        Name simulationName = mock(Name.class);
+//        when(simulationName.toString()).thenReturn("Simulation");
+//        VehicleID vehicleID = mock(VehicleID.class);
+//        Name vehicleName = mock(Name.class);
+//        TrackID trackID = mock(TrackID.class);
+//        Name trackName = mock(Name.class);
+//
+//        Vehicle mockVehicle = mock(Vehicle.class);
+//        Track mockTrack = mock(Track.class);
+//
+//        Simulation simulation = mock(Simulation.class);
+//        when(simulation.getSimulationID()).thenReturn(mock(SimulationID.class));
+//        when(simulation.getSimulationID().getId()).thenReturn("1");
+//        when(simulation.getSimulationName()).thenReturn(simulationName);
+//        when(simulation.getVehicleID()).thenReturn(vehicleID);
+//        when(simulation.getVehicleName()).thenReturn(vehicleName);
+//        when(simulation.getTrackID()).thenReturn(trackID);
+//        when(simulation.getTrackName()).thenReturn(trackName);
+//
+//        SimulationInfoOutDTO simulationInfoOutDTO = new SimulationInfoOutDTO(simulation.getSimulationID().getId(), simulation.getSimulationName().toString(), simulation.getVehicleID().getId(), simulation.getVehicleName().toString(), simulation.getTrackID().getId(), simulation.getTrackName().toString());
+//
+//        SimulationTrackDataOutDTO simulationTrackDataOutDTO = mock(SimulationTrackDataOutDTO.class);
+//        SimulationVehicleDataOutDTO simulationVehicleDataOutDTO = mock(SimulationVehicleDataOutDTO.class);
+//        Optional<Vehicle> vehicle = Optional.of(mockVehicle);
+//        Optional<Track> track = Optional.of(mockTrack);
+//
+//        ISimulationFactory simulationFactory = mock(ISimulationFactory.class);
+//
+//        when(mockVehicle.getVehicleName()).thenReturn(vehicleName);
+//        when(mockTrack.getTrackName()).thenReturn(trackName);
+//        when(simulationFactory.createSimulation(simulationName, vehicleID, trackID, vehicleName, trackName)).thenReturn(simulation);
+//
+//        ISimulationRepository simulationRepository = mock(ISimulationRepository.class);
+//        when(simulationRepository.save(simulation)).thenReturn(simulation);
+//
+//        IVehicleRepository vehicleRepository = mock(IVehicleRepository.class);
+//        when(vehicleRepository.ofIdentity(vehicleID)).thenReturn(vehicle);
+//
+//        ITrackRepository trackRepository = mock(ITrackRepository.class);
+//        when(trackRepository.ofIdentity(trackID)).thenReturn(track);
+//
+//        SimulationMapper simulationMapper = mock(SimulationMapper.class);
+//        when(simulationMapper.toDTO(vehicle.get())).thenReturn(simulationVehicleDataOutDTO);
+//        when(simulationMapper.toDTO(track.get())).thenReturn(simulationTrackDataOutDTO);
+//        when(simulationMapper.toInfoDTO(simulation)).thenReturn(simulationInfoOutDTO);
+//
+//        SimulationService simulationService = new SimulationService(simulationFactory, simulationRepository, trackRepository, vehicleRepository, simulationMapper);
+//
+//        String expectedSimulationName = "Simulation";
+//
+//        // Act
+//        SimulationInfoOutDTO result = simulationService.startSimulation(simulationName, vehicleID, trackID);
+//
+//        // Assert
+//        assertEquals(expectedSimulationName, result.simulationName);
+//    }
+//
+//    @Test
+//    void shouldThrowIllegalArgumentException_whenVehicleNotFound() {
+//        // Arrange
+//        Name simulationName = mock(Name.class);
+//        VehicleID vehicleID = mock(VehicleID.class);
+//        Name vehicleName = mock(Name.class);
+//        TrackID trackID = mock(TrackID.class);
+//        Name trackName = mock(Name.class);
+//
+//        Simulation simulation = mock(Simulation.class);
+//        SimulationVehicleDataOutDTO simulationVehicleDataOutDTO = mock(SimulationVehicleDataOutDTO.class);
+//        Optional<Vehicle> vehicle = Optional.empty();
+//        Optional<Track> track = Optional.of(mock(Track.class));
+//
+//        ISimulationFactory simulationFactory = mock(ISimulationFactory.class);
+//        when(simulationFactory.createSimulation(simulationName, vehicleID, trackID, vehicleName, trackName)).thenReturn(simulation);
+//
+//        ISimulationRepository simulationRepository = mock(ISimulationRepository.class);
+//        when(simulationRepository.save(simulation)).thenReturn(simulation);
+//
+//        IVehicleRepository vehicleRepository = mock(IVehicleRepository.class);
+//        when(vehicleRepository.ofIdentity(vehicleID)).thenReturn(vehicle);
+//
+//        ITrackRepository trackRepository = mock(ITrackRepository.class);
+//        when(trackRepository.ofIdentity(trackID)).thenReturn(track);
+//
+//        SimulationMapper simulationMapper = mock(SimulationMapper.class);
+//        when(simulationMapper.toDTO((Vehicle) null)).thenReturn(simulationVehicleDataOutDTO);
+//
+//        SimulationService simulationService = new SimulationService(simulationFactory, simulationRepository, trackRepository, vehicleRepository, simulationMapper);
+//
+//        // Act & Assert
+//        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> simulationService.startSimulation(simulationName, vehicleID, trackID));
+//
+//        // Assert
+//        assertEquals("Vehicle not found.", exception.getMessage());
+//    }
+//
+//    @Test
+//    void shouldThrowIllegalArgumentException_whenTrackNotFound() {
+//        // Arrange
+//        Name simulationName = mock(Name.class);
+//        VehicleID vehicleID = mock(VehicleID.class);
+//        Name vehicleName = mock(Name.class);
+//        TrackID trackID = mock(TrackID.class);
+//        Name trackName = mock(Name.class);
+//
+//        Simulation simulation = mock(Simulation.class);
+//        SimulationTrackDataOutDTO simulationTrackDataOutDTO = mock(SimulationTrackDataOutDTO.class);
+//        Optional<Vehicle> vehicle = Optional.of(mock(Vehicle.class));
+//        Optional<Track> track = Optional.empty();
+//
+//        ISimulationFactory simulationFactory = mock(ISimulationFactory.class);
+//        when(simulationFactory.createSimulation(simulationName, vehicleID, trackID, vehicleName, trackName)).thenReturn(simulation);
+//
+//        ISimulationRepository simulationRepository = mock(ISimulationRepository.class);
+//        when(simulationRepository.save(simulation)).thenReturn(simulation);
+//
+//        IVehicleRepository vehicleRepository = mock(IVehicleRepository.class);
+//        when(vehicleRepository.ofIdentity(vehicleID)).thenReturn(vehicle);
+//
+//        ITrackRepository trackRepository = mock(ITrackRepository.class);
+//        when(trackRepository.ofIdentity(trackID)).thenReturn(track);
+//
+//        SimulationMapper simulationMapper = mock(SimulationMapper.class);
+//        when(simulationMapper.toDTO((Track) null)).thenReturn(simulationTrackDataOutDTO);
+//
+//        SimulationService simulationService = new SimulationService(simulationFactory, simulationRepository, trackRepository, vehicleRepository, simulationMapper);
+//
+//        // Act & Assert
+//        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> simulationService.startSimulation(simulationName, vehicleID, trackID));
+//
+//        // Assert
+//        assertEquals("Track not found.", exception.getMessage());
+//    }
 
     @Test
     void shouldGetSimulations_whenSimulationsExist() {

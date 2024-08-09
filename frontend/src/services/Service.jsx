@@ -42,7 +42,7 @@ export function fetchSimulationsFromServer(success, failure) {
  * @param success - callback function to handle the response
  * @param failure - callback function to handle the error
  */
-export function fetchSelectedVehicleModelFromServer(vehicleId, success, failure){
+export function fetchSelectedVehicleModelFromServer(vehicleId, success, failure) {
     fetch(`${URL_API}/vehicles/${vehicleId}`)
         .then(res => res.json())
         .then(res => success(res))
@@ -55,13 +55,55 @@ export function fetchSelectedVehicleModelFromServer(vehicleId, success, failure)
  * @param success - callback function to handle the response
  * @param failure - callback function to handle the error
  */
-export function postUpdatedVehicleModelToServer(vehicle, success, failure){
+export function postUpdatedVehicleModelToServer(vehicle, success, failure) {
     fetch(`${URL_API}/vehicles/${vehicle.vehicleID}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(vehicle)
+    })
+        .then(res => res.json())
+        .then(res => success(res))
+        .catch(err => failure(err.message));
+}
+
+export function postCreatedVehicleModelToServer(vehicle, success, failure) {
+    fetch(`${URL_API}/vehicles`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(vehicle)
+    })
+        .then(res => res.json())
+        .then(res => success(res))
+        .catch(err => failure(err.message));
+}
+
+export function postCreateSimulationToServer(simulationName, trackId, vehicleId, success, failure) {
+    fetch(`${URL_API}/simulations`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            simulationName: simulationName
+            , vehicleID: vehicleId,
+            trackID: trackId
+        })
+    })
+        .then(res => res.json())
+        .then(res => success(res))
+        .catch(err => failure(err.message));
+}
+
+export function startSimulationInServer(simulationId, success, failure) {
+    fetch(`${URL_API}/simulations/start?simulationID=${simulationId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })
         .then(res => res.json())
         .then(res => success(res))

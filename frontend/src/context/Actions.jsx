@@ -2,7 +2,10 @@ import {
     fetchSelectedVehicleModelFromServer,
     fetchSimulationsFromServer,
     fetchTracksFromServer,
-    fetchVehiclesFromServer, postUpdatedVehicleModelToServer
+    fetchVehiclesFromServer,
+    postCreatedVehicleModelToServer,
+    postCreateSimulationToServer,
+    postUpdatedVehicleModelToServer, startSimulationInServer
 } from "../services/Service.jsx";
 
 export const FETCH_TRACKS_STARTED = 'FETCH_TRACKS_STARTED';
@@ -20,6 +23,8 @@ export const FETCH_SIMULATIONS_FAILURE = 'FETCH_SIMULATIONS_FAILURE';
 export const UPDATE_SELECTED_VEHICLE = 'UPDATE_SELECTED_VEHICLE';
 export const UPDATE_SELECTED_TRACK = 'UPDATE_SELECTED_TRACK';
 
+export const UPDATE_SIMULATION_NAME = 'UPDATE_SIMULATION_NAME';
+
 export const UPDATE_DOWNFORCE_COEFFICIENT = 'UPDATE_DOWNFORCE_COEFFICIENT';
 export const UPDATE_DRAG_COEFFICIENT = 'UPDATE_DRAG_COEFFICIENT';
 export const UPDATE_PRESSURE_TO_TORQUE_RATIO = 'UPDATE_PRESSURE_TO_TORQUE_RATIO';
@@ -36,6 +41,7 @@ export const UPDATE_FINAL_DRIVE_RATIO = 'UPDATE_FINAL_DRIVE_RATIO';
 export const UPDATE_LONGITUDINAL_GRIP = 'UPDATE_LONGITUDINAL_GRIP';
 export const UPDATE_LATERAL_GRIP = 'UPDATE_LATERAL_GRIP';
 export const UPDATE_TYRE_RADIUS = 'UPDATE_TYRE_RADIUS';
+export const UPDATE_VEHICLE_NAME = 'UPDATE_VEHICLE_NAME';
 
 export const POST_UPDATED_VEHICLE_MODEL_STARTED = 'POST_UPDATED_VEHICLE_MODEL_STARTED';
 export const POST_UPDATED_VEHICLE_MODEL_SUCCESS = 'POST_UPDATED_VEHICLE_MODEL_SUCCESS';
@@ -44,6 +50,22 @@ export const POST_UPDATED_VEHICLE_MODEL_FAILURE = 'POST_UPDATED_VEHICLE_MODEL_FA
 export const FETCH_VEHICLE_MODEL_BY_ID_STARTED = 'FETCH_VEHICLE_MODEL_BY_ID_STARTED';
 export const FETCH_VEHICLE_MODEL_BY_ID_SUCCESS = 'FETCH_VEHICLE_MODEL_BY_ID_SUCCESS';
 export const FETCH_VEHICLE_MODEL_BY_ID_FAILURE = 'FETCH_VEHICLE_MODEL_BY_ID_FAILURE';
+
+export const POST_CREATED_VEHICLE_MODEL_STARTED = 'POST_CREATED_VEHICLE_MODEL_STARTED';
+export const POST_CREATED_VEHICLE_MODEL_SUCCESS = 'POST_CREATED_VEHICLE_MODEL_SUCCESS';
+export const POST_CREATED_VEHICLE_MODEL_FAILURE = 'POST_CREATED_VEHICLE_MODEL_FAILURE';
+
+export const POST_CREATE_SIMULATION_STARTED = 'POST_CREATE_SIMULATION_STARTED';
+export const POST_CREATE_SIMULATION_SUCCESS = 'POST_CREATE_SIMULATION_SUCCESS';
+export const POST_CREATE_SIMULATION_FAILURE = 'POST_CREATE_SIMULATION_FAILURE';
+
+export const POST_START_SIMULATION_STARTED = 'POST_START_SIMULATION_STARTED';
+export const POST_START_SIMULATION_SUCCESS = 'POST_START_SIMULATION_SUCCESS';
+export const POST_START_SIMULATION_FAILURE = 'POST_START_SIMULATION_FAILURE';
+
+export const RESET_SELECTED_VEHICLE = 'RESET_SELECTED_VEHICLE';
+
+export const HIDE_ALERT = 'HIDE_ALERT';
 
 /**
  * Fetch all tracks from the server
@@ -457,11 +479,31 @@ export function updateLateralGrip(dispatch, newLateralGrip){
     dispatch(action);
 }
 
+/**
+ * Updates the tyre radius
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newTyreRadius - new tyre radius
+ */
 export function updateTyreRadius(dispatch, newTyreRadius){
     const action = {
         type: UPDATE_TYRE_RADIUS,
         payload: {
             newTyreRadius: newTyreRadius
+        }
+    };
+    dispatch(action);
+}
+
+/**
+ * Updates the vehicle name
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newVehicleName - new vehicle name
+ */
+export function updateVehicleName(dispatch, newVehicleName){
+    const action = {
+        type: UPDATE_VEHICLE_NAME,
+        payload: {
+            newVehicleName: newVehicleName
         }
     };
     dispatch(action);
@@ -496,7 +538,7 @@ function postUpdatedVehicleModelSuccess(data) {
         type: POST_UPDATED_VEHICLE_MODEL_SUCCESS,
         payload: {
             data: data,
-        }
+        },
     }
 }
 
@@ -549,4 +591,168 @@ function fetchVehicleModelByIdFailure(error) {
             error: error,
         }
     }
+}
+
+/**
+ * Sends a request to the server to create a new vehicle model
+ * @param dispatch - dispatch function to dispatch actions
+ * @param newVehicleModel - new vehicle model
+ */
+export function postCreatedVehicleModel(dispatch, newVehicleModel){
+    const action = {
+        type: POST_CREATED_VEHICLE_MODEL_STARTED,
+    };
+    dispatch(action);
+
+    const success = (res) => {
+        const action = postCreatedVehicleModelSuccess(res);
+        dispatch(action);
+    };
+
+    const failure = (err) => {
+        const action = postCreatedVehicleModelFailure(err);
+        dispatch(action);
+    }
+
+    postCreatedVehicleModelToServer(newVehicleModel, success, failure);
+}
+
+function postCreatedVehicleModelSuccess(data) {
+    return {
+        type: POST_CREATED_VEHICLE_MODEL_SUCCESS,
+        payload: {
+            data: data,
+        },
+    }
+}
+
+function postCreatedVehicleModelFailure(error) {
+    return {
+        type: POST_CREATED_VEHICLE_MODEL_FAILURE,
+        payload: {
+            error: error,
+        }
+    }
+}
+
+/**
+ * Sends a request to the server to create a new simulation
+ * @param dispatch - dispatch function to dispatch actions
+ * @param simulationName - simulationName
+ * @param trackId - trackId
+ * @param vehicleId - vehicleId
+ */
+export function postCreateSimulation(dispatch, simulationName, trackId, vehicleId){
+    const action = {
+        type: POST_CREATE_SIMULATION_STARTED,
+    };
+    dispatch(action);
+
+    const success = (res) => {
+        const action = postCreateSimulationSuccess(res);
+        dispatch(action);
+    };
+
+    const failure = (err) => {
+        const action = postCreateSimulationFailure(err);
+        dispatch(action);
+    }
+
+    postCreateSimulationToServer(simulationName, trackId, vehicleId, success, failure);
+}
+
+function postCreateSimulationSuccess(data) {
+    return {
+        type: POST_CREATE_SIMULATION_SUCCESS,
+        payload: {
+            data: data,
+        },
+    }
+}
+
+function postCreateSimulationFailure(error) {
+    return {
+        type: POST_CREATE_SIMULATION_FAILURE,
+        payload: {
+            error: error,
+        }
+    }
+}
+
+/**
+ * Resets the selected vehicle
+ * @param dispatch - dispatch function to dispatch actions
+ */
+export function resetSelectedVehicle(dispatch) {
+    const action = {
+        type: RESET_SELECTED_VEHICLE,
+    };
+    dispatch(action);
+}
+
+/**
+ * Updates the simulation name
+ * @param dispatch - dispatch function to dispatch actions
+ * @param simulationName - new simulation name
+ */
+export function updateSimulationName(dispatch, simulationName) {
+    const action = {
+        type: UPDATE_SIMULATION_NAME,
+        payload: {
+            simulationName: simulationName
+        }
+    };
+    dispatch(action);
+}
+
+/**
+ * Sends a request to the server to start a simulation
+ * @param dispatch - dispatch function to dispatch actions
+ * @param simulationId - simulationId
+ */
+export function postStartSimulation(dispatch, simulationId) {
+    const action = {
+        type: POST_START_SIMULATION_STARTED,
+        payload: {
+            simulationId: simulationId
+        }
+    };
+    dispatch(action);
+
+    const success = (res) => {
+        const action = postStartSimulationSuccess(res);
+        dispatch(action);
+    };
+
+    const failure = (err) => {
+        const action = postStartSimulationFailure(err);
+        dispatch(action);
+    }
+
+    startSimulationInServer(simulationId, success, failure);
+}
+
+function postStartSimulationSuccess(data) {
+    return {
+        type: POST_START_SIMULATION_SUCCESS,
+        payload: {
+            data: data,
+        },
+    }
+}
+
+function postStartSimulationFailure(error) {
+    return {
+        type: POST_START_SIMULATION_FAILURE,
+        payload: {
+            error: error,
+        }
+    }
+}
+
+export function hideAlert(dispatch) {
+    const action = {
+        type: HIDE_ALERT,
+    };
+    dispatch(action);
 }

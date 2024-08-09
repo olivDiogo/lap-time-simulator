@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { styled, createTheme, ThemeProvider } from '@mui/material/styles';
+import {styled, createTheme, ThemeProvider} from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiDrawer from '@mui/material/Drawer';
 import Box from '@mui/material/Box';
@@ -11,18 +11,25 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Badge from '@mui/material/Badge';
 import Container from '@mui/material/Container';
-import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
 import Link from '@mui/material/Link';
 import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
-import { mainListItems, secondaryListItems } from '../components/ListItems.jsx';
-import TrackListDashboard from '../components/dashboard/TrackListDashboard.jsx';
-import VehicleModelListDashboard from '../components/dashboard/VehicleModelListDashboard.jsx';
-import SimulationsList from '../components/SimulationsList.jsx';
+import {mainListItems, secondaryListItems} from '../components/ListItems.jsx';
 import backgroundImage from '../assets/chequered_flag.jpg';
-import SimulationsListDashboard from "../components/dashboard/SimulationsListDashboard.jsx";
+import {useContext, useEffect, useState} from "react";
+import AppContext from "../context/AppContext.jsx";
+import { postUpdatedVehicleModel, hideAlert} from "../context/Actions.jsx";
+import {Alert, Stack} from "@mui/material";
+import Button from "@mui/material/Button";
+import AeroModelUpdate from "../components/updateVehicle/AeroModelUpdate.jsx";
+import BrakeModelUpdate from "../components/updateVehicle/BrakeModelUpdate.jsx";
+import ChassisModelUpdate from "../components/updateVehicle/ChassisModelUpdate.jsx";
+import PowertrainModelUpdate from "../components/updateVehicle/PowertrainModelUpdate.jsx";
+import TransmissionModelUpdate from "../components/updateVehicle/TransmissionModelUpdate.jsx";
+import TyreModelUpdate from "../components/updateVehicle/TyreModelUpdate.jsx";
+import {useNavigate} from "react-router";
 
 function Copyright(props) {
     return (
@@ -41,7 +48,7 @@ const drawerWidth = 240;
 
 const AppBar = styled(MuiAppBar, {
     shouldForwardProp: (prop) => prop !== 'open',
-})(({ theme, open }) => ({
+})(({theme, open}) => ({
     zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
         easing: theme.transitions.easing.sharp,
@@ -57,8 +64,8 @@ const AppBar = styled(MuiAppBar, {
     }),
 }));
 
-const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' })(
-    ({ theme, open }) => ({
+const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})(
+    ({theme, open}) => ({
         '& .MuiDrawer-paper': {
             position: 'relative',
             whiteSpace: 'nowrap',
@@ -99,18 +106,41 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
 // TODO remove, this demo shouldn't need to reset the theme.
 const defaultTheme = createTheme();
 
-export default function DashboardPage() {
-    const [open, setOpen] = React.useState(false);
+export default function UpdateVehicleModelPage() {
+    const [open, setOpen] = useState(false);
     const toggleDrawer = () => {
         setOpen(!open);
     };
 
+    const navigate = useNavigate();
+
+    const {state, dispatch} = useContext(AppContext);
+    const {selectedVehicle} = state;
+    const {vehicle} = selectedVehicle;
+    let { vehicleName } = vehicle;
+
+    const {alert} = state;
+    useEffect(() => {
+        if (alert.showAlert) {
+            const timer = setTimeout(() => {
+                hideAlert(dispatch);
+            }, 5000);
+
+            return () => clearTimeout(timer);
+        }
+    }, [alert, dispatch]);
+
+    const handleUpdateVehicle = () => {
+        postUpdatedVehicleModel(dispatch, vehicle);
+
+    };
+
     return (
         <ThemeProvider theme={defaultTheme}>
-            <Box sx={{ display: 'flex' }}>
-                <CssBaseline />
+            <Box sx={{display: 'flex'}}>
+                <CssBaseline/>
                 <AppBar position="absolute" open={open}
-                sx={{backgroundColor: 'black'}}>
+                        sx={{backgroundColor: 'black'}}>
                     <Toolbar
                         sx={{
                             pr: '24px', // keep right padding when drawer closed
@@ -123,23 +153,23 @@ export default function DashboardPage() {
                             onClick={toggleDrawer}
                             sx={{
                                 marginRight: '36px',
-                                ...(open && { display: 'none' }),
+                                ...(open && {display: 'none'}),
                             }}
                         >
-                            <MenuIcon />
+                            <MenuIcon/>
                         </IconButton>
                         <Typography
                             component="h1"
                             variant="h6"
                             color="inherit"
                             noWrap
-                            sx={{ flexGrow: 1 }}
+                            sx={{flexGrow: 1}}
                         >
-                            Dashboard
+                            {vehicleName}
                         </Typography>
                         <IconButton color="inherit">
                             <Badge badgeContent={4} color="secondary">
-                                <NotificationsIcon />
+                                <NotificationsIcon/>
                             </Badge>
                         </IconButton>
                     </Toolbar>
@@ -154,13 +184,13 @@ export default function DashboardPage() {
                         }}
                     >
                         <IconButton onClick={toggleDrawer}>
-                            <ChevronLeftIcon />
+                            <ChevronLeftIcon/>
                         </IconButton>
                     </Toolbar>
-                    <Divider />
+                    <Divider/>
                     <List component="nav">
                         {mainListItems}
-                        <Divider sx={{ my: 1 }} />
+                        <Divider sx={{my: 1}}/>
                         {secondaryListItems}
                     </List>
                 </Drawer>
@@ -182,60 +212,72 @@ export default function DashboardPage() {
                         // position: 'relative'
                     }}
                 >
-                    {/*<video autoPlay loop muted*/}
-                    {/*       style={{*/}
-                    {/*           position: "absolute",*/}
-                    {/*           width: "100%",*/}
-                    {/*           left: "50%",*/}
-                    {/*           top: "50%",*/}
-                    {/*           height: "100%",*/}
-                    {/*           objectFit: "cover",*/}
-                    {/*           transform: "translate(-50%, -50%)",*/}
-                    {/*           zIndex: "-1"*/}
-                    {/*       }}*/}
-                    {/*>*/}
-                    {/*    <source src={backgroundImage} type="video/mp4"/>*/}
-                    {/*</video>*/}
                     <Toolbar/>
                     <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
-                            <Grid container spacing={3}>
-                                {/* TrackListDashboard */}
-                                <Grid item xs={12} md={6} lg={6}>
-                                    <Paper
+                        <Box component={"form"}>
+                            <Paper sx={{
+                                p: 2,
+                                padding: 5,
+                                display: 'grid',
+                                gridTemplateColumns: 'repeat(3, 1fr)', // This creates three columns of equal width
+                                gap: '20px', // Adjust the gap between the boxes as needed
+                                justifyContent: 'center',
+                            }}>
+                                <AeroModelUpdate/>
+                                <BrakeModelUpdate/>
+                                <ChassisModelUpdate/>
+                                <PowertrainModelUpdate/>
+                                <TransmissionModelUpdate/>
+                                <TyreModelUpdate/>
+
+
+                                <Box gridColumn={"span 3"} display={"flex"} alignItems={"center"} justifyContent={"center"} marginTop={"20px"}>
+                                    <Button
+                                        variant="contained"
+                                        color="primary"
+                                        onClick={handleUpdateVehicle}
                                         sx={{
-                                            p: 2,
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            height: 350,
+                                            gridColumn: '1 / -1',
+                                            justifySelf: 'center',
+                                            color: 'black',
+                                            backgroundColor: 'lightgrey',
+                                            '&:hover': {
+                                                backgroundColor: 'darkgrey', color: 'black'// Change this to the color you want on hover
+                                            },
                                         }}
                                     >
-                                        <TrackListDashboard/>
-                                    </Paper>
-                                </Grid>
-                                {/* Recent VehicleModelListDashboard */}
-                                <Grid item xs={12} md={6} lg={6}>
-                                    <Paper
+                                        Update
+                                    </Button>
+                                    <Button
                                         sx={{
-                                            p: 2,
-                                            display: 'flex',
-                                            flexDirection: 'column',
-                                            height: 350,
+                                            margin: '10px',
+                                            backgroundColor: 'lightgrey',
+                                            color: 'black',
+                                            '&:hover': {
+                                                backgroundColor: 'darkgrey', // Change this to the color you want on hover
+                                                color: 'black'
+                                            },
                                         }}
+                                        onClick={() => navigate(-1)}
+                                        variant="contained"
                                     >
-                                        <VehicleModelListDashboard/>
-                                    </Paper>
-                                </Grid>
-                                {/* Recent SimulationsList */}
-                                <Grid item xs={12}>
-                                    <Paper sx={{p: 2, display: 'flex', flexDirection: 'column'}}>
-                                        <SimulationsListDashboard/>
-                                    </Paper>
-                                </Grid>
-                            </Grid>
-                            <Copyright sx={{pt: 4}}/>
-                        </Container>
+                                        Back
+                                    </Button>
+                                </Box>
+                                {alert.showAlert && (
+                                    <Stack sx={{width: '100%'}} spacing={2}>
+                                        <Alert severity={alert.alertType}>
+                                            {alert.alertMessage}
+                                        </Alert>
+                                    </Stack>
+                                )}
+                            </Paper>
+                        </Box>
+
+                        <Copyright sx={{pt: 4}}/>
+                    </Container>
                 </Box>
             </Box>
         </ThemeProvider>
-);
+    );
 }

@@ -16,7 +16,7 @@ public class PowertrainModel implements IValueObject {
     private final PowertrainType powertrainType;
 
     /**
-     * Constructor of the class PowertrainModel for combustion powertrains.
+     * Constructor of the class PowertrainModel.
      *
      * @param powerMax     is the maximum power of the engine
      * @param torqueMax    is the maximum torque of the engine
@@ -29,11 +29,11 @@ public class PowertrainModel implements IValueObject {
         }
 
         if (Objects.equals(powertrainType.getValue(), PowertrainType.COMBUSTION.getValue()) && (powerMax <= 0 || torqueMax <= 0 || rpmPowerMax <= 0 || rpmTorqueMax <= 0)) {
-            throw new IllegalArgumentException("PowertrainModel parameters must be greater than 0");
+            throw new IllegalArgumentException("PowertrainModelUpdate parameters must be greater than 0");
         }
 
         if (Objects.equals(powertrainType.getValue(), PowertrainType.ELECTRIC.getValue()) && (powerMax <= 0 || torqueMax <= 0)) {
-            throw new IllegalArgumentException("PowertrainModel parameters must be greater than 0");
+            throw new IllegalArgumentException("PowertrainModelUpdate parameters must be greater than 0");
         }
 
         if(powertrainType == PowertrainType.ELECTRIC){

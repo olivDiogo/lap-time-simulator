@@ -30,24 +30,46 @@ public class SimulationController {
     /**
      * Starts a simulation.
      *
-     * @param simulationDataInDTO is the simulation data.
+     * @param simulationID is the simulation identifier.
      * @return the simulation entity.
      */
+    @PostMapping("/start")
+    public ResponseEntity<EntityModel<SimulationInfoOutDTO>> startSimulation(@RequestParam SimulationID simulationID) {
+        SimulationInfoOutDTO simulation;
+        try {
+            simulation = simulationService.startSimulation(simulationID);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();  // Log the stack trace for debugging
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        Link selfLink = linkTo(methodOn(SimulationController.class).startSimulation(simulationID)).withSelfRel();
+        EntityModel<SimulationInfoOutDTO> response = EntityModel.of(simulation, selfLink);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    /**
+     * Creates a simulation.
+     *
+     * @param simulationDataInDTO is the simulation data.
+     * @return the simulation entity
+     */
     @PostMapping
-    public ResponseEntity<EntityModel<SimulationInfoOutDTO>> startSimulation(@RequestBody SimulationDataInDTO simulationDataInDTO) {
+    public ResponseEntity<EntityModel<SimulationInfoOutDTO>> createSimulation (@RequestBody SimulationDataInDTO simulationDataInDTO) {
         SimulationInfoOutDTO simulation;
         try {
             Name simulationName = new Name(simulationDataInDTO.simulationName);
             VehicleID vehicleID = new VehicleID(simulationDataInDTO.vehicleID);
             TrackID trackID = new TrackID(simulationDataInDTO.trackID);
 
-            simulation = simulationService.startSimulation(simulationName, vehicleID, trackID);
+            simulation = simulationService.createSimulation(simulationName, vehicleID, trackID);
         } catch (IllegalArgumentException e) {
             e.printStackTrace();  // Log the stack trace for debugging
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
         }
 
-        Link selfLink = linkTo(methodOn(SimulationController.class).startSimulation(simulationDataInDTO)).withSelfRel();
+        Link selfLink = linkTo(methodOn(SimulationController.class).createSimulation(simulationDataInDTO)).withSelfRel();
         EntityModel<SimulationInfoOutDTO> response = EntityModel.of(simulation, selfLink);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

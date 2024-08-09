@@ -53,7 +53,7 @@ class PowertrainModelTest {
         });
 
         // Assert
-        assertEquals("PowertrainModel parameters must be greater than 0", exception.getMessage());
+        assertEquals("PowertrainModelUpdate parameters must be greater than 0", exception.getMessage());
     }
 
     @Test
@@ -71,7 +71,7 @@ class PowertrainModelTest {
         });
 
         // Assert
-        assertEquals("PowertrainModel parameters must be greater than 0", exception.getMessage());
+        assertEquals("PowertrainModelUpdate parameters must be greater than 0", exception.getMessage());
     }
 
     @Test
@@ -89,7 +89,7 @@ class PowertrainModelTest {
         });
 
         // Assert
-        assertEquals("PowertrainModel parameters must be greater than 0", exception.getMessage());
+        assertEquals("PowertrainModelUpdate parameters must be greater than 0", exception.getMessage());
     }
 
     @Test
@@ -107,7 +107,7 @@ class PowertrainModelTest {
         });
 
         // Assert
-        assertEquals("PowertrainModel parameters must be greater than 0", exception.getMessage());
+        assertEquals("PowertrainModelUpdate parameters must be greater than 0", exception.getMessage());
     }
 
     @Test
@@ -125,7 +125,7 @@ class PowertrainModelTest {
         });
 
         // Assert
-        assertEquals("PowertrainModel parameters must be greater than 0", exception.getMessage());
+        assertEquals("PowertrainModelUpdate parameters must be greater than 0", exception.getMessage());
     }
 
     @Test
@@ -143,7 +143,7 @@ class PowertrainModelTest {
         });
 
         // Assert
-        assertEquals("PowertrainModel parameters must be greater than 0", exception.getMessage());
+        assertEquals("PowertrainModelUpdate parameters must be greater than 0", exception.getMessage());
     }
 
     @Test
@@ -161,7 +161,7 @@ class PowertrainModelTest {
         });
 
         // Assert
-        assertEquals("PowertrainModel parameters must be greater than 0", exception.getMessage());
+        assertEquals("PowertrainModelUpdate parameters must be greater than 0", exception.getMessage());
     }
 
     @Test
@@ -179,7 +179,7 @@ class PowertrainModelTest {
         });
 
         // Assert
-        assertEquals("PowertrainModel parameters must be greater than 0", exception.getMessage());
+        assertEquals("PowertrainModelUpdate parameters must be greater than 0", exception.getMessage());
     }
 
     @Test
@@ -197,7 +197,7 @@ class PowertrainModelTest {
         });
 
         // Assert
-        assertEquals("PowertrainModel parameters must be greater than 0", exception.getMessage());
+        assertEquals("PowertrainModelUpdate parameters must be greater than 0", exception.getMessage());
     }
 
     @Test
@@ -215,7 +215,7 @@ class PowertrainModelTest {
         });
 
         // Assert
-        assertEquals("PowertrainModel parameters must be greater than 0", exception.getMessage());
+        assertEquals("PowertrainModelUpdate parameters must be greater than 0", exception.getMessage());
     }
 
     @Test
@@ -233,7 +233,7 @@ class PowertrainModelTest {
         });
 
         // Assert
-        assertEquals("PowertrainModel parameters must be greater than 0", exception.getMessage());
+        assertEquals("PowertrainModelUpdate parameters must be greater than 0", exception.getMessage());
     }
 
     @Test
@@ -251,7 +251,7 @@ class PowertrainModelTest {
         });
 
         // Assert
-        assertEquals("PowertrainModel parameters must be greater than 0", exception.getMessage());
+        assertEquals("PowertrainModelUpdate parameters must be greater than 0", exception.getMessage());
     }
 
     @Test

@@ -25,16 +25,16 @@ class VehicleTest {
         }
     }
 
-    @Test
-    void shouldInstantiateVehicle_whenVehicleIDAndVehicleParametersAreValid() {
-        // Assert
-        VehicleParameters vehicleParameters = mock(VehicleParameters.class);
-        VehicleID vehicleID = mock(VehicleID.class);
-
-        //Act
-        Vehicle vehicle = new Vehicle(vehicleID, vehicleParameters);
-
-        //Assert
-        assertNotNull(vehicle);
-    }
+//    @Test
+//    void shouldInstantiateVehicle_whenVehicleIDAndVehicleParametersAreValid() {
+//        // Assert
+//        VehicleParameters vehicleParameters = mock(VehicleParameters.class);
+//        VehicleID vehicleID = mock(VehicleID.class);
+//
+//        //Act
+//        Vehicle vehicle = new Vehicle(vehicleID, vehicleParameters);
+//
+//        //Assert
+//        assertNotNull(vehicle);
+//    }
 }

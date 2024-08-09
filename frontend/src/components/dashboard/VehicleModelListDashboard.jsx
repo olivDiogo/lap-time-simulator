@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Title from './Title';
+import Title from '../Title.jsx';
 import Table from "@mui/material/Table";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
@@ -7,13 +7,12 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import TableBody from "@mui/material/TableBody";
 import {useContext, useEffect} from "react";
-import AppContext from "../context/AppContext.jsx";
-import {fetchVehicles} from "../context/Actions.jsx";
+import AppContext from "../../context/AppContext.jsx";
+import {fetchVehicles} from "../../context/Actions.jsx";
 import Box from "@mui/material/Box";
 import {CircularProgress, Collapse, useTheme} from "@mui/material";
 import {Link} from "react-router-dom";
 import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
 
 function preventDefault(event) {
     event.preventDefault();

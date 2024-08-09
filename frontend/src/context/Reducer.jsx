@@ -30,7 +30,21 @@ import {
     UPDATE_TYRE_RADIUS,
     FETCH_VEHICLE_MODEL_BY_ID_STARTED,
     FETCH_VEHICLE_MODEL_BY_ID_SUCCESS,
-    FETCH_VEHICLE_MODEL_BY_ID_FAILURE, UPDATE_GEARS,
+    FETCH_VEHICLE_MODEL_BY_ID_FAILURE,
+    UPDATE_GEARS,
+    HIDE_ALERT,
+    POST_CREATED_VEHICLE_MODEL_SUCCESS,
+    POST_CREATED_VEHICLE_MODEL_STARTED,
+    POST_CREATED_VEHICLE_MODEL_FAILURE,
+    UPDATE_VEHICLE_NAME,
+    RESET_SELECTED_VEHICLE,
+    POST_CREATE_SIMULATION_STARTED,
+    POST_CREATE_SIMULATION_SUCCESS,
+    POST_CREATE_SIMULATION_FAILURE,
+    UPDATE_SIMULATION_NAME,
+    POST_START_SIMULATION_STARTED,
+    POST_START_SIMULATION_SUCCESS,
+    POST_START_SIMULATION_FAILURE,
 } from "./Actions.jsx";
 
 function reducer(state, action) {
@@ -168,6 +182,7 @@ function reducer(state, action) {
             return {
                 ...state,
                 selectedVehicle: {
+                    ...state.selectedVehicle,
                     vehicle: {
                         ...state.selectedVehicle.vehicle,
                         pressureToTorqueRatio: action.payload.newPressureToTorqueRatio
@@ -179,6 +194,7 @@ function reducer(state, action) {
             return {
                 ...state,
                 selectedVehicle: {
+                    ...state.selectedVehicle,
                     vehicle: {
                         ...state.selectedVehicle.vehicle,
                         mass: action.payload.newVehicleMass
@@ -190,6 +206,7 @@ function reducer(state, action) {
             return {
                 ...state,
                 selectedVehicle: {
+                    ...state.selectedVehicle,
                     vehicle: {
                         ...state.selectedVehicle.vehicle,
                         powerMax: action.payload.newPowerMax
@@ -201,6 +218,7 @@ function reducer(state, action) {
             return {
                 ...state,
                 selectedVehicle: {
+                    ...state.selectedVehicle,
                     vehicle: {
                         ...state.selectedVehicle.vehicle,
                         torqueMax: action.payload.newTorqueMax
@@ -212,6 +230,7 @@ function reducer(state, action) {
             return {
                 ...state,
                 selectedVehicle: {
+                    ...state.selectedVehicle,
                     vehicle: {
                         ...state.selectedVehicle.vehicle,
                         rpmPowerMax: action.payload.newRpmPowerMax
@@ -223,6 +242,7 @@ function reducer(state, action) {
             return {
                 ...state,
                 selectedVehicle: {
+                    ...state.selectedVehicle,
                     vehicle: {
                         ...state.selectedVehicle.vehicle,
                         rpmTorqueMax: action.payload.newRpmTorqueMax
@@ -245,6 +265,7 @@ function reducer(state, action) {
             return {
                 ...state,
                 selectedVehicle: {
+                    ...state.selectedVehicle,
                     vehicle: {
                         ...state.selectedVehicle.vehicle,
                         numberOfGears: action.payload.newNumberOfGears
@@ -322,6 +343,17 @@ function reducer(state, action) {
                 }
             }
 
+        case UPDATE_VEHICLE_NAME:
+            return {
+                ...state,
+                selectedVehicle: {
+                    vehicle: {
+                        ...state.selectedVehicle.vehicle,
+                        vehicleName: action.payload.newVehicleName
+                    }
+                }
+            }
+
         case POST_UPDATED_VEHICLE_MODEL_STARTED:
             return {
                 ...state,
@@ -339,7 +371,13 @@ function reducer(state, action) {
                     ...state.selectedVehicle,
                     loading: false,
                     error: null,
+                },
+                alert: {
+                    alertMessage: 'Vehicle model updated successfully',
+                    alertType: 'success',
+                    showAlert: true,
                 }
+
             }
 
         case POST_UPDATED_VEHICLE_MODEL_FAILURE:
@@ -349,6 +387,11 @@ function reducer(state, action) {
                     ...state.selectedVehicle,
                     loading: false,
                     error: action.payload.error,
+                },
+                alert: {
+                    alertMessage: 'Error updating vehicle model',
+                    alertType: 'error',
+                    showAlert: true,
                 }
             }
 
@@ -382,6 +425,156 @@ function reducer(state, action) {
                     error: action.payload.error,
                 }
             }
+
+        case POST_CREATED_VEHICLE_MODEL_STARTED:
+            return {
+                ...state,
+                selectedVehicle: {
+                    loading: true,
+                    error: null,
+                }
+            }
+
+        case POST_CREATED_VEHICLE_MODEL_SUCCESS:
+            return {
+                ...state,
+                selectedVehicle: {
+                    loading: false,
+                    error: null,
+                },
+                alert: {
+                    alertMessage: 'Vehicle model created successfully',
+                    alertType: 'success',
+                    showAlert: true,
+                }
+
+            }
+
+        case POST_CREATED_VEHICLE_MODEL_FAILURE:
+            return {
+                ...state,
+                selectedVehicle: {
+                    loading: false,
+                    error: action.payload.error,
+                },
+                alert: {
+                    alertMessage: 'Error creating vehicle model',
+                    alertType: 'error',
+                    showAlert: true,
+                }
+            }
+
+        case POST_CREATE_SIMULATION_STARTED:
+            return {
+                ...state,
+                createSimulation: {
+                    loading: true,
+                    error: null,
+                }
+            }
+
+        case POST_CREATE_SIMULATION_SUCCESS:
+            return {
+                ...state,
+                createSimulation: {
+                    loading: false,
+                    trackId: action.payload.data.trackID,
+                    vehicleId: action.payload.data.vehicleID,
+                    simulationName: action.payload.data.simulationName,
+                },
+                alert: {
+                    alertMessage: 'Simulation created successfully',
+                    alertType: 'success',
+                    showAlert: true,
+                }
+            }
+
+        case POST_CREATE_SIMULATION_FAILURE:
+            return {
+                ...state,
+                createSimulation: {
+                    loading: false,
+                    error: action.payload.error,
+                },
+                alert: {
+                    alertMessage: 'Error creating simulation',
+                    alertType: 'error',
+                    showAlert: true,
+                }
+            }
+
+        case UPDATE_SIMULATION_NAME:
+            return {
+                ...state,
+                simulation: {
+                    ...state.simulation,
+                    simulationName: action.payload.simulationName
+                }
+            }
+
+        case POST_START_SIMULATION_STARTED:
+            return {
+                ...state,
+                startSimulation: {
+                    ...state.startSimulation,
+                    simulationId: action.payload.simulationId
+                }
+            }
+
+        case POST_START_SIMULATION_SUCCESS:
+            return {
+                ...state,
+                startSimulation: {
+                    ...state.startSimulation,
+                    simulationId: null
+                },
+                alert: {
+                    alertMessage: 'Simulation started successfully',
+                    alertType: 'success',
+                    showAlert: true,
+                }
+            }
+
+        case POST_START_SIMULATION_FAILURE:
+            return {
+                ...state,
+                startSimulation: {
+                    ...state.startSimulation,
+                    error: action.payload.error
+                },
+                alert: {
+                    alertMessage: 'Error starting simulation',
+                    alertType: 'error',
+                    showAlert: true,
+                }
+            }
+
+        case RESET_SELECTED_VEHICLE:
+            return {
+                ...state,
+                selectedVehicle: {
+                    vehicle: null,
+                    loading: false,
+                    error: null,
+                }
+            }
+
+        // case 'SHOW_ALERT':
+        //     return {
+        //         ...state,
+        //         alert: {
+        //             showAlert: true,
+        //             message: action.payload.message,
+        //         },
+        //     };
+        case HIDE_ALERT:
+            return {
+                ...state,
+                alert: {
+                    showAlert: false,
+                    message: '',
+                },
+            };
 
         default:
             return state;
