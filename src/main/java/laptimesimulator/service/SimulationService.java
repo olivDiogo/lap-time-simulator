@@ -72,8 +72,13 @@ public class SimulationService {
     public SimulationInfoOutDTO createSimulation(Name simulationName, VehicleID vehicleID, TrackID trackID) {
         Optional<Vehicle> vehicle = vehicleRepository.ofIdentity(vehicleID);
         Optional<Track> track = trackRepository.ofIdentity(trackID);
-        if (vehicle.isEmpty() || track.isEmpty()) {
-            throw new IllegalArgumentException("Vehicle or track not found.");
+
+        if (vehicle.isEmpty()) {
+            throw new IllegalArgumentException("Vehicle not found.");
+        }
+
+        if (track.isEmpty()) {
+            throw new IllegalArgumentException("Track not found.");
         }
 
         Simulation simulation = simulationFactory.createSimulation(simulationName, vehicleID, trackID, vehicle.get().getVehicleName(), track.get().getTrackName());

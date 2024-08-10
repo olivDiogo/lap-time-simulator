@@ -45,6 +45,7 @@ public class Vehicle implements IAggregateRoot<VehicleID> {
      *
      * @param vehicleID         is the ID of the vehicle.
      * @param vehicleParameters is the parameters of the vehicle.
+     * @param version           is the version of the vehicle.
      */
     Vehicle(VehicleID vehicleID, VehicleParameters vehicleParameters, long version) {
         // Validation of the parameters is done in the factory
