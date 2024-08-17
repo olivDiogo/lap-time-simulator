@@ -1,5 +1,6 @@
 package laptimesimulator.utils.simulationStarter;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import laptimesimulator.utils.dto.inputDataDTO.SimulationResultDTO;
 import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationDataOutDTO;
@@ -41,7 +42,7 @@ public class SimulationStarter {
         String jsonDataPath = "simulationData.json";
         String workingDirectoryPath = System.getProperty("user.dir");
 
-        RunCppExeWithJson.runCppExecutable(cppExePath, jsonDataPath, workingDirectoryPath);
+        RunCppExeWithJson.runCppExecutable(cppExePath, jsonDataPath, workingDirectoryPath, workingDirectoryPath);
 
         Path responseFilePath = Paths.get("simulationResult.json");
         return getSimulationResult(responseFilePath);
@@ -77,6 +78,7 @@ public class SimulationStarter {
                             simulationVehicleDataOutDTO.MEngMax,
                             simulationVehicleDataOutDTO.nEngPMax,
                             simulationVehicleDataOutDTO.nEngMMax,
+                            simulationVehicleDataOutDTO.type,
                             simulationVehicleDataOutDTO.gears,
                             simulationVehicleDataOutDTO.finalDriveRatio,
                             simulationVehicleDataOutDTO.mux0,
@@ -90,13 +92,47 @@ public class SimulationStarter {
             );
 
             // Convert the structured data to JSON
-            String simulationDataJson = objectMapper.writeValueAsString(simulationOutputData);
+            // Had to use JsonGenerator to avoid casing issues with writeValueAsString() method
+            File simulationDataFile = new File("simulationData.json");
+            FileWriter fileWriter = new FileWriter(simulationDataFile);
 
-            // Write JSON to file
-            File outputFile = new File("simulationData.json");
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(outputFile))) {
-                writer.write(simulationDataJson);
-            }
+            JsonGenerator jsonGenerator = objectMapper.getFactory().createGenerator(fileWriter);
+            jsonGenerator.writeStartObject();
+
+            jsonGenerator.writeFieldName("sim");
+            jsonGenerator.writeStartObject();
+            jsonGenerator.writeObjectField("simulationId", simulationOutputData.sim.simulationID);
+            jsonGenerator.writeObjectField("simulationName", simulationOutputData.sim.simulationName);
+            jsonGenerator.writeEndObject();
+
+            jsonGenerator.writeFieldName("vehicle");
+            jsonGenerator.writeStartObject();
+            jsonGenerator.writeObjectField("vehicleId", simulationOutputData.vehicle.vehicleId);
+            jsonGenerator.writeObjectField("vehicleName", simulationOutputData.vehicle.vehicleName);
+            jsonGenerator.writeObjectField("sCz", simulationOutputData.vehicle.sCz);
+            jsonGenerator.writeObjectField("sCx", simulationOutputData.vehicle.sCx);
+            jsonGenerator.writeObjectField("rBrkF2P", simulationOutputData.vehicle.rBrkF2P);
+            jsonGenerator.writeObjectField("mCar", simulationOutputData.vehicle.mCar);
+            jsonGenerator.writeObjectField("PEngMax", simulationOutputData.vehicle.PEngMax);
+            jsonGenerator.writeObjectField("MEngMax", simulationOutputData.vehicle.MEngMax);
+            jsonGenerator.writeObjectField("nEngPMax", simulationOutputData.vehicle.nEngPMax);
+            jsonGenerator.writeObjectField("nEngMMax", simulationOutputData.vehicle.nEngMMax);
+            jsonGenerator.writeObjectField("type", simulationOutputData.vehicle.type);
+            jsonGenerator.writeObjectField("gears", simulationOutputData.vehicle.gears);
+            jsonGenerator.writeObjectField("finalDriveRatio", simulationOutputData.vehicle.finalDriveRatio);
+            jsonGenerator.writeObjectField("mux0", simulationOutputData.vehicle.mux0);
+            jsonGenerator.writeObjectField("muy0", simulationOutputData.vehicle.muy0);
+            jsonGenerator.writeObjectField("rrTyre", simulationOutputData.vehicle.rrTyre);
+            jsonGenerator.writeEndObject();
+
+            jsonGenerator.writeFieldName("track");
+            jsonGenerator.writeStartObject();
+            jsonGenerator.writeObjectField("trackId", simulationOutputData.track.trackId);
+            jsonGenerator.writeObjectField("trackName", simulationOutputData.track.trackName);
+            jsonGenerator.writeEndObject();
+
+            jsonGenerator.close();
+            fileWriter.close();
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -126,15 +162,15 @@ public class SimulationStarter {
         private double sCx;
         private double rBrkF2P;
         private double mCar;
-        private double pEngMax;
-        private double mEngMax;
+        private double PEngMax;
+        private double MEngMax;
         private Double nEngPMax;
         private Double nEngMMax;
+        private String type;
         private List<Double> gears;
         private double finalDriveRatio;
-        private double mux;
-        private double muy;
-        private double rrTyre;
+        private double mux0;
+        private double muy0;        private double rrTyre;
     }
 
 

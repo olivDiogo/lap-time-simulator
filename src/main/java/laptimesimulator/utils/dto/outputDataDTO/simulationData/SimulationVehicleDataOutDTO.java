@@ -16,6 +16,7 @@ public class SimulationVehicleDataOutDTO {
     public final double MEngMax; // maximum torque
     public final double nEngPMax; // rpm at maximum power
     public final double nEngMMax; // rpm at maximum torque
+    public final String type;
     public final List<Double> gears;
     public final double finalDriveRatio;
     public final double mux0; // longitudinal grip coefficient

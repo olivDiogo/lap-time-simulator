@@ -46,7 +46,7 @@ public class SimulationController {
         Link selfLink = linkTo(methodOn(SimulationController.class).startSimulation(simulationID)).withSelfRel();
         EntityModel<SimulationInfoOutDTO> response = EntityModel.of(simulation, selfLink);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
     /**

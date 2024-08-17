@@ -73,7 +73,7 @@ public class VehicleController {
     public ResponseEntity<EntityModel<VehicleDataOutDTO>> updateVehicle(@PathVariable String strVehicleID, @RequestBody VehicleDataInDTO vehicleDataInDTO) {
 
         // Try to get the vehicle parameters from the vehicle data input transfer object
-        VehicleID vehicleID = new VehicleID(strVehicleID);
+        VehicleID vehicleID = new VehicleID(strVehicleID); // FIX THIS!!!
         VehicleParameters vehicleParameters;
         try {
             vehicleParameters = VehicleParametersUtils.getVehicleParameters(vehicleDataInDTO);

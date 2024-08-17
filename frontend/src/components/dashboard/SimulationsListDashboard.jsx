@@ -79,7 +79,7 @@ export default function SimulationsListDashboard() {
                                 <TableCell>{sim.vehicleName}</TableCell>
                                 <TableCell>{sim.trackName}</TableCell>
                                 <TableCell sx={{display: "flex", alignItems: "center", justifyContent: "center"}}>
-                                    <Box color={"primary"} href={"#"} onClick={() => startSimulation(sim.simulationID)}>
+                                    <Box color={"primary"} href={"#"} onClick={() => startSimulation(sim.simulationID)} sx={{cursor: "pointer"}}>
                                         <img src={startSimulationButton} alt={"play-button"} width={"20"} height={"20"}/>
                                     </Box>
                                 </TableCell>

@@ -25,7 +25,7 @@ public class RunCppExeWithJson {
             return;
         }
 
-        ProcessBuilder processBuilder = new ProcessBuilder(exeFile.getAbsolutePath(), jsonDataFile.getAbsolutePath() /*, outputDirectory.getAbsolutePath() */);
+        ProcessBuilder processBuilder = new ProcessBuilder(exeFile.getAbsolutePath(), jsonDataFile.getAbsolutePath(), outputDirectory.getAbsolutePath());
         processBuilder.directory(new File("cpp"));
 
         try {

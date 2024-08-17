@@ -31,6 +31,7 @@ class SimulationStarterTest {
         double torqueMax = 300;
         double rpmPowerMax = 5000;
         double rpmTorqueMax = 3000;
+        String type = "combustion";
         List<Double> gears = List.of(1.0, 2.0, 3.0, 4.0, 5.0);
         double finalDriveRatio = 3.0;
         double longitudinalGrip = 1.0;
@@ -41,7 +42,7 @@ class SimulationStarterTest {
         String trackName = "trackName";
 
         SimulationVehicleDataOutDTO simulationVehicleDataOutDTO = new SimulationVehicleDataOutDTO(vehicleID, vehicleName, downforceCoefficient, dragCoefficient, pressureToTorqueRatio,
-                mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
+                mass, powerMax, torqueMax, rpmPowerMax, rpmTorqueMax, type, gears, finalDriveRatio, longitudinalGrip, lateralGrip, tyreRadius);
 
         SimulationTrackDataOutDTO simulationTrackDataOutDTO = new SimulationTrackDataOutDTO(trackID, trackName);
         SimulationOptionsDataOutDTO simulationOptionsDataOutDTO = new SimulationOptionsDataOutDTO(simulationID, simulationName);
@@ -74,7 +75,7 @@ class SimulationStarterTest {
     void shouldThrowException_whenSimulationTrackDataOutDTOIsNull(){
         // Arrange
         String expectedMessage = "Simulation data cannot be null.";
-        SimulationVehicleDataOutDTO simulationVehicleDataOutDTO = new SimulationVehicleDataOutDTO("kjdf@984", "Carocha", 1.0, -1.0, 1.0, 600.0, 500, 300, 5000, 3000, List.of(1.0, 2.0, 3.0, 4.0, 5.0), 3.0, 1.0, 4, 0.3);
+        SimulationVehicleDataOutDTO simulationVehicleDataOutDTO = new SimulationVehicleDataOutDTO("kjdf@984", "Carocha", 1.0, -1.0, 1.0, 600.0, 500, 300, 5000, 3000, "combustion", List.of(1.0, 2.0, 3.0, 4.0, 5.0), 3.0, 1.0, 4, 0.3);
         SimulationOptionsDataOutDTO simulationOptionsDataOutDTO = new SimulationOptionsDataOutDTO("123456789", "Simulation");
 
         // Act & Assert
@@ -89,7 +90,7 @@ class SimulationStarterTest {
     void shouldThrowException_whenSimulationOptionsDataOutDTOIsNull(){
         // Arrange
         String expectedMessage = "Simulation data cannot be null.";
-        SimulationVehicleDataOutDTO simulationVehicleDataOutDTO = new SimulationVehicleDataOutDTO("kjdf@984", "Carocha", 1.0, -1.0, 1.0, 600.0, 500, 300, 5000, 3000, List.of(1.0, 2.0, 3.0, 4.0, 5.0), 3.0, 1.0, 4, 0.3);
+        SimulationVehicleDataOutDTO simulationVehicleDataOutDTO = new SimulationVehicleDataOutDTO("kjdf@984", "Carocha", 1.0, -1.0, 1.0, 600.0, 500, 300, 5000, 3000, "combustion", List.of(1.0, 2.0, 3.0, 4.0, 5.0), 3.0, 1.0, 4, 0.3);
         SimulationTrackDataOutDTO simulationTrackDataOutDTO = new SimulationTrackDataOutDTO("trackID", "trackName");
 
         // Act & Assert

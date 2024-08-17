@@ -39,7 +39,6 @@ public class SimulationService {
      * @param simulationID is the simulation identifier.
      * @return the simulation entity.
      */
-    @Transactional
     public SimulationInfoOutDTO startSimulation(SimulationID simulationID) {
 
         Optional<Simulation> simulationOptional = simulationRepository.ofIdentity(simulationID);

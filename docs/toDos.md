@@ -1,5 +1,5 @@
 To do:
 
 * Implement clone vehicle model button
-* Separate create simulation and start simulation into 2 methods
+* Fix update vehicle in Vehicle Controller (vehicleID comes inside the DTO)
 * HATEOAS 

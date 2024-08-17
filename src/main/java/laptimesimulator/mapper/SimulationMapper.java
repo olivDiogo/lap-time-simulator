@@ -2,6 +2,7 @@ package laptimesimulator.mapper;
 
 import laptimesimulator.domain.simulation.Simulation;
 import laptimesimulator.domain.track.Track;
+import laptimesimulator.domain.valueObject.PowertrainType;
 import laptimesimulator.domain.vehicle.Vehicle;
 import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationOptionsDataOutDTO;
 import laptimesimulator.utils.dto.outputDataDTO.simulationData.SimulationTrackDataOutDTO;
@@ -37,6 +38,7 @@ public class SimulationMapper {
         double tEngMax = vehicle.getPowertrainModel().getTorqueMax();
         Double nEngPMax = vehicle.getPowertrainModel().getRpmPowerMax();
         Double nEngTMax = vehicle.getPowertrainModel().getRpmTorqueMax();
+        String powertrainType = vehicle.getPowertrainModel().getPowertrainType().getValue();
         List<Double> gears = vehicle.getTransmissionModel().getGears();
         double finalDriveRatio = vehicle.getTransmissionModel().getFinalDriveRatio();
         double mux = vehicle.getTyreModel().getLongitudinalGrip();
@@ -44,7 +46,7 @@ public class SimulationMapper {
         double rrTyre = vehicle.getTyreModel().getTyreRadius();
 
         return new SimulationVehicleDataOutDTO(vehicleID, vehicleName, sCz, sCx,
-                rBrkF2P, mCar, pEngMax, tEngMax, nEngPMax, nEngTMax, gears,
+                rBrkF2P, mCar, pEngMax, tEngMax, nEngPMax, nEngTMax, powertrainType, gears,
                 finalDriveRatio, mux, muy, rrTyre);
     }
 
