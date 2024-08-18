@@ -172,6 +172,7 @@ void writeCSV(const std::string& outPath, const std::string& simId, const Eigen:
     }
 
     // Write data to the CSV file
+    file << "sLap" << "," << "vCar" <<"\n";
     for (size_t i=0; i<vec1.size(); i++) {
         file << vec1[i] << "," << vec2[i] <<"\n";
     }
