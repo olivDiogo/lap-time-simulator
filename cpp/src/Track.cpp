@@ -8,7 +8,7 @@ Track::Track(const nlohmann::json &jTrack)
      m_trackName(jTrack["trackName"]),
      m_trackPath("resources/tracks/")
 {
-    getTrackData(m_trackPath + m_trackName);
+    getTrackData(m_trackPath + m_trackName + ".track");
     calcCurvature();
     //data.curvature = Eigen::ArrayXd::Ones(200);
 
